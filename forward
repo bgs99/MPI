@@ -1,0 +1,2 @@
+#!/bin/bash
+ssh -f -N -L 42322:se.ifmo.ru:42322 -p 2222 s242322@se.ifmo.ru
