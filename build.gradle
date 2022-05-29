@@ -1,13 +1,15 @@
 plugins {
-	id 'org.springframework.boot' version '3.0.0-SNAPSHOT'
+	id 'org.springframework.boot' version '2.7.0'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+        id 'org.hidetake.ssh' version '2.10.1'
 	id 'java'
 	id 'application'
 }
 
 group = 'ru.itmo'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
 
 configurations {
 	compileOnly {
@@ -35,4 +37,22 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+remotes {
+  helios {
+    role 'prod'
+    host = 'se.ifmo.ru'
+    user = 's242322'
+    port = 2222
+    identity = file("${System.getProperty('user.home')}/.ssh/id_rsa")
+  }
+}
+
+task deploy(dependsOn: bootJar) {
+  ssh.run {
+    session(remotes.helios) {
+      put from: "${bootJar.archiveFile.get()}", into: 'hungerGames.jar'
+    }
+  }
 }
