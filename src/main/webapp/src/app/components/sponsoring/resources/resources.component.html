@@ -6,6 +6,8 @@
     <mat-step [editable]="false" label="Оплата"></mat-step>
 </mat-horizontal-stepper>
 
+<h2>ТРИБУТ {{this.tribute?.name}}</h2>
+
 <form>
     <table mat-table [dataSource]="resources" style="width: 100%;" class="mat-elevation-z8">
         <ng-container matColumnDef="name">
@@ -17,7 +19,7 @@
             <th mat-header-cell *matHeaderCellDef> Количество </th>
             <td mat-cell *matCellDef="let element">
                 <mat-form-field class="example-full-width">
-                    <input matInput type="number" [(ngModel)]="element.amount">
+                    <input matInput type="number" [(ngModel)]="element.amount" name="amount">
                 </mat-form-field>
             </td>
         </ng-container>

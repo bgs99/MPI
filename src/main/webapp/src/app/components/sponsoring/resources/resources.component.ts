@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
 import { Resource } from 'src/app/models/resource';
+import { Tribute } from 'src/app/models/tribute';
 
 @Component({
     selector: 'app-resources',
@@ -10,18 +12,20 @@ import { Resource } from 'src/app/models/resource';
 })
 export class ResourcesComponent implements OnInit {
     resourcesColumns: string[] = ['name', 'amount', 'price', 'total'];
-    tributes = new MatTableDataSource<Resource>([]);
+    resources = new MatTableDataSource<Resource>([]);
 
-    tribute: number = -1;
+    tribute: Tribute | null = null;
 
-    constructor(private route: ActivatedRoute) { }
+    constructor(private router: Router) {
+        router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(e => {
+            const state = router.getCurrentNavigation()?.extras.state;
+            if (state !== undefined) {
+                this.tribute = state['tribute']
+            }
+        });
+    }
 
     ngOnInit(): void {
-        this.route.queryParamMap.subscribe({
-            next: (params: ParamMap) => {
-                const tribute_param: string | null = params.get("tribute");
-                this.tribute = tribute_param === null ? -1 : parseInt(tribute_param);
-            }
-        })
+
     }
 }

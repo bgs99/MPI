@@ -6,11 +6,14 @@ import { AppComponent } from './app.component';
 import { TributesComponent } from './components/sponsoring/tributes/tributes.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { AuthService } from './services/auth.service';
 import { TributesService } from './services/tributes.service';
@@ -27,6 +30,7 @@ import { ResourcesComponent } from './components/sponsoring/resources/resources.
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -35,6 +39,8 @@ import { ResourcesComponent } from './components/sponsoring/resources/resources.
     MatStepperModule,
     MatToolbarModule,
     MatIconModule,
+    MatInputModule,
+    MatFormFieldModule,
   ],
   providers: [AuthService, TributesService],
   bootstrap: [AppComponent]
