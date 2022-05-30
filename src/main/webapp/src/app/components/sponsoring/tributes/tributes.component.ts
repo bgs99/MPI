@@ -9,7 +9,7 @@ import { TributesService } from 'src/app/services/tributes.service';
   styleUrls: ['./tributes.component.css']
 })
 export class TributesComponent implements OnInit {
-  tributesColumns: string[] = ['name', 'district'];
+  tributesColumns: string[] = ['name', 'district', 'select'];
   tributes = new MatTableDataSource<Tribute>([]);
 
   constructor(private tributesService: TributesService) { }
