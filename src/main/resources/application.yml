@@ -7,5 +7,5 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-    hibernate:
-      ddl-auto: update
+    generate-ddl: true
+    open-in-view: true
