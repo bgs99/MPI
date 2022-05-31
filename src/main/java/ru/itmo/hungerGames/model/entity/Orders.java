@@ -30,6 +30,8 @@ public class Orders {
     @Enumerated(EnumType.STRING)
     private OrdersType ordersType;
 
+    private String advertisingText;
+
     @OneToMany
     @JoinColumn(name = "order_id")
     private List<OrderDetail> orderDetails;

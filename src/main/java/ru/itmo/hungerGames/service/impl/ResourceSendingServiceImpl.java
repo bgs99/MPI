@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.itmo.hungerGames.model.entity.*;
+import ru.itmo.hungerGames.model.request.AdvertisingTextRequest;
 import ru.itmo.hungerGames.model.request.ApproveResourcesRequest;
 import ru.itmo.hungerGames.model.request.OrderDetailRequest;
 import ru.itmo.hungerGames.model.request.SponsorResourceOrderRequest;
+import ru.itmo.hungerGames.model.response.AdvertisingTextResponse;
 import ru.itmo.hungerGames.model.response.ResourceApprovalResponse;
 import ru.itmo.hungerGames.model.response.SponsorResourceOrderResponse;
 import ru.itmo.hungerGames.repository.*;
@@ -89,6 +91,7 @@ public class ResourceSendingServiceImpl implements ResourceSendingService {
                 .tribute(tribute)
                 .sponsor(sponsor)
                 .price(price)
+                .ordersType(OrdersType.RESOURCES)
                 .build();
 
         return SponsorResourceOrderResponse.builder()
@@ -117,5 +120,20 @@ public class ResourceSendingServiceImpl implements ResourceSendingService {
         Orders orders = ordersOptional.get();
         orders.setApproved(approveResourcesRequest.getApproved());
         ordersRepository.save(orders);
+    }
+
+    @Override
+    public AdvertisingTextResponse sendAdvertisingText(AdvertisingTextRequest advertisingTextRequest) {
+        Tribute tribute = tributeRepository
+                .findById(advertisingTextRequest.getTributeId())
+                .orElseThrow(() -> new ResourceNotFoundException("There's no tribute with such ID"));
+
+        return new AdvertisingTextResponse(
+                ordersRepository.save(Orders.builder()
+                        .tribute(tribute)
+                        .advertisingText(advertisingTextRequest.getText())
+                        .ordersType(OrdersType.ADVERTISEMENT)
+                        .build()).getId()
+        );
     }
 }
