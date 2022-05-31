@@ -4,23 +4,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.itmo.hungerGames.model.Tribute;
-import ru.itmo.hungerGames.service.TributeService;
+import ru.itmo.hungerGames.model.entity.Tribute;
+import ru.itmo.hungerGames.service.ResourceSendingService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/tribute")
 public class TributeController {
-    private final TributeService tributeService;
+    private final ResourceSendingService resourceSendingService;
 
     @Autowired
-    public TributeController(TributeService tributeService) {
-        this.tributeService = tributeService;
+    public TributeController(ResourceSendingService resourceSendingService) {
+        this.resourceSendingService = resourceSendingService;
     }
 
     @GetMapping("/all")
     public List<Tribute> getAllTributes() {
-        return tributeService.getAllTributes();
+        return resourceSendingService.getAllTributes();
     }
 }
