@@ -17,6 +17,6 @@ public interface ResourceSendingService {
     List<Mentor> getAllMentors();
     List<Resource> getAllResources();
     SponsorResourceOrderResponse sendResourcesForApproval(SponsorResourceOrderRequest sponsorResourceOrderRequest);
-    List<ResourceApprovalResponse> getResourcesForApproval(Long mentorId);
+    List<ResourceApprovalResponse> getOrdersForApproval(Long mentorId);
     void approveResourcesToSend(ApproveResourcesRequest approveResourcesRequest);
 }

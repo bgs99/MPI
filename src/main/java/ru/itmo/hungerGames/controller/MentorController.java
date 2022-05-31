@@ -24,12 +24,12 @@ public class MentorController {
         return resourceSendingService.getAllMentors();
     }
 
-    @GetMapping("/resources")
-    public List<ResourceApprovalResponse> getResourcesForApproval(@RequestParam Long mentorId) {
-        return resourceSendingService.getResourcesForApproval(mentorId);
+    @GetMapping("/orders")
+    public List<ResourceApprovalResponse> getOrdersForApproval(@RequestParam Long mentorId) {
+        return resourceSendingService.getOrdersForApproval(mentorId);
     }
 
-    @PostMapping("/resources/approve")
+    @PostMapping("/order/approve")
     public void approveResourcesToSend(@RequestBody ApproveResourcesRequest approveResourcesRequest) {
         resourceSendingService.approveResourcesToSend(approveResourcesRequest);
     }
