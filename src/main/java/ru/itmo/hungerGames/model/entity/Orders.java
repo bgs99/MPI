@@ -16,8 +16,7 @@ public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-    @Builder.Default
-    private boolean approved = false;
+    private Boolean approved;
     @Builder.Default
     private boolean paid = false;
     private BigDecimal price;
