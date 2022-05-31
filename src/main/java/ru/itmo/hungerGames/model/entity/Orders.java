@@ -28,5 +28,6 @@ public class Orders {
     private OrdersType ordersType;
 
     @OneToMany
+    @JoinColumn(name = "order_id")
     private List<OrderDetail> orderDetails;
 }
