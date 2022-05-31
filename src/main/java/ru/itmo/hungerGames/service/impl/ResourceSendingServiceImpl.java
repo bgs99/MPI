@@ -97,7 +97,7 @@ public class ResourceSendingServiceImpl implements ResourceSendingService {
 
     @Override
     public List<ResourceApprovalResponse> getResourcesForApproval(Long mentorId) {
-        List<Orders> orders = ordersRepository.findAllByTribute_MentorId(mentorId);
+        List<Orders> orders = ordersRepository.findAllByTribute_MentorIdAndPaid(mentorId, true);
         return orders.stream().map(ResourceApprovalResponse::new).collect(Collectors.toList());
     }
 }

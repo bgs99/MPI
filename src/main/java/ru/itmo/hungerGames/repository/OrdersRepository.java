@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface OrdersRepository extends JpaRepository<Orders, Long> {
-    List<Orders> findAllByTribute_MentorId(Long mentorId);
+    List<Orders> findAllByTribute_MentorIdAndPaid(Long mentorId, boolean paid);
 }
