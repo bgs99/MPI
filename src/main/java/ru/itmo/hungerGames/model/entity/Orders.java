@@ -16,6 +16,7 @@ public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+    @Builder.Default
     private boolean approved = false;
     private BigDecimal price;
     @ManyToOne
