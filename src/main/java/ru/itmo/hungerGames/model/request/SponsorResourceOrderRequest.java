@@ -14,5 +14,6 @@ import java.util.List;
 @NoArgsConstructor
 public class SponsorResourceOrderRequest {
     Long tributeId;
+    Long sponsorId;
     List<OrderDetailRequest> orderDetails;
 }

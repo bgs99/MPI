@@ -25,7 +25,7 @@ public class ResourceController {
     }
 
     @PostMapping("/send")
-    public SponsorResourceOrderResponse sendResourcesToMentorForApproval(@RequestBody SponsorResourceOrderRequest sponsorResourceOrderRequest) {
-        return resourceService.sendResourcesToMentorForApproval(sponsorResourceOrderRequest);
+    public SponsorResourceOrderResponse sendResourcesForApproval(@RequestBody SponsorResourceOrderRequest sponsorResourceOrderRequest) {
+        return resourceService.sendResourcesForApproval(sponsorResourceOrderRequest);
     }
 }

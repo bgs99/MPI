@@ -24,6 +24,9 @@ public class Orders {
     @ManyToOne
     private Tribute tribute;
 
+    @ManyToOne
+    private Sponsor sponsor;
+
     @Enumerated(EnumType.STRING)
     private OrdersType ordersType;
 
