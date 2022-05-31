@@ -22,6 +22,9 @@ public class Orders {
     @ManyToOne
     private Tribute tribute;
 
+    @Enumerated(EnumType.STRING)
+    private OrdersType ordersType;
+
     @OneToMany
     private List<OrderDetail> orderDetails;
 }
