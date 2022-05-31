@@ -11,5 +11,4 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PaymentRequest {
     private Long orderId;
-    private boolean approved;
 }

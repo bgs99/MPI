@@ -19,7 +19,7 @@ public class PaymentManagerController {
     }
 
     @PostMapping
-    public void setPaymentStatus(@RequestBody PaymentRequest paymentRequest) {
-        paymentManagerService.setPaymentStatus(paymentRequest);
+    public void approvePayment(@RequestBody PaymentRequest paymentRequest) {
+        paymentManagerService.approvePayment(paymentRequest);
     }
 }

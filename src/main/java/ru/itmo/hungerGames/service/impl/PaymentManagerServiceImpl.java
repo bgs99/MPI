@@ -18,7 +18,7 @@ public class PaymentManagerServiceImpl implements PaymentManagerService {
     }
 
     @Override
-    public void setPaymentStatus(PaymentRequest paymentRequest) {
+    public void approvePayment(PaymentRequest paymentRequest) {
         Orders orders = ordersRepository
                 .findById(paymentRequest.getOrderId())
                 .orElseThrow(() -> new ResourceNotFoundException("Order is not found."));
