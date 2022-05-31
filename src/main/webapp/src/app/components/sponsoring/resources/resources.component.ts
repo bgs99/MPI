@@ -43,8 +43,12 @@ export class ResourcesComponent implements OnInit {
         if (this.tribute === null) {
             return;
         }
+        const selfId: string | null = localStorage.getItem("identity");
+        if (selfId === null) {
+            return;
+        }
         this.paymentEnabled = false;
-        this.resourcesService.orderResources(this.tribute.id, this.resources.data).subscribe({
+        this.resourcesService.orderResources(this.tribute.id, parseInt(selfId), this.resources.data).subscribe({
             next: (paymentData: PaymentData) => {
                 localStorage.setItem('tribute', JSON.stringify(this.tribute));
                 localStorage.setItem('resources', JSON.stringify(this.resources.data));

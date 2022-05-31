@@ -7,6 +7,7 @@ import { TributesComponent } from './components/sponsoring/tributes/tributes.com
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -15,10 +16,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatSelectModule } from '@angular/material/select';
+import { MatListModule } from '@angular/material/list';
 
 import { AuthService } from './services/auth.service';
 import { TributesService } from './services/tributes.service';
-import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from './components/header/header.component';
 import { ResourcesComponent } from './components/sponsoring/resources/resources.component';
 import { PaymentComponent } from './components/payment/payment.component';
@@ -26,6 +28,9 @@ import { SuccessComponent } from './components/sponsoring/success/success.compon
 import { FailureComponent } from './components/sponsoring/failure/failure.component';
 import { ResourcesService } from './services/resources.service';
 import { PaymentService } from './services/mock/payment.service';
+import { LoginComponent } from './components/login/login.component';
+import { SponsorsService } from './services/sponsors.service';
+import { MentorsService } from './services/mentors.service';
 
 @NgModule({
   declarations: [
@@ -35,7 +40,8 @@ import { PaymentService } from './services/mock/payment.service';
     ResourcesComponent,
     PaymentComponent,
     SuccessComponent,
-    FailureComponent
+    FailureComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -51,8 +57,17 @@ import { PaymentService } from './services/mock/payment.service';
     MatInputModule,
     MatFormFieldModule,
     MatGridListModule,
+    MatSelectModule,
+    MatListModule,
   ],
-  providers: [AuthService, TributesService, ResourcesService, PaymentService],
+  providers: [
+    AuthService,
+    TributesService,
+    ResourcesService,
+    PaymentService,
+    SponsorsService,
+    MentorsService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
