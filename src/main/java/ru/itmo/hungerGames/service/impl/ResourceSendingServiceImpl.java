@@ -9,6 +9,7 @@ import ru.itmo.hungerGames.model.entity.Resource;
 import ru.itmo.hungerGames.model.entity.Tribute;
 import ru.itmo.hungerGames.model.request.OrderDetailRequest;
 import ru.itmo.hungerGames.model.request.SponsorResourceOrderRequest;
+import ru.itmo.hungerGames.model.response.SponsorResourceOrderResponse;
 import ru.itmo.hungerGames.repository.OrderDetailRepository;
 import ru.itmo.hungerGames.repository.OrdersRepository;
 import ru.itmo.hungerGames.repository.ResourceRepository;
@@ -46,7 +47,7 @@ public class ResourceSendingServiceImpl implements ResourceSendingService {
     }
 
     @Override
-    public void sendResourcesToMentorForApproval(SponsorResourceOrderRequest sponsorResourceOrderRequest) {
+    public SponsorResourceOrderResponse sendResourcesToMentorForApproval(SponsorResourceOrderRequest sponsorResourceOrderRequest) {
         Tribute tribute = tributeRepository
                 .findById(sponsorResourceOrderRequest.getTributeId())
                 .orElseThrow(() -> new ResourceNotFoundException("There's no tribute with the ID"));
@@ -73,7 +74,10 @@ public class ResourceSendingServiceImpl implements ResourceSendingService {
                 .tribute(tribute)
                 .price(price)
                 .build();
-        
-        ordersRepository.save(orders);
+
+        return SponsorResourceOrderResponse.builder()
+                .id(ordersRepository.save(orders).getId())
+                .price(price)
+                .build();
     }
 }
