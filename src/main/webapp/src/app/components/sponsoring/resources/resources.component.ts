@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
+import { PaymentData } from 'src/app/models/payment-data';
 import { Resource } from 'src/app/models/resource';
 import { Tribute } from 'src/app/models/tribute';
 import { ResourcesService } from 'src/app/services/resources.service';
@@ -15,6 +16,7 @@ import { ResourcesService } from 'src/app/services/resources.service';
 export class ResourcesComponent implements OnInit {
     resourcesColumns: string[] = ['name', 'amount', 'price', 'total'];
     resources = new MatTableDataSource<Resource>([]);
+    paymentEnabled: boolean = true;
 
     tribute: Tribute | null = null;
 
@@ -38,7 +40,22 @@ export class ResourcesComponent implements OnInit {
     }
 
     pay(): void {
-        this.resources.data = []
+        if (this.tribute === null) {
+            return;
+        }
+        this.paymentEnabled = false;
+        this.resourcesService.orderResources(this.tribute.id, this.resources.data).subscribe({
+            next: (paymentData: PaymentData) => {
+                localStorage.setItem('tribute', JSON.stringify(this.tribute));
+                localStorage.setItem('resources', JSON.stringify(this.resources.data));
+                localStorage.setItem('order', JSON.stringify(paymentData.id));
+                this.router.navigateByUrl("/mock/payment/" + paymentData.id);
+            },
+            error: (err: any) => {
+                console.log(err);
+                this.paymentEnabled = true;
+            }
+        });
     }
 
     ngOnInit(): void {
@@ -46,8 +63,14 @@ export class ResourcesComponent implements OnInit {
             .subscribe({
                 next: (data: Resource[]) => {
                     console.log("Received data " + JSON.stringify(data));
+
+                    const resourceItem: string | null = localStorage.getItem('resources');
+
+                    const savedData: Resource[] = resourceItem === null ? [] : JSON.parse(resourceItem);
+
                     data.forEach(resource => {
-                        resource.amount = 0;
+                        const savedAmount: number | undefined = savedData.find((res) => res.id === resource.id)?.amount;
+                        resource.amount = savedAmount === undefined ? 0 : savedAmount;
                     });
                     this.resources.data = data;
                 },
