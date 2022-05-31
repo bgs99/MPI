@@ -3,7 +3,7 @@
 <mat-horizontal-stepper [linear]="true" [selectedIndex]="1" (selectionChange)="stepperChanged($event)">
     <mat-step [completed]="true" [editable]="true" label="Выбор трибута"></mat-step>
     <mat-step [completed]="false" label="Выбор ресурсов"></mat-step>
-    <mat-step [editable]="false" label="Оплата"></mat-step>
+    <mat-step [editable]="false" label="Подтверждение"></mat-step>
 </mat-horizontal-stepper>
 
 <form>
@@ -45,7 +45,7 @@
     <mat-grid-tile>
         <h2>Сумма: </h2>
         <div class="payment-field">{{total()}}$</div>
-        <button mat-raised-button (click)="pay()"> Оплатить </button>
+        <button mat-raised-button (click)="pay()" [disabled]="total() <= 0 || !paymentEnabled"> Оплатить </button>
     </mat-grid-tile>
   </mat-grid-list>
   
