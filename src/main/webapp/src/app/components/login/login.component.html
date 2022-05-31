@@ -1,0 +1,23 @@
+<mat-list>
+    <mat-list-item>
+        <mat-form-field>
+            <mat-label>Роль</mat-label>
+            <mat-select [(value)]="role" name="role">
+                <mat-option value="tribute">Трибут</mat-option>
+                <mat-option value="sponsor">Спонсор</mat-option>
+                <mat-option value="mentor">Ментор</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </mat-list-item>
+    <mat-list-item>
+        <mat-form-field>
+            <mat-label>Личность</mat-label>
+            <mat-select [(value)]="identity" name="identity">
+                <mat-option *ngFor="let person of persons()" value="{{person.id}}">{{person.name}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </mat-list-item>
+    <mat-list-item>
+        <button mat-raised-button (click)="login()">Войти</button>
+    </mat-list-item>
+</mat-list>

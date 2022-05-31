@@ -1,3 +1,7 @@
-export class Tribute {
-    constructor(public name: String, public district: number, public id: number = 42) { }
+import { Person } from "./person";
+
+export class Tribute extends Person {
+    constructor(name: String, public district: number, id: number) {
+        super(name, id)
+    }
 }

@@ -17,10 +17,9 @@ class OrderDetail {
 }
 
 class SponsorResourceOrderRequest {
-  tributeId: number;
   orderDetails: OrderDetail[];
 
-  constructor(tributeId: number, resources: Resource[]) {
+  constructor(public tributeId: number, public sponsorId: number, resources: Resource[]) {
     this.tributeId = tributeId;
     this.orderDetails = resources
       .filter((resource: Resource) => resource.amount > 0)
@@ -41,10 +40,10 @@ export class ResourcesService {
       { headers: this.auth.authenticatedHeaders(ResourcesService.headers) },
     );
   }
-  orderResources(tributeId: number, resources: Resource[]): Observable<PaymentData> {
+  orderResources(tributeId: number, sponsorId: number, resources: Resource[]): Observable<PaymentData> {
     return this.http.post<PaymentData>(
       ResourcesService.BASE_URL + "/send",
-      new SponsorResourceOrderRequest(tributeId, resources), 
+      new SponsorResourceOrderRequest(tributeId, sponsorId, resources), 
       { headers: this.auth.authenticatedHeaders(ResourcesService.headers) },
     );
   }
