@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.itmo.hungerGames.model.entity.*;
 import ru.itmo.hungerGames.model.request.OrderDetailRequest;
 import ru.itmo.hungerGames.model.request.SponsorResourceOrderRequest;
-import ru.itmo.hungerGames.model.response.ResourceApprovalRequest;
+import ru.itmo.hungerGames.model.response.ResourceApprovalResponse;
 import ru.itmo.hungerGames.model.response.SponsorResourceOrderResponse;
 import ru.itmo.hungerGames.repository.*;
 import ru.itmo.hungerGames.service.ResourceSendingService;
@@ -15,19 +15,22 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ResourceSendingServiceImpl implements ResourceSendingService {
     private final TributeRepository tributeRepository;
     private final SponsorRepository sponsorRepository;
+    private final MentorRepository mentorRepository;
     private final ResourceRepository resourceRepository;
     private final OrdersRepository ordersRepository;
     private final OrderDetailRepository orderDetailRepository;
 
     @Autowired
-    public ResourceSendingServiceImpl(TributeRepository tributeRepository, SponsorRepository sponsorRepository, ResourceRepository resourceRepository, OrdersRepository ordersRepository, OrderDetailRepository orderDetailRepository) {
+    public ResourceSendingServiceImpl(TributeRepository tributeRepository, SponsorRepository sponsorRepository, MentorRepository mentorRepository, ResourceRepository resourceRepository, OrdersRepository ordersRepository, OrderDetailRepository orderDetailRepository) {
         this.tributeRepository = tributeRepository;
         this.sponsorRepository = sponsorRepository;
+        this.mentorRepository = mentorRepository;
         this.resourceRepository = resourceRepository;
         this.ordersRepository = ordersRepository;
         this.orderDetailRepository = orderDetailRepository;
@@ -41,6 +44,11 @@ public class ResourceSendingServiceImpl implements ResourceSendingService {
     @Override
     public List<Sponsor> getAllSponsors() {
         return sponsorRepository.findAll();
+    }
+
+    @Override
+    public List<Mentor> getAllMentors() {
+        return mentorRepository.findAll();
     }
 
     @Override
@@ -88,7 +96,8 @@ public class ResourceSendingServiceImpl implements ResourceSendingService {
     }
 
     @Override
-    public List<OrderDetail> getResourcesForApproval(ResourceApprovalRequest resourceApprovalRequest) {
-        return null;
+    public List<ResourceApprovalResponse> getResourcesForApproval(Long mentorId) {
+        List<Orders> orders = ordersRepository.findAllByTribute_MentorId(mentorId);
+        return orders.stream().map(ResourceApprovalResponse::new).collect(Collectors.toList());
     }
 }
