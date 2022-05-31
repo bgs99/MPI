@@ -1,0 +1,17 @@
+<app-header></app-header>
+
+<mat-horizontal-stepper [linear]="true" [selectedIndex]="2" (selectionChange)="stepperChanged($event)">
+    <mat-step [completed]="true" [editable]="true" label="Выбор трибута"></mat-step>
+    <mat-step [completed]="true" [editable]="false" label="Выбор ресурсов"></mat-step>
+    <mat-step [completed]="true" label="Подтверждение"></mat-step>
+</mat-horizontal-stepper>
+
+<h2>Оплата подтверждена</h2>
+
+<div>
+    Средства заморожены на счете и будут списаны когда ментор трибута {{ tribute?.name }} одобрит отправку.
+</div>
+
+<div>
+    Если отправка будет отклонена, средства на счету будут разморожены.
+</div>

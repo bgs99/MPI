@@ -21,13 +21,21 @@ import { TributesService } from './services/tributes.service';
 import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from './components/header/header.component';
 import { ResourcesComponent } from './components/sponsoring/resources/resources.component';
+import { PaymentComponent } from './components/payment/payment.component';
+import { SuccessComponent } from './components/sponsoring/success/success.component';
+import { FailureComponent } from './components/sponsoring/failure/failure.component';
+import { ResourcesService } from './services/resources.service';
+import { PaymentService } from './services/mock/payment.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     TributesComponent,
     HeaderComponent,
-    ResourcesComponent
+    ResourcesComponent,
+    PaymentComponent,
+    SuccessComponent,
+    FailureComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +52,7 @@ import { ResourcesComponent } from './components/sponsoring/resources/resources.
     MatFormFieldModule,
     MatGridListModule,
   ],
-  providers: [AuthService, TributesService],
+  providers: [AuthService, TributesService, ResourcesService, PaymentService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
