@@ -1,11 +1,9 @@
 package ru.itmo.hungerGames.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.itmo.hungerGames.model.entity.Mentor;
+import ru.itmo.hungerGames.model.request.ApproveResourcesRequest;
 import ru.itmo.hungerGames.model.response.ResourceApprovalResponse;
 import ru.itmo.hungerGames.service.ResourceSendingService;
 
@@ -29,5 +27,10 @@ public class MentorController {
     @GetMapping("/resources")
     public List<ResourceApprovalResponse> getResourcesForApproval(@RequestParam Long mentorId) {
         return resourceSendingService.getResourcesForApproval(mentorId);
+    }
+
+    @PostMapping("/resources/approve")
+    public void approveResourcesToSend(@RequestBody ApproveResourcesRequest approveResourcesRequest) {
+        resourceSendingService.approveResourcesToSend(approveResourcesRequest);
     }
 }

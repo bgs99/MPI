@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.itmo.hungerGames.model.entity.*;
+import ru.itmo.hungerGames.model.request.ApproveResourcesRequest;
 import ru.itmo.hungerGames.model.request.OrderDetailRequest;
 import ru.itmo.hungerGames.model.request.SponsorResourceOrderRequest;
 import ru.itmo.hungerGames.model.response.ResourceApprovalResponse;
@@ -11,6 +12,7 @@ import ru.itmo.hungerGames.model.response.SponsorResourceOrderResponse;
 import ru.itmo.hungerGames.repository.*;
 import ru.itmo.hungerGames.service.ResourceSendingService;
 
+import javax.swing.text.html.Option;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -99,5 +101,21 @@ public class ResourceSendingServiceImpl implements ResourceSendingService {
     public List<ResourceApprovalResponse> getResourcesForApproval(Long mentorId) {
         List<Orders> orders = ordersRepository.findAllByTribute_MentorIdAndPaid(mentorId, true);
         return orders.stream().map(ResourceApprovalResponse::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public void approveResourcesToSend(ApproveResourcesRequest approveResourcesRequest) {
+        Mentor mentor = mentorRepository
+                .findById(approveResourcesRequest.getMentorId())
+                .orElseThrow(() -> new ResourceNotFoundException("There's no mentor with such ID"));
+        Optional<Orders> ordersOptional = ordersRepository
+                .findByIdAndTribute_MentorIdAndPaid(
+                        approveResourcesRequest.getOrderId(), mentor.getId(), true);
+        if (!ordersOptional.isPresent()) {
+            return;
+        }
+        Orders orders = ordersOptional.get();
+        orders.setApproved(approveResourcesRequest.getApproved());
+        ordersRepository.save(orders);
     }
 }
