@@ -1,11 +1,12 @@
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/studs
-    username: test
-    password: test
+    username: s242322
   jpa:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     generate-ddl: true
     open-in-view: true
+server:
+  port: 42322
