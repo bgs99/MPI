@@ -1,19 +1,3 @@
---Tributes:
-INSERT INTO tribute(id, name, district)
-VALUES (1, 'Tribute-1', 1);
-
-INSERT INTO tribute(id, name, district)
-VALUES (2, 'Tribute-2', 2);
-
-INSERT INTO tribute(id, name, district)
-VALUES (3, 'Tribute-3', 3);
-
-INSERT INTO tribute(id, name, district)
-VALUES (4, 'Tribute-4', 4);
-
-INSERT INTO tribute(id, name, district)
-VALUES (5, 'Tribute-5', 5);
-
 --Sponsors:
 INSERT INTO sponsor(id, name)
 VALUES (1, 'Sponsor-1');
@@ -45,6 +29,22 @@ VALUES (4, 'Mentor-4');
 
 INSERT INTO mentor(id, name)
 VALUES (5, 'Mentor-5');
+
+--Tributes:
+INSERT INTO tribute(id, name, district, mentor_id)
+VALUES (1, 'Tribute-1', 1, 1);
+
+INSERT INTO tribute(id, name, district, mentor_id)
+VALUES (2, 'Tribute-2', 2, 1);
+
+INSERT INTO tribute(id, name, district, mentor_id)
+VALUES (3, 'Tribute-3', 3, 1);
+
+INSERT INTO tribute(id, name, district, mentor_id)
+VALUES (4, 'Tribute-4', 4, 1);
+
+INSERT INTO tribute(id, name, district, mentor_id)
+VALUES (5, 'Tribute-5', 5, 1);
 
 --Resources:
 INSERT INTO resource(id, name, price)
