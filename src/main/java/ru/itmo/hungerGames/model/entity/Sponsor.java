@@ -1,4 +1,4 @@
-package ru.itmo.hungerGames.model;
+package ru.itmo.hungerGames.model.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,11 +14,9 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Resource {
+public class Sponsor {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long id;
-
+    private Long id;
     private String name;
-    private BigDecimal price;
 }

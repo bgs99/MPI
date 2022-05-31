@@ -1,6 +1,5 @@
-package ru.itmo.hungerGames.model;
+package ru.itmo.hungerGames.model.entity;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,11 +13,10 @@ import javax.persistence.Id;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Tribute {
+public class Mentor {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long id;
+    private Long id;
 
     private String name;
-    private int district;
 }
