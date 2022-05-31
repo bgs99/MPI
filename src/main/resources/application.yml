@@ -3,10 +3,11 @@ spring:
     url: jdbc:postgresql://localhost:5432/studs
     username: s242322
   jpa:
+    generate-ddl: true
+    open-in-view: true
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-    hibernate:
-      ddl-auto: update
+
 server:
   port: 42322
