@@ -18,6 +18,8 @@ public class Orders {
     private Long id;
     @Builder.Default
     private boolean approved = false;
+    @Builder.Default
+    private boolean paid = false;
     private BigDecimal price;
     @ManyToOne
     private Tribute tribute;
