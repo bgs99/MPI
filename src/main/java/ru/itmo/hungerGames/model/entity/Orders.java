@@ -16,10 +16,14 @@ public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+    @Builder.Default
     private boolean approved = false;
     private BigDecimal price;
     @ManyToOne
     private Tribute tribute;
+
+    @Enumerated(EnumType.STRING)
+    private OrdersType ordersType;
 
     @OneToMany
     private List<OrderDetail> orderDetails;
