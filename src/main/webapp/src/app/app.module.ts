@@ -14,6 +14,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 import { AuthService } from './services/auth.service';
 import { TributesService } from './services/tributes.service';
@@ -41,6 +42,7 @@ import { ResourcesComponent } from './components/sponsoring/resources/resources.
     MatIconModule,
     MatInputModule,
     MatFormFieldModule,
+    MatGridListModule,
   ],
   providers: [AuthService, TributesService],
   bootstrap: [AppComponent]

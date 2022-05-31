@@ -22,7 +22,7 @@ export class TributesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.tributesService.getTributes(0)
+    this.tributesService.getTributes()
       .subscribe({
         next: (data: Tribute[]) => {
           console.log("Received data " + JSON.stringify(data));
