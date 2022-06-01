@@ -1,0 +1,11 @@
+<app-header></app-header>
+
+<mat-horizontal-stepper [linear]="true" [selectedIndex]="1" (selectionChange)="stepperChanged($event)">
+    <mat-step [completed]="true" [editable]="true" label="Оформление"></mat-step>
+    <mat-step [completed]="true" label="Подтверждение"></mat-step>
+</mat-horizontal-stepper>
+
+<div>
+    <button mat-raised-button (click)="retry()">Повторить</button>
+    <button mat-raised-button (click)="cancel()">Отменить</button>
+</div>
