@@ -14,7 +14,6 @@ import ru.itmo.hungerGames.model.response.SponsorResourceOrderResponse;
 import ru.itmo.hungerGames.repository.*;
 import ru.itmo.hungerGames.service.ResourceSendingService;
 
-import javax.swing.text.html.Option;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -95,7 +94,7 @@ public class ResourceSendingServiceImpl implements ResourceSendingService {
                 .build();
 
         return SponsorResourceOrderResponse.builder()
-                .id(ordersRepository.save(orders).getId())
+                .orderId(ordersRepository.save(orders).getId())
                 .price(price)
                 .build();
     }

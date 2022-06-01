@@ -10,6 +10,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Builder
 public class SponsorResourceOrderResponse {
-    private long id;
+    private long orderId;
     private BigDecimal price;
 }
