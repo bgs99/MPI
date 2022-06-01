@@ -10,6 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface OrdersRepository extends JpaRepository<Orders, Long> {
-    List<Orders> findAllByTribute_MentorIdAndPaidAndApprovedAnAndOrdersType(Long mentorId, boolean paid, Boolean approved, OrdersType ordersType);
+    List<Orders> findAllByTribute_MentorIdAndPaidAndApprovedAndOrdersType(Long mentorId, boolean paid, Boolean approved, OrdersType ordersType);
     Optional<Orders> findByIdAndTribute_MentorIdAndPaid(Long id, Long mentorId, boolean paid);
 }
