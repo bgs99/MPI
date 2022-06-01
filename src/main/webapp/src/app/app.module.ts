@@ -19,6 +19,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatListModule } from '@angular/material/list';
 
+import { AngularEditorModule } from '@kolkov/angular-editor';
+
 import { AuthService } from './services/auth.service';
 import { TributesService } from './services/tributes.service';
 import { HeaderComponent } from './components/header/header.component';
@@ -31,6 +33,7 @@ import { PaymentService } from './services/mock/payment.service';
 import { LoginComponent } from './components/login/login.component';
 import { SponsorsService } from './services/sponsors.service';
 import { MentorsService } from './services/mentors.service';
+import { ApprovalComponent } from './components/mentor/approval/approval.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +44,8 @@ import { MentorsService } from './services/mentors.service';
     PaymentComponent,
     SuccessComponent,
     FailureComponent,
-    LoginComponent
+    LoginComponent,
+    ApprovalComponent
   ],
   imports: [
     BrowserModule,
@@ -59,6 +63,7 @@ import { MentorsService } from './services/mentors.service';
     MatGridListModule,
     MatSelectModule,
     MatListModule,
+    AngularEditorModule,
   ],
   providers: [
     AuthService,
