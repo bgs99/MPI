@@ -9,10 +9,8 @@ import { Router } from '@angular/router';
 })
 export class FailureComponent implements OnInit {
   stepperChanged(event: StepperSelectionEvent): void {
-    if (event.selectedIndex === 0) {
-      this.router.navigateByUrl("/sponsoring/tributes");
-    } else if (event.selectedIndex === 1) {
-      this.router.navigateByUrl("/sponsoring/resources");
+    if (event.selectedIndex == 0) {
+      this.router.navigateByUrl("/tribute/posting");
     }
   }
 
@@ -21,21 +19,17 @@ export class FailureComponent implements OnInit {
     if (orderItem === null) {
       return;
     }
-    this.router.navigate(["/mock/payment"], {queryParams: {id: orderItem, path: '/sponsoring'}});
-  }
-
-  rechoose(): void {
-    this.router.navigateByUrl("/sponsoring/resources");
+    this.router.navigate(["/mock/payment"], {queryParams: {id: orderItem, path: '/tribute/posting'}});
   }
 
   cancel(): void {
-    localStorage.removeItem('tribute');
-    localStorage.removeItem('resources');
-    this.router.navigateByUrl("/sponsoring/tributes");
+    localStorage.removeItem('order');
+    this.router.navigateByUrl("/tribute/posting");
   }
-
 
   constructor(private router: Router) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+  }
+
 }

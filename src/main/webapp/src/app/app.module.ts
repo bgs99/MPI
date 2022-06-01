@@ -34,6 +34,9 @@ import { LoginComponent } from './components/login/login.component';
 import { SponsorsService } from './services/sponsors.service';
 import { MentorsService } from './services/mentors.service';
 import { ApprovalComponent } from './components/mentor/approval/approval.component';
+import { PostingComponent } from './components/tribute/posting/posting.component';
+import { SuccessComponent as PostingSuccessComponent } from './components/tribute/posting/success/success.component';
+import { FailureComponent as PostingFailureComponent } from './components/tribute/posting/failure/failure.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +48,10 @@ import { ApprovalComponent } from './components/mentor/approval/approval.compone
     SuccessComponent,
     FailureComponent,
     LoginComponent,
-    ApprovalComponent
+    ApprovalComponent,
+    PostingComponent,
+    PostingSuccessComponent,
+    PostingFailureComponent,
   ],
   imports: [
     BrowserModule,
