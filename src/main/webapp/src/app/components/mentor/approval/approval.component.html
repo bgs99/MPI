@@ -1,0 +1,33 @@
+<app-header></app-header>
+
+<table mat-table [dataSource]="orders" style="width: 100%;" class="mat-elevation-z8">
+    <ng-container matColumnDef="tributeName">
+        <th mat-header-cell *matHeaderCellDef> Имя трибута </th>
+        <td mat-cell *matCellDef="let element"> {{element.tributeName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="sponsorName">
+        <th mat-header-cell *matHeaderCellDef> Имя спонсора </th>
+        <td mat-cell *matCellDef="let element"> {{element.sponsorName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="resources">
+        <th mat-header-cell *matHeaderCellDef> Ресурсы </th>
+        <td mat-cell *matCellDef="let element">
+            <mat-list>
+                <mat-list-item *ngFor="let resource of element.resources"> {{resource.size}}X {{resource.name}}</mat-list-item>
+            </mat-list>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef class="header-align-right"></th>
+        <td mat-cell *matCellDef="let element">
+            <button mat-raised-button (click)="approve(element)"> Одобрить </button>
+            <button mat-raised-button (click)="deny(element)"> Отклонить </button>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="ordersColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: ordersColumns;"></tr>
+</table>
