@@ -1,0 +1,6 @@
+.payment-field {
+    background-color: lightgray;
+    width: 200px;
+    display: flex;
+    justify-content: flex-end;
+}

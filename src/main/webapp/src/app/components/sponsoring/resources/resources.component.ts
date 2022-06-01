@@ -52,8 +52,8 @@ export class ResourcesComponent implements OnInit {
             next: (paymentData: PaymentData) => {
                 localStorage.setItem('tribute', JSON.stringify(this.tribute));
                 localStorage.setItem('resources', JSON.stringify(this.resources.data));
-                localStorage.setItem('order', JSON.stringify(paymentData.id));
-                this.router.navigateByUrl("/mock/payment/" + paymentData.id);
+                localStorage.setItem('order', JSON.stringify(paymentData.orderId));
+                this.router.navigate(["/mock/payment"], { queryParams: { id: paymentData.orderId, path: '/sponsoring' } });
             },
             error: (err: any) => {
                 console.log(err);

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { switchMap } from 'rxjs';
 import { PaymentService } from 'src/app/services/mock/payment.service';
 
 @Component({
@@ -10,17 +11,18 @@ import { PaymentService } from 'src/app/services/mock/payment.service';
 export class PaymentComponent implements OnInit {
 
   orderId: number | null = null;
+  path: string | null = null;
 
   constructor(private route: ActivatedRoute, private router: Router, private paymentService: PaymentService) { }
 
   approve(): void {
-    if (this.orderId === null) {
+    if (this.orderId === null || this.path === null) {
       return;
     }
     this.paymentService.approve(this.orderId)
       .subscribe({
         next: () => {
-          this.router.navigateByUrl('/sponsoring/success');
+          this.router.navigateByUrl(this.path + '/success');
         },
         error: (err) => {
           console.log(err);
@@ -29,12 +31,23 @@ export class PaymentComponent implements OnInit {
   }
 
   deny(): void {
-    this.router.navigateByUrl('/sponsoring/failure');
+    if (this.orderId === null || this.path === null) {
+      return;
+    }
+    this.router.navigateByUrl(this.path + '/failure');
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(event => {
-      this.orderId = parseInt(event['id']);
+    this.route.queryParams.subscribe({
+      next: (params) => {
+        const idParam: string | null = params['id'];
+        this.orderId = idParam === null ? null : parseInt(idParam);
+        this.path = params['path'];
+        console.log("Got route params " + this.orderId + ", " + this.path);
+      },
+      error: (err) => {
+        console.log(err);
+      }
     });
   }
 

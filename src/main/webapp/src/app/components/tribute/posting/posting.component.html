@@ -1,0 +1,14 @@
+<app-header></app-header>
+
+<mat-horizontal-stepper [linear]="true" [selectedIndex]="0">
+    <mat-step [completed]="false" label="Оформление"></mat-step>
+    <mat-step [editable]="false" label="Подтверждение"></mat-step>
+</mat-horizontal-stepper>
+
+<angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="htmlContent"></angular-editor>
+
+<div>
+    <h2>Сумма: </h2>
+    <div class="payment-field">200$</div>
+    <button mat-raised-button (click)="order()">Оплатить</button>
+</div>
