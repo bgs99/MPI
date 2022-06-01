@@ -128,12 +128,16 @@ public class ResourceSendingServiceImpl implements ResourceSendingService {
                 .findById(advertisingTextRequest.getTributeId())
                 .orElseThrow(() -> new ResourceNotFoundException("There's no tribute with such ID"));
 
+        Orders order = ordersRepository.save(Orders.builder()
+                .tribute(tribute)
+                .advertisingText(advertisingTextRequest.getText())
+                .ordersType(OrdersType.ADVERTISEMENT)
+                .price(BigDecimal.valueOf(200))
+                .build());
+
         return new AdvertisingTextResponse(
-                ordersRepository.save(Orders.builder()
-                        .tribute(tribute)
-                        .advertisingText(advertisingTextRequest.getText())
-                        .ordersType(OrdersType.ADVERTISEMENT)
-                        .build()).getId()
+                order.getId(),
+                order.getPrice()
         );
     }
 }
