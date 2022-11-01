@@ -4,8 +4,8 @@ services:
     image: "postgres" # use latest official postgres version
     environment:
       POSTGRES_DB: "studs"
-      POSTGRES_USER: "test"
-      POSTGRES_PASSWORD: "test"
+      POSTGRES_USER: "s242322"
+      POSTGRES_HOST_AUTH_METHOD: "trust"
     volumes:
       - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
     ports:
