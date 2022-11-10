@@ -1,2 +1,2 @@
 #!/bin/bash
-scp -P 2222 build/libs/*-SNAPSHOT.jar s242322@se.ifmo.ru:~/hungerGames.jar
+scp -P 2222 build/libs/*-SNAPSHOT.jar s242322@se.ifmo.ru:~/hunger-games.jar
