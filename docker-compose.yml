@@ -8,8 +8,11 @@ services:
       POSTGRES_PASSWORD: 'password'
     volumes:
       - database-data:/var/lib/postgresql/data/
+    expose:
+      - '6969'
     ports:
-      - '5432:5432'
+      - '6969:6969'
+    command: '-p 6969'
   app:
     image: 'hunger-games-backend:latest'
     build: ./
@@ -19,7 +22,7 @@ services:
     links:
       - pg:database
     environment:
-      SPRING_DATASOURCE_URL: 'jdbc:postgresql://pg:5432/studs'
+      SPRING_DATASOURCE_URL: 'jdbc:postgresql://pg:6969/studs'
       SPRING_DATASOURCE_USERNAME: 's242322'
       SPRING_DATASOURCE_PASSWORD: 'password'
     ports:
