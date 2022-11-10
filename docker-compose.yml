@@ -1,14 +1,28 @@
 version: '3'
 services:
-  postresql:
-    image: "postgres" # use latest official postgres version
+  pg:
+    image: 'postgres'
     environment:
-      POSTGRES_DB: "studs"
-      POSTGRES_USER: "s242322"
-      POSTGRES_HOST_AUTH_METHOD: "trust"
+      POSTGRES_DB: 'studs'
+      POSTGRES_USER: 's242322'
+      POSTGRES_PASSWORD: 'password'
     volumes:
-      - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
+      - database-data:/var/lib/postgresql/data/
     ports:
-      - "5432:5432"
+      - '5432:5432'
+  app:
+    image: 'hunger-games-backend:latest'
+    build: ./
+    container_name: app
+    depends_on:
+      - pg
+    links:
+      - pg:database
+    environment:
+      SPRING_DATASOURCE_URL: 'jdbc:postgresql://pg:5432/studs'
+      SPRING_DATASOURCE_USERNAME: 's242322'
+      SPRING_DATASOURCE_PASSWORD: 'password'
+    ports:
+      - "42322:42322"
 volumes:
-  database-data: # named volumes can be managed easier using docker-compose
+  database-data:

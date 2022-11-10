@@ -5,4 +5,9 @@ pluginManagement {
 		gradlePluginPortal()
 	}
 }
-rootProject.name = 'hungerGames'
+
+rootProject.name = 'hunger-games'
+
+include 'hunger-games-backend'
+include 'hunger-games-frontend'
+
