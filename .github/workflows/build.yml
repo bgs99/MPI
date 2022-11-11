@@ -18,5 +18,5 @@ jobs:
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: backend
-        path: build/distributions/
+        name: backend.jar
+        path: hunger-games-backend/build/libs/hunger-games-backend.jar
