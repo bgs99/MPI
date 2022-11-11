@@ -13,4 +13,8 @@ jobs:
       uses: gradle/gradle-build-action@v2
     - name: Run build with Gradle Wrapper
       run: ./gradlew build
-
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: backend
+        path: build/distributions/
