@@ -12,6 +12,7 @@ chmod +x build.sh
 ./build.sh
 ```
 
+## Troubleshooting
 If the script the result is not expected, try clearing the images and volumes in Docker.
 
 If the script fails at the npm install stage, then just restart it.
