@@ -3,6 +3,7 @@ package ru.itmo.hungergames.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.itmo.hungergames.model.entity.*;
 import ru.itmo.hungergames.model.request.AdvertisingTextRequest;
 import ru.itmo.hungergames.model.request.ApproveResourcesRequest;
@@ -21,6 +22,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true)
 public class ResourceSendingServiceImpl implements ResourceSendingService {
     private final TributeRepository tributeRepository;
     private final SponsorRepository sponsorRepository;
@@ -60,6 +62,7 @@ public class ResourceSendingServiceImpl implements ResourceSendingService {
     }
 
     @Override
+    @Transactional
     public SponsorResourceOrderResponse sendResourcesForApproval(SponsorResourceOrderRequest sponsorResourceOrderRequest) {
         Tribute tribute = tributeRepository
                 .findById(sponsorResourceOrderRequest.getTributeId())
@@ -107,6 +110,7 @@ public class ResourceSendingServiceImpl implements ResourceSendingService {
     }
 
     @Override
+    @Transactional
     public void approveResourcesToSend(ApproveResourcesRequest approveResourcesRequest) {
         Mentor mentor = mentorRepository
                 .findById(approveResourcesRequest.getMentorId())
@@ -123,6 +127,7 @@ public class ResourceSendingServiceImpl implements ResourceSendingService {
     }
 
     @Override
+    @Transactional
     public AdvertisingTextResponse sendAdvertisingText(AdvertisingTextRequest advertisingTextRequest) {
         Tribute tribute = tributeRepository
                 .findById(advertisingTextRequest.getTributeId())
