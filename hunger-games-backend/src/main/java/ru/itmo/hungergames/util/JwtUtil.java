@@ -6,8 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.itmo.hungergames.model.entity.User;
 
-import java.text.DateFormat;
-import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 
 @Component
@@ -19,17 +18,13 @@ public class JwtUtil {
     private String expirationMs;
 
     public String generateJwtToken(User user) {
-        Date expirationDate;
-        try {
-            expirationDate = DateFormat.getDateInstance().parse(System.currentTimeMillis() + expirationMs);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis() + Long.parseLong(expirationMs));
 
         return Jwts.builder()
                 .setSubject((user.getUsername()))
                 .setIssuedAt(new Date())
-                .setExpiration(expirationDate)
+                .setExpiration(Date.from(calendar.toInstant()))
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }
