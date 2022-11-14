@@ -51,7 +51,7 @@ public class SecurityConfig {
                         "/**/*.css",
                         "/**/*.js"
                 ).permitAll()
-                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/api/auth/**", "/api/sponsor/all").permitAll()
                 .anyRequest()
                 .authenticated();
 

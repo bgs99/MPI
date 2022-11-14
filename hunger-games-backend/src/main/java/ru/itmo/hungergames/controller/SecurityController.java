@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.itmo.hungergames.model.entity.Sponsor;
 import ru.itmo.hungergames.model.entity.User;
 import ru.itmo.hungergames.model.request.SignInRequest;
 import ru.itmo.hungergames.model.request.SignUpRequest;
@@ -30,8 +31,8 @@ public class SecurityController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<String> createUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-        securityService.createUser(new User(
+    public ResponseEntity<String> createSponsor(@Valid @RequestBody SignUpRequest signUpRequest) {
+        securityService.createSponsor(new Sponsor(
                 signUpRequest.getUsername(),
                 signUpRequest.getPassword()
         ));

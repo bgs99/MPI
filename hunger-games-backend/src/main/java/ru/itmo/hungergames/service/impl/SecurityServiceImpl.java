@@ -9,9 +9,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.itmo.hungergames.model.entity.Sponsor;
 import ru.itmo.hungergames.model.entity.User;
 import ru.itmo.hungergames.model.entity.UserRole;
 import ru.itmo.hungergames.model.response.JwtResponse;
+import ru.itmo.hungergames.repository.SponsorRepository;
 import ru.itmo.hungergames.repository.UserRepository;
 import ru.itmo.hungergames.service.SecurityService;
 import ru.itmo.hungergames.util.JwtUtil;
@@ -29,14 +31,16 @@ public class SecurityServiceImpl implements SecurityService {
     private final BCryptPasswordEncoder encoder;
     private final UserRepository userRepository;
     private final SecurityUtil securityUtil;
+    private final SponsorRepository sponsorRepository;
 
     @Autowired
-    public SecurityServiceImpl(AuthenticationProvider authenticationProvider, JwtUtil jwtUtil, BCryptPasswordEncoder encoder, UserRepository userRepository, SecurityUtil securityUtil) {
+    public SecurityServiceImpl(AuthenticationProvider authenticationProvider, JwtUtil jwtUtil, BCryptPasswordEncoder encoder, UserRepository userRepository, SecurityUtil securityUtil, SponsorRepository sponsorRepository) {
         this.authenticationProvider = authenticationProvider;
         this.jwtUtil = jwtUtil;
         this.encoder = encoder;
         this.userRepository = userRepository;
         this.securityUtil = securityUtil;
+        this.sponsorRepository = sponsorRepository;
     }
 
     @Override
@@ -67,5 +71,14 @@ public class SecurityServiceImpl implements SecurityService {
         user.setPassword(encoder.encode(user.getPassword()));
         user.getUserRoles().add(UserRole.SPONSOR);
         userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void createSponsor(Sponsor sponsor) {
+        securityUtil.validateBeforeSigningUp(sponsor);
+        sponsor.setPassword(encoder.encode(sponsor.getPassword()));
+        sponsor.getUserRoles().add(UserRole.SPONSOR);
+        sponsorRepository.save(sponsor);
     }
 }

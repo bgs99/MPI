@@ -1,18 +1,5 @@
 --Sponsors:
-INSERT INTO sponsor(id, name)
-VALUES (1, 'Sponsor-1');
 
-INSERT INTO sponsor(id, name)
-VALUES (2, 'Sponsor-2');
-
-INSERT INTO sponsor(id, name)
-VALUES (3, 'Sponsor-3');
-
-INSERT INTO sponsor(id, name)
-VALUES (4, 'Sponsor-4');
-
-INSERT INTO sponsor(id, name)
-VALUES (5, 'Sponsor-5');
 
 --Mentors:
 INSERT INTO mentor(id, name)
