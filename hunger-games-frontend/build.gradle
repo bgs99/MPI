@@ -5,13 +5,7 @@ plugins {
 
 sourceCompatibility = '1.8'
 
-node {
-  version = '16.10.0'
-  npmVersion = '7.24.0'
-  download = true
-}
-
-jar.dependsOn 'npm_run_build'
+jar.dependsOn 'yarn_run_build'
 
 jar {
   from 'dist/hunger-games-frontend' into 'static'

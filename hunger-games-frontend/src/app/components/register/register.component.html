@@ -1,0 +1,36 @@
+<form id="sponsor" (ngSubmit)="register()" novalidate>
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Зарегистрироваться как спонсор</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div>
+                <mat-form-field>
+                    <input matInput type="text" id="name" placeholder="Имя" [(ngModel)]="name" name="name"
+                        required />
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field>
+                    <input matInput type="text" id="login" placeholder="Логин" [(ngModel)]="username" name="login"
+                        required />
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field>
+                    <input matInput type="password" class="form-control" id="password" placeholder="Пароль..."
+                        [(ngModel)]="password" name="password" required />
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-form-field>
+                    <input matInput type="password" class="form-control" id="password2" placeholder="Подтвердите пароль..."
+                        [(ngModel)]="password2" name="password2" required />
+                </mat-form-field>
+            </div>
+        </mat-card-content>
+        <mat-card-actions>
+            <button type="submit" mat-raised-button>Зарегистрироваться</button>
+        </mat-card-actions>
+    </mat-card>
+</form>
