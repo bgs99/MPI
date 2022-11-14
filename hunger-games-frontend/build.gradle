@@ -5,14 +5,8 @@ plugins {
 
 sourceCompatibility = '1.8'
 
-node {
-  version = '16.10.0'
-  npmVersion = '7.24.0'
-  download = true
-}
-
 yarn {
-  version = '0.17.9'
+  version = '1.22.19'
 }
 
 jar.dependsOn 'yarn_run_build'
