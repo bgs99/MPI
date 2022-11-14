@@ -2,36 +2,20 @@
 
 
 --Mentors:
-INSERT INTO mentor(id, name)
-VALUES (1, 'Mentor-1');
-
-INSERT INTO mentor(id, name)
-VALUES (2, 'Mentor-2');
-
-INSERT INTO mentor(id, name)
-VALUES (3, 'Mentor-3');
-
-INSERT INTO mentor(id, name)
-VALUES (4, 'Mentor-4');
-
-INSERT INTO mentor(id, name)
-VALUES (5, 'Mentor-5');
-
+INSERT INTO users (name, username) VALUES ('mentor-name-1', 'mentor-1');
+INSERT INTO users (name, username) VALUES ('mentor-name-2', 'mentor-2');
+INSERT INTO user_roles(user_id, role) VALUES ('1', 'MENTOR');
+INSERT INTO user_roles(user_id, role) VALUES ('2', 'MENTOR');
+INSERT INTO mentor (user_id, district) values  ('1','1');
+INSERT INTO mentor (user_id, district) values  ('2','3');
 --Tributes:
-INSERT INTO tribute(id, name, district, mentor_id)
-VALUES (1, 'Tribute-1', 1, 1);
+INSERT INTO users (name, username) VALUES ('tribute-name-1', 'tribute-1');
+INSERT INTO users (name, username) VALUES ('tribute-name-2', 'tribute-2');
+INSERT INTO user_roles(user_id, role) VALUES ('3', 'TRIBUTE');
+INSERT INTO user_roles(user_id, role) VALUES ('4', 'TRIBUTE');
+INSERT INTO tribute (user_id,mentor_user_id) values  ('3','1');
+INSERT INTO tribute (user_id,mentor_user_id) values  ('4','2');
 
-INSERT INTO tribute(id, name, district, mentor_id)
-VALUES (2, 'Tribute-2', 2, 1);
-
-INSERT INTO tribute(id, name, district, mentor_id)
-VALUES (3, 'Tribute-3', 3, 1);
-
-INSERT INTO tribute(id, name, district, mentor_id)
-VALUES (4, 'Tribute-4', 4, 1);
-
-INSERT INTO tribute(id, name, district, mentor_id)
-VALUES (5, 'Tribute-5', 5, 1);
 
 --Resources:
 INSERT INTO resource(id, name, price)
