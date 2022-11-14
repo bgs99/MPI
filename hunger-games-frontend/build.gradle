@@ -15,7 +15,6 @@ yarn {
   version = '0.17.9'
 }
 
-//jar.dependsOn 'npm_run_build'
 jar.dependsOn 'yarn_run_build'
 
 jar {
