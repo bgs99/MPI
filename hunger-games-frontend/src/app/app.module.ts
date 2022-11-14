@@ -8,6 +8,7 @@ import { TributesComponent } from './components/sponsoring/tributes/tributes.com
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -37,6 +38,7 @@ import { ApprovalComponent } from './components/mentor/approval/approval.compone
 import { PostingComponent } from './components/tribute/posting/posting.component';
 import { SuccessComponent as PostingSuccessComponent } from './components/tribute/posting/success/success.component';
 import { FailureComponent as PostingFailureComponent } from './components/tribute/posting/failure/failure.component';
+import { RegisterComponent } from './components/register/register.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +54,7 @@ import { FailureComponent as PostingFailureComponent } from './components/tribut
     PostingComponent,
     PostingSuccessComponent,
     PostingFailureComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,6 +62,7 @@ import { FailureComponent as PostingFailureComponent } from './components/tribut
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    MatCardModule,
     MatTableModule,
     MatButtonModule,
     MatStepperModule,

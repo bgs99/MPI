@@ -10,6 +10,7 @@ import { TributesComponent } from './components/sponsoring/tributes/tributes.com
 import { PostingComponent } from './components/tribute/posting/posting.component';
 import { SuccessComponent as PostingSuccessComponent } from './components/tribute/posting/success/success.component';
 import { FailureComponent as PostingFailureComponent } from './components/tribute/posting/failure/failure.component';
+import { RegisterComponent } from './components/register/register.component';
 
 const routes: Routes = [
   { path: 'mock/payment', component: PaymentComponent },
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: 'tribute/posting/success', component: PostingSuccessComponent },
   { path: 'tribute/posting/failure', component: PostingFailureComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },
 ];
 
