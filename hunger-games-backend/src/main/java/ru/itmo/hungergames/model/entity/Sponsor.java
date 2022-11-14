@@ -16,8 +16,9 @@ import javax.persistence.*;
                 "accountNonExpired", "accountNonLocked",
                 "credentialsNonExpired", "enabled"})
 public class Sponsor extends User{
-    public Sponsor(String username, String password) {
+    public Sponsor(String username, String password, String name) {
         this.setUsername(username);
         this.setPassword(password);
+        this.setName(name);
     }
 }

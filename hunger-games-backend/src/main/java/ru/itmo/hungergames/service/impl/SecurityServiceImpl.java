@@ -60,7 +60,8 @@ public class SecurityServiceImpl implements SecurityService {
                 userDetails.getId(),
                 jwtUtil.generateJwtToken(userDetails),
                 userDetails.getUsername(),
-                roles
+                roles,
+                userDetails.getName()
         );
     }
 
