@@ -18,17 +18,12 @@ INSERT INTO tribute (user_id,mentor_user_id) values  ('4','2');
 
 
 --Resources:
-INSERT INTO resource(id, name, price)
-VALUES (1, 'Resource-1', 50);
+INSERT INTO resource(id, name, price) VALUES (1, 'Resource-1', 50);
 
-INSERT INTO resource(id, name, price)
-VALUES (2, 'Resource-2', 100);
+INSERT INTO resource(id, name, price) VALUES (2, 'Resource-2', 100);
 
-INSERT INTO resource(id, name, price)
-VALUES (3, 'Resource-3', 150);
+INSERT INTO resource(id, name, price) VALUES (3, 'Resource-3', 150);
 
-INSERT INTO resource(id, name, price)
-VALUES (4, 'Resource-4', 200);
+INSERT INTO resource(id, name, price) VALUES (4, 'Resource-4', 200);
 
-INSERT INTO resource(id, name, price)
-VALUES (5, 'Resource-5', 300);
+INSERT INTO resource(id, name, price) VALUES (5, 'Resource-5', 300);
