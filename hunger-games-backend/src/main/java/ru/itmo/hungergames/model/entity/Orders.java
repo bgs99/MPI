@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @Builder
-@Table(indexes = @Index(columnList = "tribute_id"))
+@Table(indexes = @Index(columnList = "tribute_user_id"))
 public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

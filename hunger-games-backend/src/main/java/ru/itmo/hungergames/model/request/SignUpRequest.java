@@ -15,6 +15,10 @@ public class SignUpRequest {
     @Size(min=3,max=250)
     private String username;
 
+    @NotBlank(message="Name should not be blank")
+    @Size(min=3,max=250)
+    private String name;
+
     @NotBlank(message="Password should not be blank")
     @Size(min=3,max=255)
     private String password;
