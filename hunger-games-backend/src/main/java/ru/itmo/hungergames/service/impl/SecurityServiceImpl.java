@@ -15,6 +15,7 @@ import ru.itmo.hungergames.model.entity.UserRole;
 import ru.itmo.hungergames.model.response.JwtResponse;
 import ru.itmo.hungergames.repository.SponsorRepository;
 import ru.itmo.hungergames.repository.UserRepository;
+import ru.itmo.hungergames.security.UserDetailsServiceImpl;
 import ru.itmo.hungergames.service.SecurityService;
 import ru.itmo.hungergames.util.JwtUtil;
 import ru.itmo.hungergames.util.SecurityUtil;
@@ -32,15 +33,17 @@ public class SecurityServiceImpl implements SecurityService {
     private final UserRepository userRepository;
     private final SecurityUtil securityUtil;
     private final SponsorRepository sponsorRepository;
+    private final UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    public SecurityServiceImpl(AuthenticationProvider authenticationProvider, JwtUtil jwtUtil, BCryptPasswordEncoder encoder, UserRepository userRepository, SecurityUtil securityUtil, SponsorRepository sponsorRepository) {
+    public SecurityServiceImpl(AuthenticationProvider authenticationProvider, JwtUtil jwtUtil, BCryptPasswordEncoder encoder, UserRepository userRepository, SecurityUtil securityUtil, SponsorRepository sponsorRepository, UserDetailsServiceImpl userDetailsService) {
         this.authenticationProvider = authenticationProvider;
         this.jwtUtil = jwtUtil;
         this.encoder = encoder;
         this.userRepository = userRepository;
         this.securityUtil = securityUtil;
         this.sponsorRepository = sponsorRepository;
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
@@ -81,5 +84,32 @@ public class SecurityServiceImpl implements SecurityService {
         sponsor.setPassword(encoder.encode(sponsor.getPassword()));
         sponsor.getUserRoles().add(UserRole.SPONSOR);
         sponsorRepository.save(sponsor);
+    }
+
+    @Override
+    public JwtResponse authenticateTributeAndMentor(User user) {
+        User userDetails = (User)userDetailsService.loadUserByUsername(user.getUsername());
+        Set<String> roles = userDetails
+                .getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toSet());
+        Authentication authentication;
+        if(roles.contains(UserRole.MENTOR.toString()) || roles.contains(UserRole.TRIBUTE.toString())) {
+             authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), userDetails.getAuthorities());
+        }
+        else {
+             authentication = authenticationProvider.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+        }
+        SecurityContextHolder
+                .getContext()
+                .setAuthentication(authentication);
+
+        return new JwtResponse(
+                userDetails.getId(),
+                jwtUtil.generateJwtToken(userDetails),
+                userDetails.getUsername(),
+                roles,
+                userDetails.getName()
+        );
     }
 }
