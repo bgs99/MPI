@@ -15,7 +15,7 @@ import javax.persistence.*;
         value = {"password", "userRoles", "authorities",
                 "accountNonExpired", "accountNonLocked",
                 "credentialsNonExpired", "enabled"})
-public class Tribute extends User{
+public class Tribute extends User {
 
     @ManyToOne
     private Mentor mentor;

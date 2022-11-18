@@ -14,6 +14,7 @@ import java.util.List;
 @Builder
 @Table(indexes = @Index(columnList = "tribute_user_id"))
 public class Orders {
+    // TODO: декомпозировать на adv и ресурсы
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;

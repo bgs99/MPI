@@ -14,7 +14,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
-@Slf4j
+@Slf4j // TODO: get ids from security and verify API access by roles
 public class SecurityController {
     private final SecurityService securityService;
 
