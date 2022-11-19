@@ -29,7 +29,7 @@ export class AuthService {
         if (this._authData !== null) {
             return this._authData;
         }
-        throw new Error("Acessing auth data before login");
+        throw new Error("Accessing auth data before login");
     }
 
     get name(): string {
@@ -43,13 +43,19 @@ export class AuthService {
     constructor(private http: HttpClient) { }
 
     async login(username: string, password: string): Promise<void> {
-        let url: string = `${this.BASE_URL}/signin`;
+        const url: string = `${this.BASE_URL}/signin`;
         const login = await lastValueFrom(this.http.post<LoginResult>(url, { username, password }, { headers: this.headers }));
         this._authData = new AuthData(login.id, login.username, login.token);
     }
 
+    async capitolAuth(username: string): Promise<void> {
+        const url = `${ApiService.baseURL}/capitol/signin`;
+        const login = await lastValueFrom(this.http.post<LoginResult>(url, { username }, { headers: this.headers }));
+        this._authData = new AuthData(login.id, login.username, login.token);
+    }
+
     async register(username: string, password: string): Promise<void> {
-        let url: string = `${this.BASE_URL}/signup`;
+        const url: string = `${this.BASE_URL}/signup`;
         await lastValueFrom(this.http.post<void>(url, { username, password }, { headers: this.headers }));
     }
 

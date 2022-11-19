@@ -16,7 +16,7 @@ export class TributesService {
     async getTributes(): Promise<Tribute[]> {
         return await lastValueFrom(this.http.get<Tribute[]>(
             TributesService.BASE_URL + "/all",
-            { headers: this.auth.authenticatedHeaders(TributesService.headers) },
+            { headers: TributesService.headers },
         ));
     }
     async orderAd(tributeId: number, text: string): Promise<PaymentData> {
