@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { ApprovalComponent } from './components/mentor/approval/approval.component';
-import { PaymentComponent } from './components/payment/payment.component';
+import { PaymentComponent } from './components/capitol/payment/payment.component';
 import { FailureComponent } from './components/sponsoring/failure/failure.component';
 import { ResourcesComponent } from './components/sponsoring/resources/resources.component';
 import { SuccessComponent } from './components/sponsoring/success/success.component';

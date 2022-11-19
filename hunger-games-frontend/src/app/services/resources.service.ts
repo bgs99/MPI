@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
 import { AuthService } from './auth.service';
 import { Resource } from '../models/resource';
 import { PaymentData } from '../models/payment-data';
@@ -35,17 +35,17 @@ export class ResourcesService {
     private static BASE_URL: string = `${ApiService.baseURL}/resource`;
     private static headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
     constructor(private http: HttpClient, private auth: AuthService) { }
-    getResources(): Observable<Resource[]> {
-        return this.http.get<Resource[]>(
+    async getResources(): Promise<Resource[]> {
+        return await lastValueFrom(this.http.get<Resource[]>(
             ResourcesService.BASE_URL + "/all",
             { headers: this.auth.authenticatedHeaders(ResourcesService.headers) },
-        );
+        ));
     }
-    orderResources(tributeId: number, sponsorId: number, resources: Resource[]): Observable<PaymentData> {
-        return this.http.post<PaymentData>(
+    async orderResources(tributeId: number, sponsorId: number, resources: Resource[]): Promise<PaymentData> {
+        return await lastValueFrom(this.http.post<PaymentData>(
             ResourcesService.BASE_URL + "/send",
             new SponsorResourceOrderRequest(tributeId, sponsorId, resources),
             { headers: this.auth.authenticatedHeaders(ResourcesService.headers) },
-        );
+        ));
     }
 }

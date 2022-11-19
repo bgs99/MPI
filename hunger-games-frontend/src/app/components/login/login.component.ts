@@ -1,13 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { Router } from '@angular/router';
-import { Mentor } from 'src/app/models/mentor';
-import { Person } from 'src/app/models/person';
-import { Sponsor } from 'src/app/models/sponsor';
-import { Tribute } from 'src/app/models/tribute';
 import { AuthService } from 'src/app/services/auth.service';
-import { MentorsService } from 'src/app/services/mentors.service';
-import { SponsorsService } from 'src/app/services/sponsors.service';
-import { TributesService } from 'src/app/services/tributes.service';
 
 @Component({
   selector: 'app-login',
@@ -20,13 +13,8 @@ export class LoginComponent {
 
   async login(): Promise<void> {
     try {
-      const result = await this.authService.login(this.username, this.password);
-      localStorage.setItem("username", result.username);
-      localStorage.setItem("id", result.id.toString());
-      localStorage.setItem("token", result.token);
-      if (result.roles[0] == 'SPONSOR') {
-        this.router.navigateByUrl('/sponsoring/tributes');
-      }
+      await this.authService.login(this.username, this.password);
+      this.router.navigateByUrl('/sponsoring/tributes');
     } catch (e) {
       console.error(e);
     }
