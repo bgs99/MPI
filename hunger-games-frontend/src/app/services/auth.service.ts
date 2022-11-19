@@ -1,30 +1,40 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
-import { LoginResult } from '../models/auth';
+import { ApiService } from './api.service';
 
+class LoginResult {
+  constructor(
+    public id: number,
+    public token: string,
+    public type: string,
+    public username: string,
+    public roles: string[]) { }
+}
 @Injectable()
 export class AuthService {
-  private BASE_URL: string = 'http://localhost:42322/api/auth';
+  private BASE_URL: string = `${ApiService.baseURL}/auth`;
   private headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
+  private token: string = '';
+  private _name: string = '';
+
+  get name(): string { return this._name; }
 
   constructor(private http: HttpClient) { }
 
-  async login(username: string, password: string): Promise<LoginResult> {
+  async login(username: string, password: string): Promise<void> {
     let url: string = `${this.BASE_URL}/signin`;
-    return lastValueFrom(this.http.post<LoginResult>(url, { username, password }, { headers: this.headers }));
+    const login = await lastValueFrom(this.http.post<LoginResult>(url, { username, password }, { headers: this.headers }));
+    this.token = login.token;
+    this._name = login.username;
   }
 
   async register(username: string, password: string): Promise<void> {
     let url: string = `${this.BASE_URL}/signup`;
-    return lastValueFrom(this.http.post<void>(url, { username, password }, { headers: this.headers }));
+    await lastValueFrom(this.http.post<void>(url, { username, password }, { headers: this.headers }));
   }
 
   authenticatedHeaders(headers: HttpHeaders): HttpHeaders {
-    let token: string | null = localStorage.getItem('token')
-    if (token !== null) {
-      return headers.append('Authorization', `Bearer ${token}`)
-    }
-    return headers;
+    return headers.append('Authorization', `Bearer ${this.token}`)
   }
 }

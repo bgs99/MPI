@@ -4,12 +4,13 @@ import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import { Mentor } from '../models/mentor';
 import { Order } from '../models/order';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MentorsService {
-  private static BASE_URL: string = 'http://localhost:42322/api/mentor';
+  private static BASE_URL: string = `${ApiService.baseURL}/mentor`;
   private static headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
   constructor(private http: HttpClient, private auth: AuthService) { }
   getMentors(): Observable<Mentor[]> {
