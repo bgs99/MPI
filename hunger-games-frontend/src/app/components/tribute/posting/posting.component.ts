@@ -8,20 +8,16 @@ import { TributesService } from 'src/app/services/tributes.service';
     templateUrl: './posting.component.html',
     styleUrls: ['./posting.component.css']
 })
-export class PostingComponent implements OnInit {
+export class PostingComponent {
     htmlContent: string = "";
-    selfId: number | null = null;
 
     constructor(private router: Router, private tributesService: TributesService) { }
 
     async order(): Promise<void> {
-        if (this.selfId === null) {
-            return;
-        }
         const text: string = this.htmlContent;
         this.htmlContent = '';
         try {
-            const paymentData = await this.tributesService.orderAd(this.selfId, text)
+            const paymentData = await this.tributesService.orderAd(text)
             console.log("Got payment data: " + JSON.stringify(paymentData));
             localStorage.setItem('htmlContent', this.htmlContent);
             localStorage.setItem('order', JSON.stringify(paymentData.orderId));
@@ -31,14 +27,4 @@ export class PostingComponent implements OnInit {
             console.log(err);
         }
     }
-
-
-    ngOnInit(): void {
-        const selfId: string | null = localStorage.getItem("identity");
-        if (selfId === null) {
-            return;
-        }
-        this.selfId = parseInt(selfId);
-    }
-
 }

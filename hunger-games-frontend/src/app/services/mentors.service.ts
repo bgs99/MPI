@@ -19,12 +19,12 @@ export class MentorsService {
             { headers: MentorsService.headers },
         ));
     }
-    async getOrders(mentorId: number): Promise<Order[]> {
+    async getOrders(): Promise<Order[]> {
         return await lastValueFrom(this.http.get<Order[]>(
             MentorsService.BASE_URL + "/orders",
             {
                 headers: this.auth.authenticatedHeaders(MentorsService.headers),
-                params: { mentorId }
+                params: { mentorId: this.auth.id }
             },
         ));
     }

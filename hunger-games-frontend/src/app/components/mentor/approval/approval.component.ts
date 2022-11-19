@@ -47,7 +47,7 @@ export class ApprovalComponent implements OnInit {
 
     async ngOnInit(): Promise<void> {
         try {
-            this.orders.data = await this.mentorsService.getOrders(this.authService.id);
+            this.orders.data = await this.mentorsService.getOrders();
         }
         catch (err: any) {
             console.log(err)

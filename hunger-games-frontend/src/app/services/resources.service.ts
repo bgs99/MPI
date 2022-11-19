@@ -41,10 +41,10 @@ export class ResourcesService {
             { headers: this.auth.authenticatedHeaders(ResourcesService.headers) },
         ));
     }
-    async orderResources(tributeId: number, sponsorId: number, resources: Resource[]): Promise<PaymentData> {
+    async orderResources(tributeId: number, resources: Resource[]): Promise<PaymentData> {
         return await lastValueFrom(this.http.post<PaymentData>(
             ResourcesService.BASE_URL + "/send",
-            new SponsorResourceOrderRequest(tributeId, sponsorId, resources),
+            new SponsorResourceOrderRequest(tributeId, this.auth.id, resources),
             { headers: this.auth.authenticatedHeaders(ResourcesService.headers) },
         ));
     }
