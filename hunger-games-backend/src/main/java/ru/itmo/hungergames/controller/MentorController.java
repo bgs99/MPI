@@ -27,8 +27,8 @@ public class MentorController {
     }
 
     @GetMapping("/orders")
-    public List<ResourceApprovalResponse> getOrdersForApproval(@RequestParam Long mentorId) {
-        return mentorService.getOrdersForApproval(mentorId);
+    public List<ResourceApprovalResponse> getOrdersForApproval() {
+        return mentorService.getOrdersForApproval();
     }
 
     @PostMapping("/order/approve")

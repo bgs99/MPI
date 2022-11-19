@@ -10,6 +10,5 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AdvertisingTextRequest {
-    private Long tributeId;
     private String text;
 }

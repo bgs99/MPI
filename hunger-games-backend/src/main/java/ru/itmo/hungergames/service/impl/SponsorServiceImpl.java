@@ -10,6 +10,7 @@ import ru.itmo.hungergames.model.request.SponsorResourceOrderRequest;
 import ru.itmo.hungergames.model.response.SponsorResourceOrderResponse;
 import ru.itmo.hungergames.repository.*;
 import ru.itmo.hungergames.service.SponsorService;
+import ru.itmo.hungergames.util.SecurityUtil;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -24,18 +25,21 @@ public class SponsorServiceImpl implements SponsorService {
     private final ResourceRepository resourceRepository;
     private final OrderDetailRepository orderDetailRepository;
     private final OrdersRepository ordersRepository;
+    private final SecurityUtil securityUtil;
 
     @Autowired
     public SponsorServiceImpl(SponsorRepository sponsorRepository,
                               TributeRepository tributeRepository,
                               ResourceRepository resourceRepository,
                               OrderDetailRepository orderDetailRepository,
-                              OrdersRepository ordersRepository) {
+                              OrdersRepository ordersRepository,
+                              SecurityUtil securityUtil) {
         this.sponsorRepository = sponsorRepository;
         this.tributeRepository = tributeRepository;
         this.resourceRepository = resourceRepository;
         this.orderDetailRepository = orderDetailRepository;
         this.ordersRepository = ordersRepository;
+        this.securityUtil = securityUtil;
     }
 
     @Override
@@ -50,7 +54,7 @@ public class SponsorServiceImpl implements SponsorService {
                 .findById(sponsorResourceOrderRequest.getTributeId())
                 .orElseThrow(() -> new ResourceNotFoundException("There's no tribute with the ID"));
         Sponsor sponsor = sponsorRepository
-                .findById(sponsorResourceOrderRequest.getSponsorId())
+                .findById(securityUtil.getAuthenticatedUser().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("There's no sponsor with the ID"));
 
         List<OrderDetail> orderDetails = new ArrayList<>();

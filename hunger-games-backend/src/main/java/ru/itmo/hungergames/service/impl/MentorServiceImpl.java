@@ -12,6 +12,7 @@ import ru.itmo.hungergames.model.response.ResourceApprovalResponse;
 import ru.itmo.hungergames.repository.MentorRepository;
 import ru.itmo.hungergames.repository.OrdersRepository;
 import ru.itmo.hungergames.service.MentorService;
+import ru.itmo.hungergames.util.SecurityUtil;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,11 +23,15 @@ import java.util.stream.Collectors;
 public class MentorServiceImpl implements MentorService {
     private final MentorRepository mentorRepository;
     private final OrdersRepository ordersRepository;
+    private final SecurityUtil securityUtil;
 
     @Autowired
-    public MentorServiceImpl(MentorRepository mentorRepository, OrdersRepository ordersRepository) {
+    public MentorServiceImpl(MentorRepository mentorRepository,
+                             OrdersRepository ordersRepository,
+                             SecurityUtil securityUtil) {
         this.mentorRepository = mentorRepository;
         this.ordersRepository = ordersRepository;
+        this.securityUtil = securityUtil;
     }
 
     @Override
@@ -35,9 +40,10 @@ public class MentorServiceImpl implements MentorService {
     }
 
     @Override
-    public List<ResourceApprovalResponse> getOrdersForApproval(Long mentorId) {
+    public List<ResourceApprovalResponse> getOrdersForApproval() {
         List<Orders> orders = ordersRepository
-                .findAllByTribute_MentorIdAndPaidAndApprovedAndOrdersType(mentorId, true, null, OrdersType.RESOURCES);
+                .findAllByTribute_MentorIdAndPaidAndApprovedAndOrdersType(
+                        securityUtil.getAuthenticatedUser().getId(), true, null, OrdersType.RESOURCES);
         return orders.stream().map(ResourceApprovalResponse::new).collect(Collectors.toList());
     }
 
@@ -45,7 +51,7 @@ public class MentorServiceImpl implements MentorService {
     @Transactional
     public void approveResourcesToSend(ApproveResourcesRequest approveResourcesRequest) {
         Mentor mentor = mentorRepository
-                .findById(approveResourcesRequest.getMentorId())
+                .findById(securityUtil.getAuthenticatedUser().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("There's no mentor with such ID"));
         Optional<Orders> ordersOptional = ordersRepository
                 .findByIdAndTribute_MentorIdAndPaid(

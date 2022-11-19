@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface MentorService {
     List<Mentor> getAllMentors();
-    List<ResourceApprovalResponse> getOrdersForApproval(Long mentorId);
+    List<ResourceApprovalResponse> getOrdersForApproval();
     void approveResourcesToSend(ApproveResourcesRequest approveResourcesRequest);
 }
