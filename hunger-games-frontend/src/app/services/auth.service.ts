@@ -54,9 +54,9 @@ export class AuthService {
         this._authData = new AuthData(login.id, login.username, login.token);
     }
 
-    async register(username: string, password: string): Promise<void> {
+    async register(username: string, name: string, password: string): Promise<void> {
         const url: string = `${this.BASE_URL}/signup`;
-        await lastValueFrom(this.http.post<void>(url, { username, password }, { headers: this.headers }));
+        await lastValueFrom(this.http.post<void>(url, { username, name, password }, { headers: this.headers }));
     }
 
     authenticatedHeaders(headers: HttpHeaders): HttpHeaders {

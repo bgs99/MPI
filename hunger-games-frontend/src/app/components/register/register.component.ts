@@ -19,7 +19,12 @@ export class RegisterComponent {
     if (this.password != this.password2) {
       return;
     }
-    await this.authService.register(this.username, this.password)
-    this.router.navigateByUrl('/login')
+    try {
+        await this.authService.register(this.username, this.name, this.password)
+        await this.router.navigateByUrl('/login')
+    }
+    catch (err: any) {
+        console.error("Failed to register", err);
+    }
   }
 }
