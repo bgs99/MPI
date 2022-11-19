@@ -1,6 +1,7 @@
 package ru.itmo.hungergames.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.hungergames.model.entity.Sponsor;
 import ru.itmo.hungergames.model.request.SponsorResourceOrderRequest;
@@ -10,6 +11,7 @@ import ru.itmo.hungergames.service.SponsorService;
 import java.util.List;
 
 @RestController
+@PreAuthorize("hasRole('SPONSOR')")
 @RequestMapping("/api/sponsor")
 public class SponsorController {
     private final SponsorService sponsorService;

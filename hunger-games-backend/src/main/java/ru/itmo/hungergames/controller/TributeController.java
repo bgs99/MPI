@@ -1,6 +1,7 @@
 package ru.itmo.hungergames.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.hungergames.model.entity.Tribute;
 import ru.itmo.hungergames.model.request.AdvertisingTextRequest;
@@ -10,6 +11,7 @@ import ru.itmo.hungergames.service.TributeService;
 import java.util.List;
 
 @RestController
+@PreAuthorize("hasRole('TRIBUTE')")
 @RequestMapping("/api/tribute")
 public class TributeController {
     private final TributeService tributeService;

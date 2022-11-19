@@ -1,6 +1,7 @@
 package ru.itmo.hungergames.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.hungergames.model.entity.Mentor;
 import ru.itmo.hungergames.model.request.ApproveResourcesRequest;
@@ -10,6 +11,7 @@ import ru.itmo.hungergames.service.MentorService;
 import java.util.List;
 
 @RestController
+@PreAuthorize("hasRole('MENTOR')")
 @RequestMapping("/api/mentor")
 public class MentorController {
     private final MentorService mentorService;
