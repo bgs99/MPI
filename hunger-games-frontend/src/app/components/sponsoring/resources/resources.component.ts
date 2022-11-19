@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
-import { PaymentData } from 'src/app/models/payment-data';
 import { Resource } from 'src/app/models/resource';
 import { Tribute } from 'src/app/models/tribute';
 import { ResourcesService } from 'src/app/services/resources.service';
@@ -39,7 +38,7 @@ export class ResourcesComponent implements OnInit {
         return this.resources.data.reduce((sum: number, resource: Resource) => sum + resource.amount * resource.price, 0)
     }
 
-    pay(): void {
+    async pay(): Promise<void> {
         if (this.tribute === null) {
             return;
         }
@@ -48,39 +47,35 @@ export class ResourcesComponent implements OnInit {
             return;
         }
         this.paymentEnabled = false;
-        this.resourcesService.orderResources(this.tribute.id, parseInt(selfId), this.resources.data).subscribe({
-            next: (paymentData: PaymentData) => {
-                localStorage.setItem('tribute', JSON.stringify(this.tribute));
-                localStorage.setItem('resources', JSON.stringify(this.resources.data));
-                localStorage.setItem('order', JSON.stringify(paymentData.orderId));
-                this.router.navigate(["/mock/payment"], { queryParams: { id: paymentData.orderId, path: '/sponsoring' } });
-            },
-            error: (err: any) => {
-                console.log(err);
-                this.paymentEnabled = true;
-            }
-        });
+        try {
+            const paymentData = await this.resourcesService.orderResources(this.tribute.id, parseInt(selfId), this.resources.data);
+            localStorage.setItem('tribute', JSON.stringify(this.tribute));
+            localStorage.setItem('resources', JSON.stringify(this.resources.data));
+            localStorage.setItem('order', JSON.stringify(paymentData.orderId));
+            this.router.navigate(["/mock/payment"], { queryParams: { id: paymentData.orderId, path: '/sponsoring' } });
+        }
+        catch (err: any) {
+            console.log(err);
+            this.paymentEnabled = true;
+        }
     }
 
-    ngOnInit(): void {
-        this.resourcesService.getResources()
-            .subscribe({
-                next: (data: Resource[]) => {
-                    console.log("Received data " + JSON.stringify(data));
+    async ngOnInit(): Promise<void> {
+        try {
+            const resources = await this.resourcesService.getResources();
 
-                    const resourceItem: string | null = localStorage.getItem('resources');
+            const resourceItem: string | null = localStorage.getItem('resources');
 
-                    const savedData: Resource[] = resourceItem === null ? [] : JSON.parse(resourceItem);
+            const savedData: Resource[] = resourceItem === null ? [] : JSON.parse(resourceItem);
 
-                    data.forEach(resource => {
-                        const savedAmount: number | undefined = savedData.find((res) => res.id === resource.id)?.amount;
-                        resource.amount = savedAmount === undefined ? 0 : savedAmount;
-                    });
-                    this.resources.data = data;
-                },
-                error: (err: any) => {
-                    console.log(err)
-                }
+            resources.forEach(resource => {
+                const savedAmount: number | undefined = savedData.find((res) => res.id === resource.id)?.amount;
+                resource.amount = savedAmount === undefined ? 0 : savedAmount;
             });
+            this.resources.data = resources;
+        }
+        catch (err: any) {
+            console.log(err)
+        }
     }
 }

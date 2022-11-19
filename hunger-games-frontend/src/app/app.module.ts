@@ -26,7 +26,7 @@ import { AuthService } from './services/auth.service';
 import { TributesService } from './services/tributes.service';
 import { HeaderComponent } from './components/header/header.component';
 import { ResourcesComponent } from './components/sponsoring/resources/resources.component';
-import { PaymentComponent } from './components/payment/payment.component';
+import { PaymentComponent } from './components/capitol/payment/payment.component';
 import { SuccessComponent } from './components/sponsoring/success/success.component';
 import { FailureComponent } from './components/sponsoring/failure/failure.component';
 import { ResourcesService } from './services/resources.service';
@@ -39,50 +39,54 @@ import { PostingComponent } from './components/tribute/posting/posting.component
 import { SuccessComponent as PostingSuccessComponent } from './components/tribute/posting/success/success.component';
 import { FailureComponent as PostingFailureComponent } from './components/tribute/posting/failure/failure.component';
 import { RegisterComponent } from './components/register/register.component';
+import { AuthComponent } from './components/capitol/auth/auth.component';
+import { HeaderComponent as CapitolHeaderComponent } from "./components/capitol/header/header.component";
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    TributesComponent,
-    HeaderComponent,
-    ResourcesComponent,
-    PaymentComponent,
-    SuccessComponent,
-    FailureComponent,
-    LoginComponent,
-    ApprovalComponent,
-    PostingComponent,
-    PostingSuccessComponent,
-    PostingFailureComponent,
-    RegisterComponent,
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    HttpClientModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatCardModule,
-    MatTableModule,
-    MatButtonModule,
-    MatStepperModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatGridListModule,
-    MatSelectModule,
-    MatListModule,
-    AngularEditorModule,
-  ],
-  providers: [
-    AuthService,
-    TributesService,
-    ResourcesService,
-    PaymentService,
-    SponsorsService,
-    MentorsService,
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        TributesComponent,
+        HeaderComponent,
+        ResourcesComponent,
+        PaymentComponent,
+        SuccessComponent,
+        FailureComponent,
+        LoginComponent,
+        ApprovalComponent,
+        PostingComponent,
+        PostingSuccessComponent,
+        PostingFailureComponent,
+        RegisterComponent,
+        AuthComponent,
+        CapitolHeaderComponent,
+    ],
+    providers: [
+        AuthService,
+        TributesService,
+        ResourcesService,
+        PaymentService,
+        SponsorsService,
+        MentorsService,
+    ],
+    bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        HttpClientModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatCardModule,
+        MatTableModule,
+        MatButtonModule,
+        MatStepperModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatGridListModule,
+        MatSelectModule,
+        MatListModule,
+        AngularEditorModule,
+    ]
 })
 export class AppModule { }

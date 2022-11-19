@@ -5,33 +5,28 @@ import { Tribute } from 'src/app/models/tribute';
 import { TributesService } from 'src/app/services/tributes.service';
 
 @Component({
-  selector: 'app-tributes',
-  templateUrl: './tributes.component.html',
-  styleUrls: ['./tributes.component.css']
+    selector: 'app-tributes',
+    templateUrl: './tributes.component.html',
+    styleUrls: ['./tributes.component.css']
 })
 export class TributesComponent implements OnInit {
-  tributesColumns: string[] = ['name', 'district', 'select'];
-  tributes = new MatTableDataSource<Tribute>([]);
+    tributesColumns: string[] = ['name', 'district', 'select'];
+    tributes = new MatTableDataSource<Tribute>([]);
 
-  constructor(private router: Router, private tributesService: TributesService) { }
+    constructor(private router: Router, private tributesService: TributesService) { }
 
-  select(tribute: Tribute): void {
-    console.log('Passing tribute in state')
-    const navigationExtras: NavigationExtras = { state: { tribute } };
-    this.router.navigate(['/sponsoring/resources'], navigationExtras);
-  }
+    select(tribute: Tribute): void {
+        console.log('Passing tribute in state')
+        const navigationExtras: NavigationExtras = { state: { tribute } };
+        this.router.navigate(['/sponsoring/resources'], navigationExtras);
+    }
 
-  ngOnInit(): void {
-    this.tributesService.getTributes()
-      .subscribe({
-        next: (data: Tribute[]) => {
-          console.log("Received data " + JSON.stringify(data));
-          this.tributes.data = data;
-        },
-        error: (err: any) => {
-          console.log(err)
+    async ngOnInit(): Promise<void> {
+        try {
+            this.tributes.data = await this.tributesService.getTributes();
         }
-      });
-  }
-
+        catch (err: any) {
+            console.error(err)
+        }
+    }
 }
