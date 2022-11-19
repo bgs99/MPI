@@ -9,7 +9,7 @@ import ru.itmo.hungergames.model.request.PaymentRequest;
 import ru.itmo.hungergames.service.PaymentManagerService;
 
 @RestController
-@RequestMapping("/api/payment")
+@RequestMapping("/api/payment") // TODO: certs identification with pub keys decrypt
 public class PaymentManagerController {
     private final PaymentManagerService paymentManagerService;
 

@@ -1,26 +1,35 @@
 package ru.itmo.hungergames.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 import ru.itmo.hungergames.model.entity.Sponsor;
-import ru.itmo.hungergames.service.ResourceSendingService;
+import ru.itmo.hungergames.model.request.SponsorResourceOrderRequest;
+import ru.itmo.hungergames.model.response.SponsorResourceOrderResponse;
+import ru.itmo.hungergames.service.SponsorService;
 
 import java.util.List;
 
 @RestController
+@PreAuthorize("hasRole('SPONSOR')")
 @RequestMapping("/api/sponsor")
 public class SponsorController {
-    private final ResourceSendingService resourceSendingService;
+    private final SponsorService sponsorService;
 
     @Autowired
-    public SponsorController(ResourceSendingService resourceSendingService) {
-        this.resourceSendingService = resourceSendingService;
+    public SponsorController(SponsorService sponsorService) {
+        this.sponsorService = sponsorService;
     }
 
     @GetMapping("/all")
     public List<Sponsor> getAllSponsors() {
-        return resourceSendingService.getAllSponsors();
+        return sponsorService.getAllSponsors();
     }
+
+    @PostMapping("/send")
+    public SponsorResourceOrderResponse sendResourcesForApproval(@RequestBody SponsorResourceOrderRequest sponsorResourceOrderRequest) {
+        return sponsorService.sendResourcesForApproval(sponsorResourceOrderRequest);
+    }
+
+    // TODO: получение ордера, который апрувнут, но не оплачен (инпут: order and tri
 }

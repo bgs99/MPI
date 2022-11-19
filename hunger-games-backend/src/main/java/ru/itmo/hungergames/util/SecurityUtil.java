@@ -1,6 +1,7 @@
 package ru.itmo.hungergames.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import ru.itmo.hungergames.exception.UserExistsException;
 import ru.itmo.hungergames.model.entity.User;
@@ -18,5 +19,9 @@ public class SecurityUtil {
     public void validateBeforeSigningUp(User user) {
         if (userRepository.existsByUsername(user.getUsername()))
             throw new UserExistsException(user);
+    }
+
+    public User getAuthenticatedUser() {
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }

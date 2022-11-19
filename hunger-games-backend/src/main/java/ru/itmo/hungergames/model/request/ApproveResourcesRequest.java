@@ -10,7 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ApproveResourcesRequest {
-    private Long mentorId;
     private Long orderId;
     private Boolean approved = false;
 }

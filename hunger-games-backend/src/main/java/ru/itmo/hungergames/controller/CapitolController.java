@@ -13,7 +13,7 @@ import ru.itmo.hungergames.service.SecurityService;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/capitol")
+@RequestMapping("/api/capitol") // TODO: certs identification with pub keys decrypt
 public class CapitolController {
     private final SecurityService securityService;
 
