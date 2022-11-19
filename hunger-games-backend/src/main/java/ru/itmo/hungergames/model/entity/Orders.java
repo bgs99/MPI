@@ -1,22 +1,22 @@
 package ru.itmo.hungergames.model.entity;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Table(indexes = @Index(columnList = "tribute_user_id"))
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Orders {
-    // TODO: декомпозировать на adv и ресурсы
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     private Long id;
     private Boolean approved;
     @Builder.Default
@@ -24,16 +24,4 @@ public class Orders {
     private BigDecimal price;
     @ManyToOne
     private Tribute tribute;
-
-    @ManyToOne
-    private Sponsor sponsor;
-
-    @Enumerated(EnumType.STRING)
-    private OrdersType ordersType;
-
-    private String advertisingText;
-
-    @OneToMany
-    @JoinColumn(name = "order_id")
-    private List<OrderDetail> orderDetails;
 }

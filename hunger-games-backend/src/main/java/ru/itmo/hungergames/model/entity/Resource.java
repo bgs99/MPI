@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @Entity
 public class Resource {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     private Long id;
 
     private String name;

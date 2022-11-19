@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Builder
 public class OrderDetail {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     private Long id;
     private int size;
 

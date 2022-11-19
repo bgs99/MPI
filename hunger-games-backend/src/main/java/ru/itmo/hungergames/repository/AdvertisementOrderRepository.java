@@ -2,8 +2,8 @@ package ru.itmo.hungergames.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.itmo.hungergames.model.entity.Orders;
+import ru.itmo.hungergames.model.entity.AdvertisementOrder;
 
 @Repository
-public interface OrdersRepository extends JpaRepository<Orders, Long> {
+public interface AdvertisementOrderRepository extends JpaRepository<AdvertisementOrder, Long> {
 }

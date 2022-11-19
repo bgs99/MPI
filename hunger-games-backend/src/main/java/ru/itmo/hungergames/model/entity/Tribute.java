@@ -16,7 +16,6 @@ import javax.persistence.*;
                 "accountNonExpired", "accountNonLocked",
                 "credentialsNonExpired", "enabled"})
 public class Tribute extends User {
-
     @ManyToOne
     private Mentor mentor;
 }

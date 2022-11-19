@@ -10,6 +10,7 @@ import ru.itmo.hungergames.service.TributeService;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @PreAuthorize("hasRole('TRIBUTE')")
 @RequestMapping("/api/tribute")
@@ -21,6 +22,7 @@ public class TributeController {
         this.tributeService = tributeService;
     }
 
+    @PreAuthorize("hasAnyRole('TRIBUTE', 'MENTOR', 'SPONSOR')")
     @GetMapping("/all")
     public List<Tribute> getAllTributes() {
         return tributeService.getAllTributes();

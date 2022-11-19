@@ -6,8 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.itmo.hungergames.model.entity.*;
 import ru.itmo.hungergames.model.request.OrderDetailRequest;
-import ru.itmo.hungergames.model.request.SponsorResourceOrderRequest;
-import ru.itmo.hungergames.model.response.SponsorResourceOrderResponse;
+import ru.itmo.hungergames.model.request.ResourceOrderRequest;
+import ru.itmo.hungergames.model.response.ResourceApprovalResponse;
+import ru.itmo.hungergames.model.response.ResourceApprovedAndNotPaidResponse;
+import ru.itmo.hungergames.model.response.ResourceOrderResponse;
 import ru.itmo.hungergames.repository.*;
 import ru.itmo.hungergames.service.SponsorService;
 import ru.itmo.hungergames.util.SecurityUtil;
@@ -16,6 +18,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -24,7 +27,7 @@ public class SponsorServiceImpl implements SponsorService {
     private final TributeRepository tributeRepository;
     private final ResourceRepository resourceRepository;
     private final OrderDetailRepository orderDetailRepository;
-    private final OrdersRepository ordersRepository;
+    private final ResourceOrderRepository resourceOrderRepository;
     private final SecurityUtil securityUtil;
 
     @Autowired
@@ -32,13 +35,13 @@ public class SponsorServiceImpl implements SponsorService {
                               TributeRepository tributeRepository,
                               ResourceRepository resourceRepository,
                               OrderDetailRepository orderDetailRepository,
-                              OrdersRepository ordersRepository,
+                              ResourceOrderRepository resourceOrderRepository,
                               SecurityUtil securityUtil) {
         this.sponsorRepository = sponsorRepository;
         this.tributeRepository = tributeRepository;
         this.resourceRepository = resourceRepository;
         this.orderDetailRepository = orderDetailRepository;
-        this.ordersRepository = ordersRepository;
+        this.resourceOrderRepository = resourceOrderRepository;
         this.securityUtil = securityUtil;
     }
 
@@ -49,9 +52,9 @@ public class SponsorServiceImpl implements SponsorService {
 
     @Override
     @Transactional
-    public SponsorResourceOrderResponse sendResourcesForApproval(SponsorResourceOrderRequest sponsorResourceOrderRequest) {
+    public ResourceOrderResponse sendResourcesForApproval(ResourceOrderRequest resourceOrderRequest) {
         Tribute tribute = tributeRepository
-                .findById(sponsorResourceOrderRequest.getTributeId())
+                .findById(resourceOrderRequest.getTributeId())
                 .orElseThrow(() -> new ResourceNotFoundException("There's no tribute with the ID"));
         Sponsor sponsor = sponsorRepository
                 .findById(securityUtil.getAuthenticatedUser().getId())
@@ -59,7 +62,7 @@ public class SponsorServiceImpl implements SponsorService {
 
         List<OrderDetail> orderDetails = new ArrayList<>();
         BigDecimal price = new BigDecimal(0);
-        for (OrderDetailRequest orderDetailRequest : sponsorResourceOrderRequest.getOrderDetails()) {
+        for (OrderDetailRequest orderDetailRequest : resourceOrderRequest.getOrderDetails()) {
             Optional<Resource> resourceOptional = resourceRepository.findById(orderDetailRequest.getResourceId());
             if (!resourceOptional.isPresent()) {
                 continue;
@@ -74,17 +77,23 @@ public class SponsorServiceImpl implements SponsorService {
 
             price = price.add(resource.getPrice().multiply(BigDecimal.valueOf(orderDetailRequest.getSize())));
         }
-        Orders orders = Orders.builder()
+        ResourceOrder order = ResourceOrder.builder()
                 .orderDetails(orderDetails)
                 .tribute(tribute)
                 .sponsor(sponsor)
                 .price(price)
-                .ordersType(OrdersType.RESOURCES)
                 .build();
 
-        return SponsorResourceOrderResponse.builder()
-                .orderId(ordersRepository.save(orders).getId())
+        return ResourceOrderResponse.builder()
+                .orderId(resourceOrderRepository.save(order).getId())
                 .price(price)
                 .build();
+    }
+
+    @Override
+    public List<ResourceApprovedAndNotPaidResponse> getOrdersNotPaidAndApproved() {
+        List<ResourceOrder> orders = resourceOrderRepository
+                .findAllByPaidAndApproved(false, true);
+        return orders.stream().map(ResourceApprovedAndNotPaidResponse::new).collect(Collectors.toList());
     }
 }

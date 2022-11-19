@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class User implements UserDetails {
     @Id
     @Column(name = "user_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     private Long id;
     private String name;
     private String username;
