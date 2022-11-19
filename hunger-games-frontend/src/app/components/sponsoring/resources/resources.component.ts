@@ -42,13 +42,9 @@ export class ResourcesComponent implements OnInit {
         if (this.tribute === null) {
             return;
         }
-        const selfId: string | null = localStorage.getItem("identity");
-        if (selfId === null) {
-            return;
-        }
         this.paymentEnabled = false;
         try {
-            const paymentData = await this.resourcesService.orderResources(this.tribute.id, parseInt(selfId), this.resources.data);
+            const paymentData = await this.resourcesService.orderResources(this.tribute.id, this.resources.data);
             localStorage.setItem('tribute', JSON.stringify(this.tribute));
             localStorage.setItem('resources', JSON.stringify(this.resources.data));
             localStorage.setItem('order', JSON.stringify(paymentData.orderId));

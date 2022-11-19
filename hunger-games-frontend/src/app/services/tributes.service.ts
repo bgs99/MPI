@@ -19,10 +19,10 @@ export class TributesService {
             { headers: TributesService.headers },
         ));
     }
-    async orderAd(tributeId: number, text: string): Promise<PaymentData> {
+    async orderAd(text: string): Promise<PaymentData> {
         return await lastValueFrom(this.http.post<PaymentData>(
             TributesService.BASE_URL + "/advertisement",
-            { tributeId, text },
+            { tributeId: this.auth.id, text },
             { headers: this.auth.authenticatedHeaders(TributesService.headers) },
         ));
     }
