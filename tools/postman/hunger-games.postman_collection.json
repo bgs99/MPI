@@ -214,6 +214,25 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Get All Tributes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/tribute/all",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"tribute",
+								"all"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"auth": {
@@ -333,6 +352,25 @@
 								"mentor",
 								"order",
 								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Mentors",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/mentor/all",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"mentor",
+								"all"
 							]
 						}
 					},

@@ -22,6 +22,12 @@ public class TributeController {
         this.tributeService = tributeService;
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/all")
+    public List<Tribute> getAllTributes() {
+        return tributeService.getAllTributes();
+    }
+
     @PostMapping("/advertisement")
     public AdvertisingTextResponse sendAdvertisingText(@RequestBody AdvertisingTextRequest advertisingTextRequest) {
         return tributeService.sendAdvertisingText(advertisingTextRequest);
