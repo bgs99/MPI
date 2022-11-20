@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { PaymentData } from 'src/app/models/payment-data';
 import { TributesService } from 'src/app/services/tributes.service';
 
 @Component({
@@ -21,7 +20,7 @@ export class PostingComponent {
             console.log("Got payment data: " + JSON.stringify(paymentData));
             localStorage.setItem('htmlContent', this.htmlContent);
             localStorage.setItem('order', JSON.stringify(paymentData.orderId));
-            this.router.navigate(["/mock/payment"], { queryParams: { id: paymentData.orderId, path: '/tribute/posting' } });
+            this.router.navigate(["/capitol/payment"], { queryParams: { id: paymentData.orderId, path: '/tribute/posting' } });
         }
         catch (err) {
             console.log(err);
