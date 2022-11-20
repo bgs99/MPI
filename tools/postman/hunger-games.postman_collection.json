@@ -28,7 +28,7 @@
 					"response": []
 				},
 				{
-					"name": "Get All Orders Approved but not Paid",
+					"name": "Get All Orders Aproved but not Paid",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -188,25 +188,6 @@
 			"name": "Tribute",
 			"item": [
 				{
-					"name": "Get All Tributes",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/tribute/all",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"tribute",
-								"all"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "Send Advertising Text",
 					"request": {
 						"method": "POST",
@@ -269,25 +250,6 @@
 		{
 			"name": "Mentor",
 			"item": [
-				{
-					"name": "Get All Mentors",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/mentor/all",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"mentor",
-								"all"
-							]
-						}
-					},
-					"response": []
-				},
 				{
 					"name": "Get Orders For Approval",
 					"event": [
@@ -371,6 +333,81 @@
 								"mentor",
 								"order",
 								"create"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Capitol",
+			"item": [
+				{
+					"name": "Get All Mentors",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/capitol/mentor/all",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"capitol",
+								"mentor",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Tributes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/capitol/tribute/all",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"capitol",
+								"tribute",
+								"all"
 							]
 						}
 					},
