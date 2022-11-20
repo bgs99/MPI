@@ -14,7 +14,7 @@ export class PaymentService {
     }
     async approve(orderId: number): Promise<void> {
         return await lastValueFrom(this.http.post<void>(
-            PaymentService.BASE_URL,
+            `${PaymentService.BASE_URL}/approve`,
             { orderId }
         ));
     }
