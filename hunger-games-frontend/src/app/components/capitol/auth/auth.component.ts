@@ -4,8 +4,8 @@ import { Mentor } from 'src/app/models/mentor';
 import { Person } from 'src/app/models/person';
 import { Tribute } from 'src/app/models/tribute';
 import { AuthService } from 'src/app/services/auth.service';
-import { MentorsService } from 'src/app/services/mentors.service';
-import { TributesService } from 'src/app/services/tributes.service';
+import { MentorsService } from 'src/app/services/mock/mentors.service';
+import { TributesService } from 'src/app/services/mock/tributes.service';
 
 enum Role {
     Tribute,
@@ -43,8 +43,8 @@ export class AuthComponent implements OnInit {
         private router: Router) { }
 
     async ngOnInit(): Promise<void> {
-        this.tributes = await this.tributesService.getTributes();
-        this.mentors = await this.mentorsService.getMentors();
+        this.tributes = await this.tributesService.getAll();
+        this.mentors = await this.mentorsService.getAll();
     }
 
     async login(): Promise<void> {

@@ -3,10 +3,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { ApprovalComponent } from './components/mentor/approval/approval.component';
 import { PaymentComponent as MockPaymentComponent } from './components/capitol/payment/payment.component';
-import { FailureComponent } from './components/sponsoring/failure/failure.component';
-import { ResourcesComponent } from './components/sponsoring/resources/resources.component';
-import { SuccessComponent } from './components/sponsoring/success/success.component';
-import { TributesComponent } from './components/sponsoring/tributes/tributes.component';
+import { FailureComponent } from './components/sponsor/failure/failure.component';
+import { ResourcesComponent } from './components/sponsor/resources/resources.component';
+import { SuccessComponent } from './components/sponsor/success/success.component';
+import { TributesComponent } from './components/sponsor/tributes/tributes.component';
 import { PostingComponent } from './components/tribute/posting/posting.component';
 import { SuccessComponent as PostingSuccessComponent } from './components/tribute/posting/success/success.component';
 import { FailureComponent as PostingFailureComponent } from './components/tribute/posting/failure/failure.component';
@@ -16,10 +16,10 @@ import { AuthComponent as MockAuthComponent } from './components/capitol/auth/au
 const routes: Routes = [
     { path: 'mock/auth', component: MockAuthComponent },
     { path: 'mock/payment', component: MockPaymentComponent },
-    { path: 'sponsoring/success', component: SuccessComponent },
-    { path: 'sponsoring/failure', component: FailureComponent },
-    { path: 'sponsoring/tributes', component: TributesComponent },
-    { path: 'sponsoring/resources', component: ResourcesComponent },
+    { path: 'sponsor/success', component: SuccessComponent },
+    { path: 'sponsor/failure', component: FailureComponent },
+    { path: 'sponsor/tributes', component: TributesComponent },
+    { path: 'sponsor/resources', component: ResourcesComponent },
     { path: 'mentor/approval', component: ApprovalComponent },
     { path: 'tribute/posting', component: PostingComponent },
     { path: 'tribute/posting/success', component: PostingSuccessComponent },

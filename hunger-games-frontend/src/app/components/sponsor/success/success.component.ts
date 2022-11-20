@@ -13,7 +13,7 @@ export class SuccessComponent implements OnInit {
 
   stepperChanged(event: StepperSelectionEvent): void {
     if (event.selectedIndex == 0) {
-      this.router.navigateByUrl("/sponsoring/tributes");
+      this.router.navigateByUrl("/sponsor/tributes");
     }
   }
 

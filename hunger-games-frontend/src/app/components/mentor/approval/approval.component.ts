@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Order } from 'src/app/models/order';
-import { AuthService } from 'src/app/services/auth.service';
 import { MentorsService } from 'src/app/services/mentors.service';
 
 @Component({
@@ -13,18 +12,12 @@ export class ApprovalComponent implements OnInit {
     ordersColumns: string[] = ['tributeName', 'sponsorName', 'resources', 'action'];
     orders = new MatTableDataSource<Order>([]);
 
-    selfId: number | null = null;
-
     constructor(
-        private authService: AuthService,
         private mentorsService: MentorsService) { }
 
     async approve(order: Order): Promise<void> {
-        if (this.selfId === null) {
-            return;
-        }
         try {
-            await this.mentorsService.approve(this.selfId, order.orderId, true);
+            await this.mentorsService.approve(order.orderId, true);
             this.orders.data = this.orders.data.filter((elem) => elem.orderId != order.orderId);
         }
         catch (err) {
@@ -33,11 +26,8 @@ export class ApprovalComponent implements OnInit {
     }
 
     async deny(order: Order): Promise<void> {
-        if (this.selfId === null) {
-            return;
-        }
         try {
-            await this.mentorsService.approve(this.selfId, order.orderId, false);
+            await this.mentorsService.approve(order.orderId, false);
             this.orders.data = this.orders.data.filter((elem) => elem.orderId != order.orderId);
         }
         catch (err) {
