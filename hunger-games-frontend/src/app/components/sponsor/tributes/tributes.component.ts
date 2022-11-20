@@ -18,7 +18,7 @@ export class TributesComponent implements OnInit {
     select(tribute: Tribute): void {
         console.log('Passing tribute in state')
         const navigationExtras: NavigationExtras = { state: { tribute } };
-        this.router.navigate(['/sponsoring/resources'], navigationExtras);
+        this.router.navigate(['/sponsor/resources'], navigationExtras);
     }
 
     async ngOnInit(): Promise<void> {

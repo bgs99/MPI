@@ -1,40 +1,37 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
-import { AuthService } from './auth.service';
 import { Mentor } from '../models/mentor';
-import { Order } from '../models/order';
+import { Order, ResourceOrderRequest } from '../models/order';
 import { ApiService } from './api.service';
+import { Resource } from '../models/resource';
 
 @Injectable({
     providedIn: 'root'
 })
 export class MentorsService {
     private static BASE_URL: string = `${ApiService.baseURL}/mentor`;
-    private static headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
-    constructor(private http: HttpClient, private auth: AuthService) { }
+    constructor(private http: HttpClient) { }
     async getMentors(): Promise<Mentor[]> {
         return await lastValueFrom(this.http.get<Mentor[]>(
-            MentorsService.BASE_URL + "/all",
-            { headers: MentorsService.headers },
+            `${MentorsService.BASE_URL}/all`
         ));
     }
     async getOrders(): Promise<Order[]> {
         return await lastValueFrom(this.http.get<Order[]>(
-            MentorsService.BASE_URL + "/orders",
-            {
-                headers: this.auth.authenticatedHeaders(MentorsService.headers),
-                params: { mentorId: this.auth.id }
-            },
+            `${MentorsService.BASE_URL}/orders`
         ));
     }
-    async approve(mentorId: number, orderId: number, approved: boolean): Promise<void> {
+    async approve(orderId: number, approved: boolean): Promise<void> {
         return await lastValueFrom(this.http.post<void>(
-            MentorsService.BASE_URL + "/order/approve",
-            { mentorId, orderId, approved },
-            {
-                headers: this.auth.authenticatedHeaders(MentorsService.headers),
-            },
+            `${MentorsService.BASE_URL}/order/approve`,
+            { orderId, approved }
         ));
+    }
+    async requestResources(tributeId: number, resources: Resource[]): Promise<void> {
+        return await lastValueFrom(this.http.post<void>(
+            `${MentorsService.BASE_URL}/order/create`,
+            new ResourceOrderRequest(tributeId, resources)
+        ))
     }
 }

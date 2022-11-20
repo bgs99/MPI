@@ -5,54 +5,50 @@ import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
 import { Resource } from 'src/app/models/resource';
 import { Tribute } from 'src/app/models/tribute';
+import { MentorsService } from 'src/app/services/mentors.service';
 import { ResourcesService } from 'src/app/services/resources.service';
 
 @Component({
-    selector: 'app-resources',
+    selector: 'mentor-resources',
     templateUrl: './resources.component.html',
     styleUrls: ['./resources.component.css']
 })
 export class ResourcesComponent implements OnInit {
-    resourcesColumns: string[] = ['name', 'amount', 'price', 'total'];
+    resourcesColumns: string[] = ['name', 'amount'];
     resources = new MatTableDataSource<Resource>([]);
-    paymentEnabled: boolean = true;
 
     tribute: Tribute | null = null;
 
-    constructor(private router: Router, private resourcesService: ResourcesService) {
+    constructor(private router: Router, private mentorService: MentorsService, private resourcesService: ResourcesService) {
         router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(e => {
             const state = router.getCurrentNavigation()?.extras.state;
             if (state !== undefined) {
-                this.tribute = state['tribute']
+                this.tribute = state['tribute'] as Tribute | null
             }
         });
     }
 
     stepperChanged(event: StepperSelectionEvent): void {
         if (event.selectedIndex == 0) {
-            this.router.navigateByUrl("/sponsoring/tributes");
+            this.router.navigateByUrl("/mentor/tributes");
         }
     }
 
-    total(): number {
-        return this.resources.data.reduce((sum: number, resource: Resource) => sum + resource.amount * resource.price, 0)
+    any(): boolean {
+        return this.resources.data.some((resource: Resource) => resource.amount > 0)
     }
 
-    async pay(): Promise<void> {
+    async request(): Promise<void> {
         if (this.tribute === null) {
             return;
         }
-        this.paymentEnabled = false;
         try {
-            const paymentData = await this.resourcesService.orderResources(this.tribute.id, this.resources.data);
-            localStorage.setItem('tribute', JSON.stringify(this.tribute));
-            localStorage.setItem('resources', JSON.stringify(this.resources.data));
-            localStorage.setItem('order', JSON.stringify(paymentData.orderId));
-            this.router.navigate(["/mock/payment"], { queryParams: { id: paymentData.orderId, path: '/sponsoring' } });
+            await this.mentorService.requestResources(this.tribute.id, this.resources.data);
+            localStorage.removeItem('resources');
+            this.router.navigateByUrl("/mentor/tributes");
         }
         catch (err: any) {
             console.log(err);
-            this.paymentEnabled = true;
         }
     }
 
