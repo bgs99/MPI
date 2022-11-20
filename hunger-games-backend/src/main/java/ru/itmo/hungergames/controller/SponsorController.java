@@ -23,7 +23,7 @@ public class SponsorController {
         this.sponsorService = sponsorService;
     }
 
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/all")
     public List<Sponsor> getAllSponsors() {
         return sponsorService.getAllSponsors();

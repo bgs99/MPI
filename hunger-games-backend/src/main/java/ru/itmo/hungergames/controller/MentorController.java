@@ -23,12 +23,6 @@ public class MentorController {
         this.mentorService = mentorService;
     }
 
-    @PreAuthorize("permitAll()")
-    @GetMapping("/all")
-    public List<Mentor> getAllMentors() {
-        return mentorService.getAllMentors();
-    }
-
     @GetMapping("/orders")
     public List<ResourceApprovalResponse> getOrdersForApproval() {
         return mentorService.getOrdersForApproval();
