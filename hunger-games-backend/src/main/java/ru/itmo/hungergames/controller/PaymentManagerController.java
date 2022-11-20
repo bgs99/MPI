@@ -1,12 +1,14 @@
 package ru.itmo.hungergames.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.hungergames.model.request.PaymentRequest;
 import ru.itmo.hungergames.service.PaymentManagerService;
 
 @CrossOrigin("*")
 @RestController
+@PreAuthorize("permitAll()")
 @RequestMapping("/api/payment") // TODO: certs identification with pub keys decrypt
 public class PaymentManagerController {
     private final PaymentManagerService paymentManagerService;
