@@ -23,7 +23,7 @@ public class MentorController {
         this.mentorService = mentorService;
     }
 
-    @PreAuthorize("hasAnyRole('TRIBUTE', 'MENTOR', 'SPONSOR')")
+    @PreAuthorize("permitAll()")
     @GetMapping("/all")
     public List<Mentor> getAllMentors() {
         return mentorService.getAllMentors();

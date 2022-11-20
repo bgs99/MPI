@@ -11,18 +11,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import ru.itmo.hungergames.security.JwtFilter;
 import ru.itmo.hungergames.security.UserDetailsServiceImpl;
-
-import java.util.Arrays;
-import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -63,12 +55,11 @@ public class SecurityConfig {
                 ).permitAll()
                 .antMatchers(
                         "/api/auth/**",
-                        "/api/mentor/all",
-                        "/api/tribute/all",
-                        "/api/capitol/**"
+                        "/api/capitol/**",
+                        "/api/payment/**",
+                        "/api/**/all"
                 ).permitAll()
-                .anyRequest()
-                .authenticated();
+                .anyRequest().authenticated();
 
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

@@ -22,7 +22,7 @@ public class TributeController {
         this.tributeService = tributeService;
     }
 
-    @PreAuthorize("hasAnyRole('TRIBUTE', 'MENTOR', 'SPONSOR')")
+    @PreAuthorize("permitAll()")
     @GetMapping("/all")
     public List<Tribute> getAllTributes() {
         return tributeService.getAllTributes();

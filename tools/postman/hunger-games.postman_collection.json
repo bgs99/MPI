@@ -28,7 +28,7 @@
 					"response": []
 				},
 				{
-					"name": "Get All Orders Aproved but not Paid",
+					"name": "Get All Orders Approved but not Paid",
 					"request": {
 						"method": "GET",
 						"header": [],
