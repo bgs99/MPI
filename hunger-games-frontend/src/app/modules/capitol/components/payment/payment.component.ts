@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 import { PaymentService } from 'src/app/services/mock/payment.service';
 
 @Component({
-    selector: 'app-payment',
     templateUrl: './payment.component.html',
     styleUrls: ['./payment.component.css']
 })
@@ -17,34 +17,35 @@ export class PaymentComponent implements OnInit {
         if (this.orderId === null || this.path === null) {
             return;
         }
+
         try {
             await this.paymentService.approve(this.orderId);
-            this.router.navigateByUrl(this.path + '/success');
+            await this.router.navigate([this.path, 'success']);
         }
         catch (err: any) {
             console.log(err);
         }
     }
 
-    deny(): void {
+    async deny(): Promise<void> {
         if (this.orderId === null || this.path === null) {
             return;
         }
-        this.router.navigateByUrl(this.path + '/failure');
+        await this.router.navigate([this.path, 'failure']);
     }
 
-    ngOnInit(): void {
-        this.route.queryParams.subscribe({
-            next: (params) => {
-                const idParam: string | null = params['id'];
-                this.orderId = idParam === null ? null : parseInt(idParam);
-                this.path = params['path'];
-                console.log("Got route params " + this.orderId + ", " + this.path);
-            },
-            error: (err) => {
-                console.log(err);
-            }
-        });
+    async ngOnInit(): Promise<void> {
+        try {
+            const params = this.route.snapshot.queryParams;
+
+            const idParam: string | null = params['id'];
+            this.orderId = idParam === null ? null : parseInt(idParam);
+            this.path = params['path'];
+            console.log(`Got route params ${this.orderId}, ${this.path}`);
+        }
+        catch (err: any) {
+            console.error(err);
+        }
     }
 
 }

@@ -1,7 +1,8 @@
 <div id="grid">
     <div id="capitol">
         <h1>Войти как трибут или ментор</h1>
-        <input type="image" src="https://pixy.org/src/85/850236.jpg" width="50%" onclick="window.location.href='/mock/auth'">
+        <input type="image" src="https://pixy.org/src/85/850236.jpg" width="50%"
+            (click)="this.router.navigateByUrl('/capitol/auth')">
     </div>
     <mat-divider id="divider" vertical></mat-divider>
     <form id="sponsor" (ngSubmit)="login()" novalidate>
@@ -25,8 +26,8 @@
             </mat-card-content>
             <mat-card-actions>
                 <button type="submit" mat-raised-button>Войти</button>
-                <button onclick="window.location.href='/register'" mat-raised-button>Зарегистрироваться</button>
+                <button (click)="this.router.navigateByUrl('/register')" mat-raised-button>Зарегистрироваться</button>
             </mat-card-actions>
         </mat-card>
     </form>
-    <div>
+</div>
