@@ -5,11 +5,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.hungergames.model.entity.Mentor;
 import ru.itmo.hungergames.model.request.ApproveResourcesRequest;
+import ru.itmo.hungergames.model.request.ResourceOrderRequest;
 import ru.itmo.hungergames.model.response.ResourceApprovalResponse;
 import ru.itmo.hungergames.service.MentorService;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @PreAuthorize("hasRole('MENTOR')")
 @RequestMapping("/api/mentor")
@@ -21,6 +23,7 @@ public class MentorController {
         this.mentorService = mentorService;
     }
 
+    @PreAuthorize("hasAnyRole('TRIBUTE', 'MENTOR', 'SPONSOR')")
     @GetMapping("/all")
     public List<Mentor> getAllMentors() {
         return mentorService.getAllMentors();
@@ -36,5 +39,8 @@ public class MentorController {
         mentorService.approveResourcesToSend(approveResourcesRequest);
     }
 
-    // TODO: создание ордера, который апрувнут, но не оплачен (на основе трибута)
+    @PostMapping("/order/create")
+    public void createOrder(@RequestBody ResourceOrderRequest resourceOrderRequest) {
+        mentorService.sendResourcesToSponsor(resourceOrderRequest);
+    }
 }

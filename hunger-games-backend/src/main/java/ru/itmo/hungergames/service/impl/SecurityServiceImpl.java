@@ -94,10 +94,9 @@ public class SecurityServiceImpl implements SecurityService {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toSet());
         Authentication authentication;
-        if(roles.contains(UserRole.MENTOR.toString()) || roles.contains(UserRole.TRIBUTE.toString())) {
+        if (roles.contains(UserRole.MENTOR.toString()) || roles.contains(UserRole.TRIBUTE.toString())) {
              authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), userDetails.getAuthorities());
-        }
-        else {
+        } else {
              authentication = authenticationProvider.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
         }
         SecurityContextHolder

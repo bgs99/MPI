@@ -13,6 +13,17 @@ services:
     ports:
       - '6969:6969'
     command: '-p 6969'
+    networks:
+      - hg-network
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: 'pg@pg.org'
+      PGADMIN_DEFAULT_PASSWORD: 'password'
+    ports:
+      - "6868:80"
+    networks:
+      - hg-network
   app:
     image: 'hunger-games-backend:latest'
     build: ./
@@ -27,5 +38,11 @@ services:
       SPRING_DATASOURCE_PASSWORD: 'password'
     ports:
       - "42322:42322"
+    networks:
+      - hg-network
+networks:
+  hg-network:
+    driver: bridge
 volumes:
   database-data:
+  pgadmin-data:

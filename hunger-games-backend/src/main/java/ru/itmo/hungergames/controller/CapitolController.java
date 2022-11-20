@@ -2,16 +2,14 @@ package ru.itmo.hungergames.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.itmo.hungergames.model.entity.User;
 import ru.itmo.hungergames.model.request.CapitolSignInRequest;
 import ru.itmo.hungergames.service.SecurityService;
 
 import javax.validation.Valid;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/capitol") // TODO: certs identification with pub keys decrypt
 public class CapitolController {

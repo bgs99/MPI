@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SponsorResourceOrderResponse {
+public class ResourceOrderResponse {
     private long orderId;
     private BigDecimal price;
 }

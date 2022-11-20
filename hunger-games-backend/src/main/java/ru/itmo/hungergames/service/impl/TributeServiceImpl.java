@@ -4,12 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.itmo.hungergames.model.entity.Orders;
-import ru.itmo.hungergames.model.entity.OrdersType;
+import ru.itmo.hungergames.model.entity.AdvertisementOrder;
 import ru.itmo.hungergames.model.entity.Tribute;
 import ru.itmo.hungergames.model.request.AdvertisingTextRequest;
 import ru.itmo.hungergames.model.response.AdvertisingTextResponse;
-import ru.itmo.hungergames.repository.OrdersRepository;
+import ru.itmo.hungergames.repository.AdvertisementOrderRepository;
 import ru.itmo.hungergames.repository.TributeRepository;
 import ru.itmo.hungergames.service.TributeService;
 import ru.itmo.hungergames.util.SecurityUtil;
@@ -21,13 +20,15 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class TributeServiceImpl implements TributeService {
     private final TributeRepository tributeRepository;
-    private final OrdersRepository ordersRepository;
+    private final AdvertisementOrderRepository advertisementOrderRepository;
     private final SecurityUtil securityUtil;
 
     @Autowired
-    public TributeServiceImpl(TributeRepository tributeRepository, OrdersRepository ordersRepository, SecurityUtil securityUtil) {
+    public TributeServiceImpl(TributeRepository tributeRepository,
+                              AdvertisementOrderRepository advertisementOrderRepository,
+                              SecurityUtil securityUtil) {
         this.tributeRepository = tributeRepository;
-        this.ordersRepository = ordersRepository;
+        this.advertisementOrderRepository = advertisementOrderRepository;
         this.securityUtil = securityUtil;
     }
 
@@ -43,10 +44,9 @@ public class TributeServiceImpl implements TributeService {
                 .findById(securityUtil.getAuthenticatedUser().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("There's no tribute with such ID"));
 
-        Orders order = ordersRepository.save(Orders.builder()
+        AdvertisementOrder order = advertisementOrderRepository.save(AdvertisementOrder.builder()
                 .tribute(tribute)
                 .advertisingText(advertisingTextRequest.getText())
-                .ordersType(OrdersType.ADVERTISEMENT)
                 .price(BigDecimal.valueOf(200))
                 .build());
 

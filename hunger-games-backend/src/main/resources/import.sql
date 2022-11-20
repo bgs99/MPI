@@ -7,7 +7,7 @@ INSERT INTO users (name, username) VALUES ('mentor-name-2', 'mentor-2');
 INSERT INTO user_roles(user_id, role) VALUES ('1', 'MENTOR');
 INSERT INTO user_roles(user_id, role) VALUES ('2', 'MENTOR');
 INSERT INTO mentor (user_id, district) values  ('1','1');
-INSERT INTO mentor (user_id, district) values  ('2','3');
+INSERT INTO mentor (user_id, district) values  ('2','2');
 --Tributes:
 INSERT INTO users (name, username) VALUES ('tribute-name-1', 'tribute-1');
 INSERT INTO users (name, username) VALUES ('tribute-name-2', 'tribute-2');

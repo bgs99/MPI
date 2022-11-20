@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface TributeService {
     List<Tribute> getAllTributes();
-    AdvertisingTextResponse sendAdvertisingText(AdvertisingTextRequest advertisingTextRequest); // TODO: WTF! to tribute
+    AdvertisingTextResponse sendAdvertisingText(AdvertisingTextRequest advertisingTextRequest);
 }

@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SponsorResourceOrderRequest {
+public class ResourceOrderRequest {
     Long tributeId;
     List<OrderDetailRequest> orderDetails;
 }
