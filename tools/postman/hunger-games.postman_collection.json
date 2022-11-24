@@ -547,6 +547,106 @@
 			]
 		},
 		{
+			"name": "Chat",
+			"item": [
+				{
+					"name": "Create Chat",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"tributeId\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/chat",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"chat"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Chat Messages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/chat/message/13",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"chat",
+								"message",
+								"13"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Chats",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/chat",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"chat"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
 			"name": "Security",
 			"item": [
 				{
