@@ -8,13 +8,14 @@ import ru.itmo.hungergames.model.entity.Message;
 import ru.itmo.hungergames.util.annotation.JsonLocalDateTime;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class MessageResponse {
-    private Long id;
+    private UUID id;
     private String role;
     @JsonLocalDateTime
     private LocalDateTime dateTime;

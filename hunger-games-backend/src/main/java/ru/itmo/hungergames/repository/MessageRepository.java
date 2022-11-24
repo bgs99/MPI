@@ -5,8 +5,9 @@ import org.springframework.stereotype.Repository;
 import ru.itmo.hungergames.model.entity.Message;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
-public interface MessageRepository extends JpaRepository<Message, Long> {
-    List<Message> findAllByChat_Id(Long chatId);
+public interface MessageRepository extends JpaRepository<Message, UUID> {
+    List<Message> findAllByChat_Id(UUID chatId);
 }

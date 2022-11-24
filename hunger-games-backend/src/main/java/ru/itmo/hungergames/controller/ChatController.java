@@ -14,6 +14,7 @@ import ru.itmo.hungergames.service.ChatService;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.UUID;
 
 @CrossOrigin("*")
 @RestController
@@ -32,7 +33,7 @@ public class ChatController {
     }
 
     @GetMapping("/message/{chatId}")
-    public List<MessageResponse> getMessagesByChatId(@PathVariable Long chatId) {
+    public List<MessageResponse> getMessagesByChatId(@PathVariable UUID chatId) {
         return chatService.getMessagesByChatId(chatId);
     }
 

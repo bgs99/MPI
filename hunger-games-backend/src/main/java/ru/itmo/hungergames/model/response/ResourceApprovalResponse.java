@@ -1,10 +1,10 @@
 package ru.itmo.hungergames.model.response;
 
 import lombok.*;
-import ru.itmo.hungergames.model.entity.Orders;
 import ru.itmo.hungergames.model.entity.ResourceOrder;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Getter
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Builder
 public class ResourceApprovalResponse {
-    private Long orderId;
+    private UUID orderId;
     private String sponsorName;
     private String tributeName;
     private List<OrderDetailResponse> resources;

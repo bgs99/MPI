@@ -5,11 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ApproveResourcesRequest {
-    private Long orderId;
+    private UUID orderId;
     private Boolean approved = false;
 }

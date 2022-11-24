@@ -8,6 +8,8 @@ import ru.itmo.hungergames.model.entity.UserRole;
 import ru.itmo.hungergames.model.request.ChatCreateRequest;
 import ru.itmo.hungergames.repository.ChatRepository;
 
+import java.util.UUID;
+
 @Component
 public class ChatUtil {
     private final ChatRepository chatRepository;
@@ -17,14 +19,14 @@ public class ChatUtil {
         this.chatRepository = chatRepository;
     }
 
-    public void validateBeforeCreate(ChatCreateRequest chatCreateRequest, Long sponsorId) {
+    public void validateBeforeCreate(ChatCreateRequest chatCreateRequest, UUID sponsorId) {
         if (chatRepository.existsAllByTribute_IdAndSponsor_id(
                 chatCreateRequest.getTributeId(), sponsorId)) {
             throw new ChatExistsException(chatCreateRequest, sponsorId);
         }
     }
 
-    public void validateBeforeGettingMessagesByChatId(Long chatId, Long userId, UserRole userRole) {
+    public void validateBeforeGettingMessagesByChatId(UUID chatId, UUID userId, UserRole userRole) {
         boolean exists = false;
         switch (userRole) {
             case TRIBUTE:

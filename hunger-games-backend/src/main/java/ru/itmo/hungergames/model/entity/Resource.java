@@ -3,12 +3,12 @@ package ru.itmo.hungergames.model.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -16,8 +16,11 @@ import java.math.BigDecimal;
 @Entity
 public class Resource {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-    private Long id;
+    @Column(name = "resource_id")
+    @Type(type = "pg-uuid")
+    @GenericGenerator(name = "uuid-gen", strategy = "uuid2")
+    @GeneratedValue(generator = "uuid-gen")
+    private UUID id;
 
     private String name;
     private BigDecimal price;

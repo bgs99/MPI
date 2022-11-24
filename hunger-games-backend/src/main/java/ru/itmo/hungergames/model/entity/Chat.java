@@ -2,9 +2,12 @@ package ru.itmo.hungergames.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "chats")
@@ -15,9 +18,11 @@ import java.util.List;
 @Builder
 public class Chat {
     @Id
-    @Column(name = "chat_id")
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-    private Long id;
+    @Column(name = "message_id")
+    @Type(type = "pg-uuid")
+    @GenericGenerator(name = "uuid-gen", strategy = "uuid2")
+    @GeneratedValue(generator = "uuid-gen")
+    private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "tribute_id", nullable = false)

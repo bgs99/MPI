@@ -17,6 +17,7 @@ import ru.itmo.hungergames.util.SecurityUtil;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,7 +32,13 @@ public class ChatServiceImpl implements ChatService {
     private final UserRepository userRepository;
 
     @Autowired
-    public ChatServiceImpl(ChatRepository chatRepository, MessageRepository messageRepository, TributeRepository tributeRepository, SponsorRepository sponsorRepository, SecurityUtil securityUtil, ChatUtil chatUtil, UserRepository userRepository) {
+    public ChatServiceImpl(ChatRepository chatRepository,
+                           MessageRepository messageRepository,
+                           TributeRepository tributeRepository,
+                           SponsorRepository sponsorRepository,
+                           SecurityUtil securityUtil,
+                           ChatUtil chatUtil,
+                           UserRepository userRepository) {
         this.chatRepository = chatRepository;
         this.messageRepository = messageRepository;
         this.tributeRepository = tributeRepository;
@@ -81,7 +88,7 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public List<MessageResponse> getMessagesByChatId(Long chatId) {
+    public List<MessageResponse> getMessagesByChatId(UUID chatId) {
         chatUtil.validateBeforeGettingMessagesByChatId(chatId,
                 securityUtil.getAuthenticatedUserId(), securityUtil.getAuthenticatedUserRole());
         return messageRepository.findAllByChat_Id(chatId).stream()
@@ -92,7 +99,7 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public List<ChatResponse> getChatsByUserId() {
         List<Chat> chats;
-        Long userId = securityUtil.getAuthenticatedUser().getId();
+        UUID userId = securityUtil.getAuthenticatedUser().getId();
         switch (securityUtil.getAuthenticatedUserRole()) {
             case MENTOR:
                 chats = chatRepository.findAllByTribute_Mentor_Id(userId);

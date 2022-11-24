@@ -6,12 +6,14 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.itmo.hungergames.model.entity.Chat;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @Builder
 public class ChatResponse {
-    private Long chatId;
+    private UUID chatId;
     private MessageResponse lastMessage;
 
     public ChatResponse(Chat chat) {

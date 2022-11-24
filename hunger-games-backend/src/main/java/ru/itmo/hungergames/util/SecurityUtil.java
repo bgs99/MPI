@@ -8,6 +8,8 @@ import ru.itmo.hungergames.model.entity.User;
 import ru.itmo.hungergames.model.entity.UserRole;
 import ru.itmo.hungergames.repository.UserRepository;
 
+import java.util.UUID;
+
 @Component
 public class SecurityUtil {
     private final UserRepository userRepository;
@@ -26,7 +28,7 @@ public class SecurityUtil {
         return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
-    public Long getAuthenticatedUserId() {
+    public UUID getAuthenticatedUserId() {
         return getAuthenticatedUser().getId();
     }
 
