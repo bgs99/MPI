@@ -3,6 +3,7 @@ package ru.itmo.hungergames.model.response;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -10,6 +11,6 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Builder
 public class AdvertisingTextResponse {
-    private Long orderId;
+    private UUID orderId;
     private BigDecimal price;
 }

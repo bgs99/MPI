@@ -56,7 +56,8 @@ public class SecurityConfig {
                 .antMatchers(
                         "/api/auth/**",
                         "/api/capitol/**",
-                        "/api/payment/**"
+                        "/api/payment/**",
+                        "/ws/**"
                 ).permitAll()
                 .anyRequest().authenticated();
 

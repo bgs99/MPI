@@ -1,28 +1,35 @@
 package ru.itmo.hungergames.model.entity;
 
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Entity
+@Table(name = "messages")
 @Getter
 @Setter
-@NoArgsConstructor
-@Entity
-@Table(name = "resources")
-public class Resource {
+@Builder
+public class Message {
     @Id
-    @Column(name = "resource_id")
+    @Column(name = "message_id")
     @Type(type = "pg-uuid")
     @GenericGenerator(name = "uuid-gen", strategy = "uuid2")
     @GeneratedValue(generator = "uuid-gen")
     private UUID id;
+    private String message;
+    private LocalDateTime dateTime;
 
-    private String name;
-    private BigDecimal price;
+    @ManyToOne
+    @JoinColumn(name = "chat_id", nullable = false)
+    private Chat chat;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }

@@ -2,6 +2,8 @@ package ru.itmo.hungergames.model.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,8 +20,10 @@ import java.util.stream.Collectors;
 public class User implements UserDetails {
     @Id
     @Column(name = "user_id")
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-    private Long id;
+    @Type(type = "pg-uuid")
+    @GenericGenerator(name = "uuid-gen", strategy = "uuid2")
+    @GeneratedValue(generator = "uuid-gen")
+    private UUID id;
     private String name;
     private String username;
     private String password;

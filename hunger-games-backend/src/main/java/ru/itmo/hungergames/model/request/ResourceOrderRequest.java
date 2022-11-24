@@ -6,12 +6,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResourceOrderRequest {
-    Long tributeId;
-    List<OrderDetailRequest> orderDetails;
+    private UUID tributeId;
+    private List<OrderDetailRequest> orderDetails;
 }

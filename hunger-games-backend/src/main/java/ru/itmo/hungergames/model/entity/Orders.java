@@ -2,9 +2,12 @@ package ru.itmo.hungergames.model.entity;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -12,12 +15,15 @@ import java.math.BigDecimal;
 @Entity
 @AllArgsConstructor
 @SuperBuilder
-@Table(indexes = @Index(columnList = "tribute_user_id"))
+@Table(indexes = @Index(columnList = "tribute_user_id"), name = "orders")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Orders {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
-    private Long id;
+    @Column(name = "order_id")
+    @Type(type = "pg-uuid")
+    @GenericGenerator(name = "uuid-gen", strategy = "uuid2")
+    @GeneratedValue(generator = "uuid-gen")
+    private UUID id;
     private Boolean approved;
     @Builder.Default
     private boolean paid = false;

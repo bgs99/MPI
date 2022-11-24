@@ -5,12 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity(name="Sponsor")
+@Entity(name = "Sponsor")
+@Table(name = "sponsors")
 @JsonIgnoreProperties(
         value = {"password", "userRoles", "authorities",
                 "accountNonExpired", "accountNonLocked",
