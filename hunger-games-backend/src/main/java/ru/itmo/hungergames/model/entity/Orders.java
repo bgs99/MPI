@@ -15,7 +15,7 @@ import java.util.UUID;
 @Entity
 @AllArgsConstructor
 @SuperBuilder
-@Table(indexes = @Index(columnList = "tribute_user_id"))
+@Table(indexes = @Index(columnList = "tribute_user_id"), name = "orders")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Orders {
     @Id

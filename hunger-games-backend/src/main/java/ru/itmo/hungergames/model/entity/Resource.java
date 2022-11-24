@@ -14,6 +14,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @Entity
+@Table(name = "resources")
 public class Resource {
     @Id
     @Column(name = "resource_id")
