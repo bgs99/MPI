@@ -57,7 +57,7 @@ export class AuthComponent implements OnInit {
                 this.router.navigateByUrl('tribute/posting');
                 break;
             case Role.Mentor:
-                this.router.navigateByUrl('mentor/approval');
+                this.router.navigateByUrl('mentor');
                 break;
         }
     }

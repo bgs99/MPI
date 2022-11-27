@@ -1,15 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { FailureComponent } from './components/failure/failure.component';
-import { ResourcesComponent } from './components/resources/resources.component';
-import { SuccessComponent } from './components/success/success.component';
-import { TributesComponent } from './components/tributes/tributes.component';
+import { MenuComponent } from './components/menu/menu.component';
+import { CreateOrderComponent } from './components/create_order/create-order.component';
+import { PayOrderComponent } from './components/pay_order/pay-order.component';
 
 const routes: Routes = [
-    { path: 'tributes', component: TributesComponent },
-    { path: 'resources', component: ResourcesComponent },
-    { path: 'failure', component: FailureComponent },
-    { path: 'success', component: SuccessComponent },
+    { path: '', component: MenuComponent },
+    { path: 'createorder', component: CreateOrderComponent },
+    { path: 'payorder', component: PayOrderComponent },
 ];
 
 @NgModule({

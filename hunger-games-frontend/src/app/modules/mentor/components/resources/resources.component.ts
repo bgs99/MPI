@@ -9,7 +9,7 @@ import { MentorsService } from 'src/app/services/mentors.service';
 import { ResourcesService } from 'src/app/services/resources.service';
 
 @Component({
-    selector: 'mentor-resources',
+    selector: 'app-mentor-resources',
     templateUrl: './resources.component.html',
     styleUrls: ['./resources.component.css']
 })
@@ -44,7 +44,6 @@ export class ResourcesComponent implements OnInit {
         }
         try {
             await this.mentorService.requestResources(this.tribute.id, this.resources.data);
-            localStorage.removeItem('resources');
             this.router.navigateByUrl("/mentor/tributes");
         }
         catch (err: any) {
@@ -56,13 +55,8 @@ export class ResourcesComponent implements OnInit {
         try {
             const resources = await this.resourcesService.getResources();
 
-            const resourceItem: string | null = localStorage.getItem('resources');
-
-            const savedData: Resource[] = resourceItem === null ? [] : JSON.parse(resourceItem);
-
             resources.forEach(resource => {
-                const savedAmount: number | undefined = savedData.find((res) => res.id === resource.id)?.amount;
-                resource.amount = savedAmount === undefined ? 0 : savedAmount;
+                resource.amount = 0
             });
             this.resources.data = resources;
         }

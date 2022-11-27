@@ -22,13 +22,13 @@ export class MentorsService {
             `${MentorsService.BASE_URL}/orders`
         ));
     }
-    async approve(orderId: number, approved: boolean): Promise<void> {
+    async approve(orderId: string, approved: boolean): Promise<void> {
         return await lastValueFrom(this.http.post<void>(
             `${MentorsService.BASE_URL}/order/approve`,
             { orderId, approved }
         ));
     }
-    async requestResources(tributeId: number, resources: Resource[]): Promise<void> {
+    async requestResources(tributeId: string, resources: Resource[]): Promise<void> {
         return await lastValueFrom(this.http.post<void>(
             `${MentorsService.BASE_URL}/order/create`,
             new ResourceOrderRequest(tributeId, resources)

@@ -12,7 +12,7 @@ export class PaymentService {
     constructor(backend: HttpBackend) {
         this.http = new HttpClient(backend);
     }
-    async approve(orderId: number): Promise<void> {
+    async approve(orderId: string): Promise<void> {
         return await lastValueFrom(this.http.post<void>(
             `${PaymentService.BASE_URL}/approve`,
             { orderId }

@@ -1,0 +1,29 @@
+<app-header></app-header>
+
+<mat-horizontal-stepper [linear]="true" [selectedIndex]="0">
+    <mat-step [completed]="false" label="Выбор трибута"></mat-step>
+    <mat-step [editable]="false" label="Выбор ресурсов"></mat-step>
+</mat-horizontal-stepper>
+
+<table mat-table [dataSource]="tributes" style="width: 100%;" class="mat-elevation-z8">
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Имя </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="district">
+        <th mat-header-cell *matHeaderCellDef> Дистрикт </th>
+        <td mat-cell *matCellDef="let element"> {{element.district}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+            <button mat-raised-button (click)="select(element)"> Выбрать
+            </button>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="tributesColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: tributesColumns;"></tr>
+</table>

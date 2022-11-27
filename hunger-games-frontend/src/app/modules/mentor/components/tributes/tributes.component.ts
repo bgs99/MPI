@@ -5,7 +5,7 @@ import { Tribute } from 'src/app/models/tribute';
 import { TributesService } from 'src/app/services/tributes.service';
 
 @Component({
-    selector: 'app-tributes',
+    selector: 'app-mentor-tributes',
     templateUrl: './tributes.component.html',
     styleUrls: ['./tributes.component.css']
 })
@@ -16,13 +16,13 @@ export class TributesComponent implements OnInit {
     constructor(private router: Router, private tributesService: TributesService) { }
 
     select(tribute: Tribute): void {
-        console.log('Passing tribute in state')
         const navigationExtras: NavigationExtras = { state: { tribute } };
-        this.router.navigate(['/sponsor/resources'], navigationExtras);
+        this.router.navigate(['/mentor/resources'], navigationExtras);
     }
 
     async ngOnInit(): Promise<void> {
         try {
+            // TODO: filter by district
             this.tributes.data = await this.tributesService.getTributes();
         }
         catch (err: any) {
