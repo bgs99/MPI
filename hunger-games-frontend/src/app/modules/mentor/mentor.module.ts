@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatListModule } from '@angular/material/list';
 import { MatStepperModule } from '@angular/material/stepper'
@@ -14,10 +15,11 @@ import { SharedModule } from '../shared/shared.module';
 import { ApprovalComponent } from './components/approval/approval.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { ResourcesComponent } from './components/resources/resources.component';
+import { TributesComponent } from './components/tributes/tributes.component';
 
 
 @NgModule({
-    declarations: [ApprovalComponent, MenuComponent, ResourcesComponent],
+    declarations: [ApprovalComponent, MenuComponent, ResourcesComponent, TributesComponent],
     imports: [
         CommonModule,
         FormsModule,
@@ -26,6 +28,7 @@ import { ResourcesComponent } from './components/resources/resources.component';
 
         SharedModule,
 
+        MatInputModule,
         MatTableModule,
         MatListModule,
         MatStepperModule,

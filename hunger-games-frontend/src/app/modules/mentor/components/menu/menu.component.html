@@ -1,4 +1,4 @@
 <app-header></app-header>
 <h1>TODO: Proper menu UI</h1>
-<button (click)="this.router.navigateByUrl('/mentor/approval')">Рассмотреть предложения спонсоров</button>
-<button (click)="this.router.navigateByUrl('/mentor/tributes')">Запросить ресурсы</button>
+<button [routerLink]="['/mentor/approval']">Рассмотреть предложения спонсоров</button>
+<button [routerLink]="['/mentor/tributes']">Запросить ресурсы</button>
