@@ -29,6 +29,12 @@ export class AuthService {
         if (this._authData !== null) {
             return this._authData;
         }
+        const storedAuth: string | null = localStorage.getItem('auth');
+        if (storedAuth != null) {
+            const authData = JSON.parse(storedAuth);
+            this._authData = authData;
+            return authData;
+        }
         throw new Error("Accessing auth data before login");
     }
 
@@ -53,6 +59,7 @@ export class AuthService {
         const url: string = `${this.BASE_URL}/signin`;
         const login = await lastValueFrom(this.http.post<LoginResult>(url, { username, password }));
         this._authData = new AuthData(login.id, login.name, login.token);
+        localStorage.setItem('auth', JSON.stringify(this._authData))
     }
 
     async capitolAuth(username: string): Promise<void> {
