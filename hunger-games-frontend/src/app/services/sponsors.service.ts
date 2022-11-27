@@ -5,7 +5,7 @@ import { Sponsor } from '../models/sponsor';
 import { ApiService } from './api.service';
 import { Resource } from '../models/resource';
 import { PaymentData } from '../models/payment-data';
-import { ResourceOrderRequest } from '../models/order';
+import { Order, ResourceOrderRequest } from '../models/order';
 
 
 @Injectable({
@@ -24,5 +24,20 @@ export class SponsorsService {
             `${SponsorsService.BASE_URL}/send`,
             new ResourceOrderRequest(tributeId, resources)
         ));
+    }
+    async resourcesToPayFor(): Promise<Map<string, Order[]>> {
+        const orders = await lastValueFrom(this.http.get<Order[]>(
+            `${SponsorsService.BASE_URL}/orders/approved`
+        ));
+
+        const result: Map<string, Order[]> = new Map();
+        orders.forEach(order => {
+            if (!result.has(order.tributeName)) {
+                result.set(order.tributeName, []);
+            }
+            result.get(order.tributeName)?.push(order);
+        });
+
+        return result;
     }
 }

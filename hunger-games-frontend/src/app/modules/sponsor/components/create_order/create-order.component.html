@@ -1,0 +1,52 @@
+<app-header></app-header>
+
+<mat-horizontal-stepper #stepper [linear]="true">
+    <mat-step label="Выбор трибута">
+        <app-tributes (tributeSelected)="selectTribute($event)"></app-tributes>
+    </mat-step>
+    <mat-step label="Выбор ресурсов">
+        <app-resources #resources (resources)="this.resources"></app-resources>
+
+        <mat-grid-list cols="2" rowHeight="100px">
+            <mat-grid-tile>
+                <h2>Получатель: {{this.tribute?.name}}</h2>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <h2>Сумма: </h2>
+                <div class="payment-field">{{resources.total}}$</div>
+                <button mat-raised-button (click)="pay(resources.resources)"
+                    [disabled]="resources.total <= 0 || !this.paymentEnabled"> Оплатить </button>
+            </mat-grid-tile>
+        </mat-grid-list>
+
+    </mat-step>
+    <mat-step label="Подтверждение">
+        <ng-container *ngIf="this.paymentSucceded === undefined">
+            <h2>Ожидаем подверждения оплаты.</h2>
+
+            <button mat-raised-button (click)="pay(resources.resources)"> Попробовать еще раз</button>
+        </ng-container>
+        <ng-container *ngIf="this.paymentSucceded === false">
+            <h2>Ошибка оплаты</h2>
+
+            <div>
+                <button mat-raised-button (click)="pay(resources.resources)">Повторить</button>
+                <button mat-raised-button (click)="editResources()">Выбрать другие ресурсы</button>
+                <button mat-raised-button [routerLink]="['/sponsor/']">Отменить</button>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="this.paymentSucceded === true">
+            <h2>Оплата подтверждена</h2>
+
+            <p>
+                Средства заморожены на счете и будут списаны когда ментор трибута {{ tribute?.name }} одобрит отправку.
+            </p>
+
+            <p>
+                Если отправка будет отклонена, средства на счету будут разморожены.
+            </p>
+
+            <button mat-raised-button [routerLink]="['/sponsor/']">Вернуться</button>
+        </ng-container>
+    </mat-step>
+</mat-horizontal-stepper>

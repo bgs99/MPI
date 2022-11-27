@@ -31,6 +31,9 @@ import { PaymentComponent } from './components/payment/payment.component';
         MatSelectModule,
         MatInputModule,
         MatButtonModule,
+    ],
+    exports: [
+        PaymentComponent,
     ]
 })
 export class CapitolModule { }

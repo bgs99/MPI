@@ -14,7 +14,7 @@ export class LoginComponent {
   async login(): Promise<void> {
     try {
       await this.authService.login(this.username, this.password);
-      this.router.navigateByUrl('/sponsor/tributes');
+      this.router.navigateByUrl('/sponsor');
     } catch (e) {
       console.error(e);
     }

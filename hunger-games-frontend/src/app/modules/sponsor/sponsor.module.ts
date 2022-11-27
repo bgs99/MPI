@@ -4,24 +4,26 @@ import { FormsModule } from '@angular/forms';
 
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTableModule } from '@angular/material/table';
+import { MatListModule } from '@angular/material/list';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
 import { SponsorRoutingModule } from './sponsor-routing.module';
-import { FailureComponent } from './components/failure/failure.component';
-import { ResourcesComponent } from './components/resources/resources.component';
-import { SuccessComponent } from './components/success/success.component';
-import { TributesComponent } from './components/tributes/tributes.component';
+
+import { CreateOrderComponent } from './components/create_order/create-order.component';
+import { MenuComponent } from './components/menu/menu.component';
+
 import { SharedModule } from '../shared/shared.module';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { PayOrderComponent } from './components/pay_order/pay-order.component';
+import { CapitolModule } from '../capitol/capitol.module';
 
 
 @NgModule({
     declarations: [
-        FailureComponent,
-        ResourcesComponent,
-        SuccessComponent,
-        TributesComponent,
+        MenuComponent,
+        CreateOrderComponent,
+        PayOrderComponent,
     ],
     imports: [
         CommonModule,
@@ -30,7 +32,9 @@ import { MatGridListModule } from '@angular/material/grid-list';
         SponsorRoutingModule,
 
         SharedModule,
+        CapitolModule,
 
+        MatListModule,
         MatStepperModule,
         MatTableModule,
         MatFormFieldModule,

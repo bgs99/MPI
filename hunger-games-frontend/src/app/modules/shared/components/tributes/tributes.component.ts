@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { NavigationExtras, Router } from '@angular/router';
 import { Tribute } from 'src/app/models/tribute';
 import { TributesService } from 'src/app/services/tributes.service';
 
@@ -10,15 +9,14 @@ import { TributesService } from 'src/app/services/tributes.service';
     styleUrls: ['./tributes.component.css']
 })
 export class TributesComponent implements OnInit {
+    @Output() tributeSelected = new EventEmitter<Tribute>();
     tributesColumns: string[] = ['name', 'district', 'select'];
     tributes = new MatTableDataSource<Tribute>([]);
 
-    constructor(private router: Router, private tributesService: TributesService) { }
+    constructor(private tributesService: TributesService) { }
 
     select(tribute: Tribute): void {
-        console.log('Passing tribute in state')
-        const navigationExtras: NavigationExtras = { state: { tribute } };
-        this.router.navigate(['/sponsor/resources'], navigationExtras);
+        this.tributeSelected.emit(tribute);
     }
 
     async ngOnInit(): Promise<void> {
