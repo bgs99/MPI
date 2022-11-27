@@ -8,7 +8,7 @@ import { PaymentService } from 'src/app/services/mock/payment.service';
     styleUrls: ['./payment.component.css']
 })
 export class PaymentComponent implements OnInit {
-    orderId: number | null = null;
+    orderId: string | null = null;
     path: string | null = null;
 
     constructor(private route: ActivatedRoute, private router: Router, private paymentService: PaymentService) { }
@@ -39,7 +39,7 @@ export class PaymentComponent implements OnInit {
             const params = this.route.snapshot.queryParams;
 
             const idParam: string | null = params['id'];
-            this.orderId = idParam === null ? null : parseInt(idParam);
+            this.orderId = idParam;
             this.path = params['path'];
             console.log(`Got route params ${this.orderId}, ${this.path}`);
         }

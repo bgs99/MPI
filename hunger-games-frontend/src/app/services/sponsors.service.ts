@@ -19,7 +19,7 @@ export class SponsorsService {
             `${SponsorsService.BASE_URL}/all`
         ));
     }
-    async orderResources(tributeId: number, resources: Resource[]): Promise<PaymentData> {
+    async orderResources(tributeId: string, resources: Resource[]): Promise<PaymentData> {
         return await lastValueFrom(this.http.post<PaymentData>(
             `${SponsorsService.BASE_URL}/send`,
             new ResourceOrderRequest(tributeId, resources)

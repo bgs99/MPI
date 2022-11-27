@@ -2,7 +2,7 @@ import { Resource } from "./resource";
 
 export class Order {
     constructor(
-        public orderId: number,
+        public orderId: string,
         public tributeName: string,
         public sponsorName: string,
         public resources: OrderResource[]
@@ -17,7 +17,7 @@ export class OrderResource {
 }
 
 export class OrderDetail {
-    resourceId: number;
+    resourceId: string;
     size: number;
 
     constructor(resource: Resource) {
@@ -29,7 +29,7 @@ export class OrderDetail {
 export class ResourceOrderRequest {
     orderDetails: OrderDetail[];
 
-    constructor(public tributeId: number, resources: Resource[]) {
+    constructor(public tributeId: string, resources: Resource[]) {
         this.tributeId = tributeId;
         this.orderDetails = resources
             .filter((resource: Resource) => resource.amount > 0)

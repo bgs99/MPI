@@ -5,16 +5,17 @@ import { ApiService } from './api.service';
 
 class LoginResult {
     constructor(
-        public id: number,
+        public id: string,
         public token: string,
         public type: string,
         public username: string,
+        public name: string,
         public roles: string[]) { }
 }
 
 class AuthData {
     constructor(
-        public id: number,
+        public id: string,
         public name: string,
         public token: string,
     ) { }
@@ -39,7 +40,7 @@ export class AuthService {
         return this.authData.name;
     }
 
-    get id(): number {
+    get id(): string {
         return this.authData.id;
     }
 
@@ -51,13 +52,13 @@ export class AuthService {
     async login(username: string, password: string): Promise<void> {
         const url: string = `${this.BASE_URL}/signin`;
         const login = await lastValueFrom(this.http.post<LoginResult>(url, { username, password }));
-        this._authData = new AuthData(login.id, login.username, login.token);
+        this._authData = new AuthData(login.id, login.name, login.token);
     }
 
     async capitolAuth(username: string): Promise<void> {
         const url = `${ApiService.baseURL}/capitol/signin`;
         const login = await lastValueFrom(this.http.post<LoginResult>(url, { username }));
-        this._authData = new AuthData(login.id, login.username, login.token);
+        this._authData = new AuthData(login.id, login.name, login.token);
     }
 
     async register(username: string, name: string, password: string): Promise<void> {
