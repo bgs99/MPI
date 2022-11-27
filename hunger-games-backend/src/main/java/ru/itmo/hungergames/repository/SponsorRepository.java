@@ -6,4 +6,5 @@ import ru.itmo.hungergames.model.entity.Sponsor;
 
 @Repository
 public interface SponsorRepository extends JpaRepository<Sponsor, Long> {
+    void deleteByUsername(String username);
 }
