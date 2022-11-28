@@ -10,6 +10,7 @@ import ru.itmo.hungergames.model.request.OrderDetailRequest;
 import ru.itmo.hungergames.model.request.ResourceOrderRequest;
 import ru.itmo.hungergames.model.response.ResourceApprovalResponse;
 import ru.itmo.hungergames.model.response.ResourceOrderResponse;
+import ru.itmo.hungergames.model.response.TributeResponse;
 import ru.itmo.hungergames.repository.*;
 import ru.itmo.hungergames.service.MentorService;
 import ru.itmo.hungergames.util.SecurityUtil;
@@ -113,5 +114,11 @@ public class MentorServiceImpl implements MentorService {
                 .orderId(resourceOrderRepository.save(order).getId())
                 .price(price)
                 .build();
+    }
+
+    @Override
+    public List<TributeResponse> getAllTributes() {
+        return tributeRepository.findAllByMentor_Id(securityUtil.getAuthenticatedUserId())
+                .stream().map(TributeResponse::new).collect(Collectors.toList());
     }
 }

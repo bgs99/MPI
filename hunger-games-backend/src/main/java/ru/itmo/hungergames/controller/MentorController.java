@@ -7,6 +7,7 @@ import ru.itmo.hungergames.model.entity.Mentor;
 import ru.itmo.hungergames.model.request.ApproveResourcesRequest;
 import ru.itmo.hungergames.model.request.ResourceOrderRequest;
 import ru.itmo.hungergames.model.response.ResourceApprovalResponse;
+import ru.itmo.hungergames.model.response.TributeResponse;
 import ru.itmo.hungergames.service.MentorService;
 
 import java.util.List;
@@ -42,5 +43,10 @@ public class MentorController {
     @PostMapping("/order/create")
     public void createOrder(@RequestBody ResourceOrderRequest resourceOrderRequest) {
         mentorService.sendResourcesToSponsor(resourceOrderRequest);
+    }
+
+    @GetMapping("/tribute/all")
+    public List<TributeResponse> getMentorTributes() {
+        return mentorService.getAllTributes();
     }
 }
