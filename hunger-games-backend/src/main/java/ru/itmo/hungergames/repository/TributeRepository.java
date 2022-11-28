@@ -10,4 +10,5 @@ import java.util.UUID;
 @Repository
 public interface TributeRepository extends JpaRepository<Tribute, UUID> {
     List<Tribute> findByName(String name);
+    List<Tribute> findAllByMentor_Id(UUID mentorId);
 }
