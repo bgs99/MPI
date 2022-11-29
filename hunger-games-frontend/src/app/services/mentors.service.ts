@@ -5,6 +5,7 @@ import { Mentor } from '../models/mentor';
 import { Order, ResourceOrderRequest } from '../models/order';
 import { ApiService } from './api.service';
 import { Resource } from '../models/resource';
+import { MentorTribute } from '../models/tribute';
 
 @Injectable({
     providedIn: 'root'
@@ -32,6 +33,11 @@ export class MentorsService {
         return await lastValueFrom(this.http.post<void>(
             `${MentorsService.BASE_URL}/order/create`,
             new ResourceOrderRequest(tributeId, resources)
+        ))
+    }
+    async tributes(): Promise<MentorTribute[]> {
+        return await lastValueFrom(this.http.get<MentorTribute[]>(
+            `${MentorsService.BASE_URL}/tribute/all`
         ))
     }
 }
