@@ -5,3 +5,7 @@ export class Tribute extends Person {
         super(username, name, id)
     }
 }
+
+export class MentorTribute {
+    constructor(name: string, public id: string) { }
+}

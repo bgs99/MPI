@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { NavigationExtras, Router } from '@angular/router';
-import { Tribute } from 'src/app/models/tribute';
-import { TributesService } from 'src/app/services/tributes.service';
+import { MentorTribute } from 'src/app/models/tribute';
+import { MentorsService } from 'src/app/services/mentors.service';
 
 @Component({
     selector: 'app-mentor-tributes',
@@ -10,20 +10,19 @@ import { TributesService } from 'src/app/services/tributes.service';
     styleUrls: ['./tributes.component.css']
 })
 export class TributesComponent implements OnInit {
-    tributesColumns: string[] = ['name', 'district', 'select'];
-    tributes = new MatTableDataSource<Tribute>([]);
+    tributesColumns: string[] = ['name', 'select'];
+    tributes = new MatTableDataSource<MentorTribute>([]);
 
-    constructor(private router: Router, private tributesService: TributesService) { }
+    constructor(private router: Router, private mentorService: MentorsService) { }
 
-    select(tribute: Tribute): void {
+    select(tribute: MentorTribute): void {
         const navigationExtras: NavigationExtras = { state: { tribute } };
         this.router.navigate(['/mentor/resources'], navigationExtras);
     }
 
     async ngOnInit(): Promise<void> {
         try {
-            // TODO: filter by district
-            this.tributes.data = await this.tributesService.getTributes();
+            this.tributes.data = await this.mentorService.tributes();
         }
         catch (err: any) {
             console.error(err)
