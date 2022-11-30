@@ -3,14 +3,15 @@ package ru.itmo.hungergames.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.itmo.hungergames.model.entity.Mentor;
 import ru.itmo.hungergames.model.request.ApproveResourcesRequest;
 import ru.itmo.hungergames.model.request.ResourceOrderRequest;
+import ru.itmo.hungergames.model.response.MentorResponse;
 import ru.itmo.hungergames.model.response.ResourceApprovalResponse;
 import ru.itmo.hungergames.model.response.TributeResponse;
 import ru.itmo.hungergames.service.MentorService;
 
 import java.util.List;
+import java.util.UUID;
 
 @CrossOrigin("*")
 @RestController
@@ -26,8 +27,13 @@ public class MentorController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/all")
-    public List<Mentor> getAllMentors() {
+    public List<MentorResponse> getAllMentors() {
         return mentorService.getAllMentors();
+    }
+
+    @GetMapping("/{id}")
+    public MentorResponse getMentorById(@PathVariable UUID id) {
+        return mentorService.getMentorById(id);
     }
 
     @GetMapping("/orders")

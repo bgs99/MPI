@@ -8,6 +8,7 @@ import ru.itmo.hungergames.model.entity.*;
 import ru.itmo.hungergames.model.request.ApproveResourcesRequest;
 import ru.itmo.hungergames.model.request.OrderDetailRequest;
 import ru.itmo.hungergames.model.request.ResourceOrderRequest;
+import ru.itmo.hungergames.model.response.MentorResponse;
 import ru.itmo.hungergames.model.response.ResourceApprovalResponse;
 import ru.itmo.hungergames.model.response.ResourceOrderResponse;
 import ru.itmo.hungergames.model.response.TributeResponse;
@@ -19,6 +20,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,8 +50,11 @@ public class MentorServiceImpl implements MentorService {
     }
 
     @Override
-    public List<Mentor> getAllMentors() {
-        return mentorRepository.findAll();
+    public List<MentorResponse> getAllMentors() {
+        return mentorRepository
+                .findAll().stream()
+                .map(MentorResponse::new)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -120,5 +125,12 @@ public class MentorServiceImpl implements MentorService {
     public List<TributeResponse> getAllTributes() {
         return tributeRepository.findAllByMentor_Id(securityUtil.getAuthenticatedUserId())
                 .stream().map(TributeResponse::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public MentorResponse getMentorById(UUID mentorId) {
+        return new MentorResponse(mentorRepository
+                .findById(mentorId)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Mentor with id=%s doesn't exist", mentorId))));
     }
 }

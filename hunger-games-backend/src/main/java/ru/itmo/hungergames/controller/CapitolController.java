@@ -3,10 +3,10 @@ package ru.itmo.hungergames.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.itmo.hungergames.model.entity.Mentor;
-import ru.itmo.hungergames.model.entity.Tribute;
 import ru.itmo.hungergames.model.entity.User;
 import ru.itmo.hungergames.model.request.CapitolSignInRequest;
+import ru.itmo.hungergames.model.response.MentorResponse;
+import ru.itmo.hungergames.model.response.TributeResponse;
 import ru.itmo.hungergames.service.MentorService;
 import ru.itmo.hungergames.service.SecurityService;
 import ru.itmo.hungergames.service.TributeService;
@@ -40,13 +40,13 @@ public class CapitolController {
 
 
     @GetMapping("/mentor/all")
-    public List<Mentor> getAllMentors() {
+    public List<MentorResponse> getAllMentors() {
         return mentorService.getAllMentors();
     }
 
 
     @GetMapping("/tribute/all")
-    public List<Tribute> getAllTributes() {
+    public List<TributeResponse> getAllTributes() {
         return tributeService.getAllTributes();
     }
 }

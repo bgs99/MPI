@@ -8,6 +8,7 @@ import ru.itmo.hungergames.model.entity.AdvertisementOrder;
 import ru.itmo.hungergames.model.entity.Tribute;
 import ru.itmo.hungergames.model.request.AdvertisingTextRequest;
 import ru.itmo.hungergames.model.response.AdvertisingTextResponse;
+import ru.itmo.hungergames.model.response.TributeResponse;
 import ru.itmo.hungergames.repository.AdvertisementOrderRepository;
 import ru.itmo.hungergames.repository.TributeRepository;
 import ru.itmo.hungergames.service.TributeService;
@@ -15,6 +16,8 @@ import ru.itmo.hungergames.util.SecurityUtil;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -33,8 +36,18 @@ public class TributeServiceImpl implements TributeService {
     }
 
     @Override
-    public List<Tribute> getAllTributes() {
-        return tributeRepository.findAll();
+    public TributeResponse getTributeById(UUID tributeId) {
+        return new TributeResponse(tributeRepository
+                .findById(tributeId)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Tribute with id=%s doesn't exist", tributeId))));
+    }
+
+    @Override
+    public List<TributeResponse> getAllTributes() {
+        return tributeRepository
+                .findAll().stream()
+                .map(TributeResponse::new)
+                .collect(Collectors.toList());
     }
 
     @Override
