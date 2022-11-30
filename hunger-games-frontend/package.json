@@ -22,6 +22,7 @@
     "@angular/platform-browser-dynamic": "^14.2.10",
     "@angular/router": "^14.2.10",
     "@kolkov/angular-editor": "^2.0.0",
+    "@stomp/rx-stomp": "1.2.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

@@ -1,0 +1,16 @@
+<h1>Трибут {{this.self?.name}}</h1>
+<h2>Дистрикт {{this.self?.mentor?.district}}</h2>
+<button mat-raised-button [routerLink]="['createorder']">
+    Предложить ресурсы
+</button>
+<button mat-raised-button [routerLink]="['payorder']">
+    Оплатить ресурсы
+</button>
+<button *ngIf="this.chat !== undefined" mat-raised-button [routerLink]="['../../chat', this.chat.chatId]">
+    Перейти к чату
+</button>
+<button *ngIf="this.chat === undefined" mat-raised-button (click)="createChat()">
+    Начать чат
+</button>
+<h2>Посты</h2>
+...

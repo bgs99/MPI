@@ -29,7 +29,7 @@ export class ResourcesComponent implements OnInit {
             this.resourcesDataSource.data = await this.resourcesService.getResources();
         }
         catch (err: any) {
-            console.log(err)
+            console.error(err)
         }
     }
 }

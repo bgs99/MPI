@@ -17,6 +17,10 @@ import { SharedModule } from '../shared/shared.module';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { PayOrderComponent } from './components/pay_order/pay-order.component';
 import { CapitolModule } from '../capitol/capitol.module';
+import { ChatsComponent } from './components/chats/chats.component';
+import { ChatComponent } from './components/chat/chat.component';
+import { TributesComponent } from './components/tributes/tributes.component';
+import { TributeComponent } from './components/tribute/tribute.component';
 
 
 @NgModule({
@@ -24,6 +28,10 @@ import { CapitolModule } from '../capitol/capitol.module';
         MenuComponent,
         CreateOrderComponent,
         PayOrderComponent,
+        ChatsComponent,
+        ChatComponent,
+        TributesComponent,
+        TributeComponent,
     ],
     imports: [
         CommonModule,

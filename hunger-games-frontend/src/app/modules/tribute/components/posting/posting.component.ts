@@ -17,13 +17,12 @@ export class PostingComponent {
         this.htmlContent = '';
         try {
             const paymentData = await this.tributesService.orderAd(text)
-            console.log("Got payment data: " + JSON.stringify(paymentData));
             localStorage.setItem('htmlContent', this.htmlContent);
             localStorage.setItem('order', JSON.stringify(paymentData.orderId));
             this.router.navigate(["/capitol/payment"], { queryParams: { id: paymentData.orderId, path: '/tribute/posting' } });
         }
         catch (err) {
-            console.log(err);
+            console.error(err);
         }
     }
 }

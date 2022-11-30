@@ -1,38 +1,34 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Mentor } from 'src/app/models/mentor';
-import { Person } from 'src/app/models/person';
+import { Person, UserRole } from 'src/app/models/person';
 import { Tribute } from 'src/app/models/tribute';
 import { AuthService } from 'src/app/services/auth.service';
 import { MentorsService } from 'src/app/services/mock/mentors.service';
 import { TributesService } from 'src/app/services/mock/tributes.service';
 
-enum Role {
-    Tribute,
-    Mentor
-}
-
 @Component({
     selector: 'app-auth',
     templateUrl: './auth.component.html',
-    styleUrls: ['./auth.component.css']
 })
 export class AuthComponent implements OnInit {
-    public Role = Role;
+    public Role = UserRole;
 
     tributes: Tribute[] = []
     mentors: Mentor[] = []
-    role: Role | null = null;
+    role: UserRole | null = null;
     identity: Person | null = null;
 
     peopleWithRole(): Person[] {
         switch (this.role) {
             case null:
                 return [];
-            case Role.Tribute:
+            case UserRole.Tribute:
                 return this.tributes;
-            case Role.Mentor:
+            case UserRole.Mentor:
                 return this.mentors;
+            default:
+                return []
         }
     }
 
@@ -48,15 +44,15 @@ export class AuthComponent implements OnInit {
     }
 
     async login(): Promise<void> {
-        if (this.identity === null) {
+        if (this.identity === null || this.role === null) {
             return;
         }
-        await this.authService.capitolAuth(this.identity.username);
+        await this.authService.capitolAuth(this.identity.username, this.role);
         switch (this.role) {
-            case Role.Tribute:
+            case UserRole.Tribute:
                 this.router.navigateByUrl('tribute/posting');
                 break;
-            case Role.Mentor:
+            case UserRole.Mentor:
                 this.router.navigateByUrl('mentor');
                 break;
         }

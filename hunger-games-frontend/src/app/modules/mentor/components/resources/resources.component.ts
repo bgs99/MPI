@@ -47,7 +47,7 @@ export class ResourcesComponent implements OnInit {
             this.router.navigateByUrl("/mentor/tributes");
         }
         catch (err: any) {
-            console.log(err);
+            console.error(err);
         }
     }
 
@@ -61,7 +61,7 @@ export class ResourcesComponent implements OnInit {
             this.resources.data = resources;
         }
         catch (err: any) {
-            console.log(err)
+            console.error(err)
         }
     }
 }
