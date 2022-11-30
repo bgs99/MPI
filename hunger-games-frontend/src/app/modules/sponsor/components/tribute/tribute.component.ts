@@ -20,7 +20,7 @@ export class TributeComponent implements OnInit {
 
     async createChat(): Promise<void> {
         this.chat = await this.chatService.createChat(this.self!.id);
-        await this.router.navigate(['../chat', this.chat.chatId], {relativeTo: this.route.parent});
+        await this.router.navigate(['../../chat', this.chat.chatId], {relativeTo: this.route});
     }
 
     async ngOnInit(): Promise<void> {

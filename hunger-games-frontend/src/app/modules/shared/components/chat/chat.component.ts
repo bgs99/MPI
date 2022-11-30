@@ -35,5 +35,6 @@ export class ChatComponent implements OnInit {
 
     send(): void {
         this.chatServiceInstance.send(this.pendingMessage);
+        this.pendingMessage = '';
     }
 }

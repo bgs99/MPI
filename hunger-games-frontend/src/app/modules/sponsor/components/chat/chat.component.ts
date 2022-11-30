@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Chat } from 'src/app/models/chat';
 
 @Component({
-  selector: 'app-chat',
-  templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.css']
+    templateUrl: './chat.component.html'
 })
 export class ChatComponent implements OnInit {
+    chat: Chat | undefined
 
-  constructor() { }
+    constructor(private route: ActivatedRoute) { }
 
-  ngOnInit(): void {
-  }
-
+    async ngOnInit(): Promise<void> {
+        const id = this.route.snapshot.paramMap.get('id')!;
+        this.chat = new Chat(id, '', '', '', undefined); // TODO: less dirty?
+    }
 }
