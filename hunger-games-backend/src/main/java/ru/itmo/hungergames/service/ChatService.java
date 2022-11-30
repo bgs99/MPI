@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface ChatService {
     ChatResponse createChat(ChatCreateRequest chatCreateRequest);
-    MessageResponse sendMessage(MessageRequest messageRequest);
+    MessageResponse sendMessage(UUID chatId, MessageRequest messageRequest);
     List<MessageResponse> getMessagesByChatId(UUID chatId);
     List<ChatResponse> getChatsByUserId();
 }

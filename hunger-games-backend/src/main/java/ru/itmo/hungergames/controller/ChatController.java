@@ -39,8 +39,8 @@ public class ChatController {
 
     @MessageMapping("/send/{chatId}")
     @SendTo("/chat/receive/{chatId}")
-    public MessageResponse send(@DestinationVariable Long chatId, @Valid MessageRequest messageRequest) {
-        return chatService.sendMessage(messageRequest);
+    public MessageResponse send(@DestinationVariable UUID chatId, @Valid MessageRequest messageRequest) {
+        return chatService.sendMessage(chatId, messageRequest);
     }
 
     @PostMapping
