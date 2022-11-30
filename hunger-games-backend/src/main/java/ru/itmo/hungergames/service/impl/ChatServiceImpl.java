@@ -70,12 +70,12 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     @Transactional
-    public MessageResponse sendMessage(MessageRequest messageRequest) {
+    public MessageResponse sendMessage(UUID chatId, MessageRequest messageRequest) {
         User user = userRepository
                 .findById(securityUtil.getAuthenticatedUser().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("There's no user with the ID"));
         Chat chat = chatRepository
-                .findById(messageRequest.getChatId())
+                .findById(chatId)
                 .orElseThrow(() -> new ResourceNotFoundException("There's no chat with the ID"));
 
         return new MessageResponse(messageRepository.save(
