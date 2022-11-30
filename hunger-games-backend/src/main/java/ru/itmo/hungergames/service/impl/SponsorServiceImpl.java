@@ -7,9 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.itmo.hungergames.model.entity.*;
 import ru.itmo.hungergames.model.request.OrderDetailRequest;
 import ru.itmo.hungergames.model.request.ResourceOrderRequest;
-import ru.itmo.hungergames.model.response.ResourceApprovalResponse;
 import ru.itmo.hungergames.model.response.ResourceApprovedAndNotPaidResponse;
 import ru.itmo.hungergames.model.response.ResourceOrderResponse;
+import ru.itmo.hungergames.model.response.SponsorResponse;
 import ru.itmo.hungergames.repository.*;
 import ru.itmo.hungergames.service.SponsorService;
 import ru.itmo.hungergames.util.SecurityUtil;
@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -46,8 +47,11 @@ public class SponsorServiceImpl implements SponsorService {
     }
 
     @Override
-    public List<Sponsor> getAllSponsors() {
-        return sponsorRepository.findAll();
+    public List<SponsorResponse> getAllSponsors() {
+        return sponsorRepository
+                .findAll().stream()
+                .map(SponsorResponse::new)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -95,5 +99,10 @@ public class SponsorServiceImpl implements SponsorService {
         List<ResourceOrder> orders = resourceOrderRepository
                 .findAllByPaidAndApproved(false, true);
         return orders.stream().map(ResourceApprovedAndNotPaidResponse::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public SponsorResponse getSponsorById(UUID sponsorId) {
+        return new SponsorResponse(sponsorRepository.findById(sponsorId).orElseThrow(() -> new ResourceNotFoundException(String.format("Sponsor with id=%s doesn't exist", sponsorId))));
     }
 }

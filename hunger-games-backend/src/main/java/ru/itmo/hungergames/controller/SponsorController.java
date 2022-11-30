@@ -3,13 +3,14 @@ package ru.itmo.hungergames.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.itmo.hungergames.model.entity.Sponsor;
 import ru.itmo.hungergames.model.request.ResourceOrderRequest;
 import ru.itmo.hungergames.model.response.ResourceApprovedAndNotPaidResponse;
 import ru.itmo.hungergames.model.response.ResourceOrderResponse;
+import ru.itmo.hungergames.model.response.SponsorResponse;
 import ru.itmo.hungergames.service.SponsorService;
 
 import java.util.List;
+import java.util.UUID;
 
 @CrossOrigin("*")
 @RestController
@@ -25,8 +26,13 @@ public class SponsorController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/all")
-    public List<Sponsor> getAllSponsors() {
+    public List<SponsorResponse> getAllSponsors() {
         return sponsorService.getAllSponsors();
+    }
+
+    @GetMapping("/{sponsorId}")
+    public SponsorResponse getSponsorById(@PathVariable UUID sponsorId) {
+        return sponsorService.getSponsorById(sponsorId);
     }
 
     @PostMapping("/send")
