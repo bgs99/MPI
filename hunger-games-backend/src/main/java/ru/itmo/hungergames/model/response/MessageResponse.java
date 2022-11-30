@@ -20,11 +20,13 @@ public class MessageResponse {
     @JsonLocalDateTime
     private LocalDateTime dateTime;
     private String message;
+    private String senderName;
 
     public MessageResponse(Message message) {
         this.id = message.getId();
         this.role = message.getUser().getUserRoles().iterator().next().name();
         this.dateTime = message.getDateTime();
         this.message = message.getMessage();
+        this.senderName = message.getUser().getName();
     }
 }
