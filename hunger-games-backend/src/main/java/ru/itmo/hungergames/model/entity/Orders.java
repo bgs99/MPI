@@ -1,11 +1,10 @@
 package ru.itmo.hungergames.model.entity;
 
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -20,7 +19,6 @@ import java.util.UUID;
 public class Orders {
     @Id
     @Column(name = "order_id")
-    @Type(type = "pg-uuid")
     @GenericGenerator(name = "uuid-gen", strategy = "uuid2")
     @GeneratedValue(generator = "uuid-gen")
     private UUID id;

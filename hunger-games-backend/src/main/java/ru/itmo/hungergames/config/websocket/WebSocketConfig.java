@@ -1,4 +1,4 @@
-package ru.itmo.hungergames.config;
+package ru.itmo.hungergames.config.websocket;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

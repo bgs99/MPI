@@ -4,9 +4,10 @@ import { lastValueFrom, Observable, map } from 'rxjs';
 import { ApiService } from './api.service';
 import { Chat, ChatMessage } from '../models/chat';
 import { RxStompService } from './rxstomp.service';
+import { RxStompServiceFactory } from './rxstomp.factory';
 
-export class ChatServiceInstance {
-    constructor(private chat: Chat, private http: HttpClient, private stompService: RxStompService) { }
+export class ConnectedChatServiceInstance {
+    constructor(private chat: Chat, private stompService: RxStompService) { }
     send(message: string): void {
         this.stompService.publish({
             destination: `/app/send/${this.chat.chatId}`,
@@ -20,6 +21,13 @@ export class ChatServiceInstance {
             })
         )
     }
+}
+
+export class ChatServiceInstance {
+    constructor(private chat: Chat, private http: HttpClient, private stompServiceFactory: RxStompServiceFactory) { }
+    connect(): ConnectedChatServiceInstance {
+        return new ConnectedChatServiceInstance(this.chat, this.stompServiceFactory.make());
+    }
     async getMessagesSnapshot(): Promise<ChatMessage[]> {
         return await lastValueFrom(this.http.get<ChatMessage[]>(
             `${ApiService.baseURL}/chat/message/${this.chat.chatId}`
@@ -32,7 +40,7 @@ export class ChatServiceInstance {
 })
 export class ChatService {
     private static BASE_URL: string = `${ApiService.baseURL}/chat`;
-    constructor(private http: HttpClient, private stompService: RxStompService) { }
+    constructor(private http: HttpClient, private stompService: RxStompService, private stompServiceFactory: RxStompServiceFactory) { }
     async createChat(tributeId: string): Promise<Chat> {
         return await lastValueFrom(this.http.post<Chat>(
             `${ChatService.BASE_URL}`,
@@ -45,6 +53,6 @@ export class ChatService {
         ));
     }
     instance(chat: Chat): ChatServiceInstance {
-        return new ChatServiceInstance(chat, this.http, this.stompService);
+        return new ChatServiceInstance(chat, this.http, this.stompServiceFactory);
     }
 }

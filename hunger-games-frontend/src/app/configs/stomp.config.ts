@@ -1,15 +1,24 @@
 import { RxStompConfig } from '@stomp/rx-stomp';
 import { ApiService } from '../services/api.service';
+import { AuthService } from '../services/auth.service';
 
-export const HgRxStompConfig: RxStompConfig = {
-    brokerURL: `ws://${ApiService.host}/ws`,
 
-    heartbeatIncoming: 0,
-    heartbeatOutgoing: 20000,
+export function makeRxStompConfig(authService: AuthService): RxStompConfig {
+    console.log(`Making WS header with token ${authService.token}`);
+    return {
+        brokerURL: `ws://${ApiService.host}/ws`,
 
-    reconnectDelay: 200,
+        heartbeatIncoming: 0,
+        heartbeatOutgoing: 20000,
 
-    debug: (msg: string): void => {
-        console.log(new Date(), msg);
-    },
-};
+        reconnectDelay: 200,
+
+        connectHeaders: {
+            passcode: `Bearer ${authService.token}`
+        },
+
+        debug: (msg: string): void => {
+            console.log(new Date(), msg);
+        },
+    }
+}

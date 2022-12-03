@@ -1,11 +1,10 @@
 package ru.itmo.hungergames.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,7 +18,6 @@ import java.util.UUID;
 public class Chat {
     @Id
     @Column(name = "message_id")
-    @Type(type = "pg-uuid")
     @GenericGenerator(name = "uuid-gen", strategy = "uuid2")
     @GeneratedValue(generator = "uuid-gen")
     private UUID id;
