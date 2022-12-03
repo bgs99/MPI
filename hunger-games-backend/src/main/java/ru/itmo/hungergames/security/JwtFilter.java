@@ -1,5 +1,9 @@
 package ru.itmo.hungergames.security;
 
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +16,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.itmo.hungergames.util.JwtUtil;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -29,22 +29,6 @@ public class JwtFilter extends OncePerRequestFilter {
     public JwtFilter(UserDetailsServiceImpl userDetailsService, JwtUtil jwtUtil) {
         this.userDetailsService = userDetailsService;
         this.jwtUtil = jwtUtil;
-    }
-
-    @Override
-    protected void doFilterInternal(
-            @NonNull HttpServletRequest request,
-            @NonNull HttpServletResponse response,
-            @NonNull FilterChain filterChain) throws ServletException, IOException {
-        try {
-            Optional<String> jwt = parseJwt(request);
-            if (jwt.isPresent() && jwtUtil.validateJwtToken(jwt.get())) {
-                SecurityContextHolder.getContext().setAuthentication(createAuthenticationFromJwtToken(request, jwt.get()));
-            }
-        } catch (Exception e) {
-            log.error("Cannot authenticate user: {}", e.getLocalizedMessage());
-        }
-        filterChain.doFilter(request, response);
     }
 
     private Optional<String> parseJwt(HttpServletRequest request) {
@@ -61,5 +45,21 @@ public class JwtFilter extends OncePerRequestFilter {
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         return authentication;
+    }
+
+    @Override
+    protected void doFilterInternal(
+            @NonNull HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain) throws ServletException, IOException {
+        try {
+            Optional<String> jwt = parseJwt(request);
+            if (jwt.isPresent() && jwtUtil.validateJwtToken(jwt.get())) {
+                SecurityContextHolder.getContext().setAuthentication(createAuthenticationFromJwtToken(request, jwt.get()));
+            }
+        } catch (Exception e) {
+            log.error("Cannot authenticate user: {}", e.getLocalizedMessage());
+        }
+        filterChain.doFilter(request, response);
     }
 }

@@ -1,5 +1,6 @@
 package ru.itmo.hungergames.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -12,7 +13,6 @@ import ru.itmo.hungergames.model.response.ChatResponse;
 import ru.itmo.hungergames.model.response.MessageResponse;
 import ru.itmo.hungergames.service.ChatService;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 

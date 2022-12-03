@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-alpine
+FROM openjdk:17-jdk-alpine
 VOLUME /tmp
 EXPOSE 42322
 ADD hunger-games-backend/build/libs/hunger-games-backend.jar app.jar

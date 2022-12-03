@@ -1,12 +1,9 @@
 package ru.itmo.hungergames.model.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -15,10 +12,11 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Message {
     @Id
     @Column(name = "message_id")
-    @Type(type = "pg-uuid")
     @GenericGenerator(name = "uuid-gen", strategy = "uuid2")
     @GeneratedValue(generator = "uuid-gen")
     private UUID id;

@@ -1,5 +1,6 @@
 package ru.itmo.hungergames.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +12,6 @@ import ru.itmo.hungergames.service.MentorService;
 import ru.itmo.hungergames.service.SecurityService;
 import ru.itmo.hungergames.service.TributeService;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @CrossOrigin("*")

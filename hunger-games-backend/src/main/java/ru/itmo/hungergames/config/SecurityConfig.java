@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -18,7 +18,7 @@ import ru.itmo.hungergames.security.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 public class SecurityConfig {
     private final JwtFilter jwtFilter;
     private final UserDetailsServiceImpl userDetailsService;
@@ -41,23 +41,23 @@ public class SecurityConfig {
                 .exceptionHandling().and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests()
-                .antMatchers(
+                .authorizeHttpRequests()
+                .requestMatchers(
                         "/",
                         "/favicon.ico",
-                        "/**/*.png",
-                        "/**/*.gif",
-                        "/**/*.svg",
-                        "/**/*.jpg",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js"
+                        "/*.png",
+                        "/*.gif",
+                        "/*.svg",
+                        "/*.jpg",
+                        "/*.html",
+                        "/*.css",
+                        "/*.js"
                 ).permitAll()
-                .antMatchers(
-                        "/api/auth/**",
-                        "/api/capitol/**",
-                        "/api/payment/**",
-                        "/ws/**"
+                .requestMatchers(
+                        "/api/auth/*",
+                        "/api/capitol/*",
+                        "/api/payment/*",
+                        "/ws"
                 ).permitAll()
                 .anyRequest().authenticated();
 
