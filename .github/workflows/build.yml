@@ -19,7 +19,7 @@ jobs:
     - name: Setup Gradle
       uses: gradle/gradle-build-action@v2
     - name: Run build with Gradle Wrapper
-      run: ./gradlew build
+      run: ./gradlew assemble
     - name: Upload build artifacts
       uses: actions/upload-artifact@v3
       with:
@@ -34,3 +34,5 @@ jobs:
         port: 2222
         source: hunger-games-backend/build/libs/hunger-games-backend.jar
         target: ~/hunger-games-backend-latest.jar
+    - name: Run tests with Gradle Wrapper
+      run: ./gradlew test
