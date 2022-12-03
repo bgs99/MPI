@@ -9,6 +9,11 @@ jobs:
   build-gradle-project:
     runs-on: ubuntu-latest
     steps:
+    - name: Setup java
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
     - name: Checkout project sources
       uses: actions/checkout@v2
     - name: Setup Gradle
