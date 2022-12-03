@@ -20,3 +20,12 @@ jobs:
       with:
         name: backend.jar
         path: hunger-games-backend/build/libs/hunger-games-backend.jar
+    - name: Deploy build artifacts
+      uses: appleboy/scp-action@master
+      with:
+        host: se.ifmo.ru
+        username: s242322
+        key: ${{ secrets.HELIOS_KEY }}
+        port: 2222
+        source: hunger-games-backend/build/libs/hunger-games-backend.jar
+        target: ~/hunger-games-backend-latest.jar
