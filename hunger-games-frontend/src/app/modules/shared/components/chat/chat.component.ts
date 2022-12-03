@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { send } from 'process';
 import { Chat, ChatMessage } from 'src/app/models/chat';
 import { AuthService } from 'src/app/services/auth.service';
-import { ChatService, ChatServiceInstance } from 'src/app/services/chat.service';
+import { ChatService, ChatServiceInstance, ConnectedChatServiceInstance } from 'src/app/services/chat.service';
 
 @Component({
     selector: 'app-chat',
@@ -14,6 +14,7 @@ export class ChatComponent implements OnInit {
     messages: ChatMessage[] = []
     self: string = ''
     private chatServiceInstance!: ChatServiceInstance
+    private connectedChatServiceInstance!: ConnectedChatServiceInstance
 
     pendingMessage: string = '';
 
@@ -23,7 +24,8 @@ export class ChatComponent implements OnInit {
         this.self = this.authService.id;
         this.chatServiceInstance = this.chatService.instance(this.chat);
         this.messages = await this.chatServiceInstance.getMessagesSnapshot();
-        this.chatServiceInstance.messages.subscribe({
+        this.connectedChatServiceInstance = this.chatServiceInstance.connect();
+        this.connectedChatServiceInstance.messages.subscribe({
             next: (message: ChatMessage) => {
                 this.messages.push(message);
             },
@@ -34,7 +36,7 @@ export class ChatComponent implements OnInit {
     }
 
     send(): void {
-        this.chatServiceInstance.send(this.pendingMessage);
+        this.connectedChatServiceInstance.send(this.pendingMessage);
         this.pendingMessage = '';
     }
 }
