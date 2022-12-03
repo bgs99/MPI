@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpBackend, HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 import { ApiService } from './api.service';
+import { UserRole } from '../models/person';
 
 class LoginResult {
     constructor(
@@ -18,6 +19,7 @@ class AuthData {
         public id: string,
         public name: string,
         public token: string,
+        public role: UserRole,
     ) { }
 }
 
@@ -50,6 +52,10 @@ export class AuthService {
         return this.authData.id;
     }
 
+    get role(): UserRole {
+        return this.authData.role;
+    }
+
     private http: HttpClient;
     constructor(backend: HttpBackend) {
         this.http = new HttpClient(backend);
@@ -58,14 +64,14 @@ export class AuthService {
     async login(username: string, password: string): Promise<void> {
         const url: string = `${this.BASE_URL}/signin`;
         const login = await lastValueFrom(this.http.post<LoginResult>(url, { username, password }));
-        this._authData = new AuthData(login.id, login.name, login.token);
+        this._authData = new AuthData(login.id, login.name, login.token, UserRole.Sponsor);
         localStorage.setItem('auth', JSON.stringify(this._authData))
     }
 
-    async capitolAuth(username: string): Promise<void> {
+    async capitolAuth(username: string, role: UserRole): Promise<void> {
         const url = `${ApiService.baseURL}/capitol/signin`;
         const login = await lastValueFrom(this.http.post<LoginResult>(url, { username }));
-        this._authData = new AuthData(login.id, login.name, login.token);
+        this._authData = new AuthData(login.id, login.name, login.token, role);
     }
 
     async register(username: string, name: string, password: string): Promise<void> {

@@ -1,31 +1,33 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Tribute } from 'src/app/models/tribute';
 import { MatStepper } from '@angular/material/stepper';
 import { Resource } from 'src/app/models/resource';
 import { SponsorsService } from 'src/app/services/sponsors.service';
 import { PaymentResult } from 'src/app/models/payment';
+import { ActivatedRoute } from '@angular/router';
+import { TributesService } from 'src/app/services/tributes.service';
 
 @Component({
     templateUrl: './create-order.component.html',
 })
-export class CreateOrderComponent {
+export class CreateOrderComponent implements OnInit {
     @ViewChild('stepper') stepper!: MatStepper;
 
-    tribute: Tribute | null = null;
+    tribute: Tribute | undefined;
 
     paymentEnabled: boolean = true;
     paymentSucceded: boolean | undefined = undefined;
     orderId: string | null = null;
 
-    constructor(private sponsorsService: SponsorsService) { }
+    constructor(private route: ActivatedRoute, private sponsorsService: SponsorsService, private tributesService: TributesService) { }
 
-    selectTribute(tribute: Tribute): void {
-        this.tribute = tribute;
-        this.stepper.next();
+    async ngOnInit(): Promise<void> {
+        const tributeId = this.route.snapshot.paramMap.get('tribute')!;
+        this.tribute = (await this.tributesService.getTribute(tributeId))!;
     }
 
     async pay(resources: Resource[]): Promise<void> {
-        if (this.tribute === null) {
+        if (this.tribute === undefined) {
             return;
         }
         try {
@@ -47,7 +49,7 @@ export class CreateOrderComponent {
             this.stepper.next();
         }
         catch (err: any) {
-            console.log(err);
+            console.error(err);
             this.paymentEnabled = true;
         }
     }

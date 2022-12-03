@@ -21,7 +21,7 @@ export class ApprovalComponent implements OnInit {
             this.orders.data = this.orders.data.filter((elem) => elem.orderId != order.orderId);
         }
         catch (err) {
-            console.log(err);
+            console.error(err);
         }
     }
 
@@ -31,7 +31,7 @@ export class ApprovalComponent implements OnInit {
             this.orders.data = this.orders.data.filter((elem) => elem.orderId != order.orderId);
         }
         catch (err) {
-            console.log(err);
+            console.error(err);
         }
     }
 
@@ -40,7 +40,7 @@ export class ApprovalComponent implements OnInit {
             this.orders.data = await this.mentorsService.getOrders();
         }
         catch (err: any) {
-            console.log(err)
+            console.error(err)
         }
     }
 

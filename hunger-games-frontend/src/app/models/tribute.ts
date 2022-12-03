@@ -1,7 +1,8 @@
+import { Mentor } from "./mentor";
 import { Person } from "./person";
 
 export class Tribute extends Person {
-    constructor(username: string, name: string, public district: number, id: string) {
+    constructor(username: string, name: string, id: string, public mentor: Mentor) {
         super(username, name, id)
     }
 }

@@ -1,9 +1,8 @@
 <app-header></app-header>
 
+<h1>Отправка ресурсов трибуту {{this.tribute?.name}}</h1>
+
 <mat-horizontal-stepper #stepper [linear]="true">
-    <mat-step label="Выбор трибута">
-        <app-tributes (tributeSelected)="selectTribute($event)"></app-tributes>
-    </mat-step>
     <mat-step label="Выбор ресурсов">
         <app-resources #resources (resources)="this.resources"></app-resources>
 

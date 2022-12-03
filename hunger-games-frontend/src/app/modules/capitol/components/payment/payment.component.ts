@@ -25,7 +25,7 @@ export class PaymentComponent implements OnInit {
             window.close();
         }
         catch (err: any) {
-            console.log(err);
+            console.error(err);
         }
     }
 

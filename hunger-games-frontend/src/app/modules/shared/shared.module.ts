@@ -1,8 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar'
 import { MatIconModule } from '@angular/material/icon';
@@ -10,7 +13,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { HeaderComponent } from './components/header/header.component';
 import { TributesComponent } from './components/tributes/tributes.component';
 import { ResourcesComponent } from './components/resources/resources.component';
-import { FormsModule } from '@angular/forms';
+import { ChatComponent } from './components/chat/chat.component';
+import { ChatsComponent } from './components/chats/chats.component';
 
 
 @NgModule({
@@ -18,13 +22,17 @@ import { FormsModule } from '@angular/forms';
         HeaderComponent,
         TributesComponent,
         ResourcesComponent,
+        ChatComponent,
+        ChatsComponent,
     ],
     imports: [
         CommonModule,
         FormsModule,
+        RouterModule,
 
         MatFormFieldModule,
         MatInputModule,
+        MatListModule,
         MatTableModule,
         MatToolbarModule,
         MatIconModule,
@@ -33,6 +41,8 @@ import { FormsModule } from '@angular/forms';
         HeaderComponent,
         TributesComponent,
         ResourcesComponent,
+        ChatComponent,
+        ChatsComponent,
     ]
 })
 export class SharedModule { }
