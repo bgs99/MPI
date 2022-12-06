@@ -68,19 +68,23 @@ class MentorServiceImplTest {
         UUID mentorID = UUID.fromString("1d3ad419-e98f-43f1-9ac6-08776036cded");
         Mentor mentor = new Mentor();
         mentor.setId(mentorID);
+
         Mockito.doReturn(Optional.of(mentor))
                 .when(mentorRepository)
                 .findById(mentorID);
         Mockito.doReturn(mentor)
                 .when(securityUtil)
                 .getAuthenticatedUser();
+
         UUID orderId = UUID.randomUUID();
         ResourceOrder order = ResourceOrder.builder().id(orderId).paid(true).build();
         Mockito.doReturn(Optional.of(order)).when(resourceOrderRepository).findByIdAndTribute_MentorIdAndPaid(orderId, mentorID, true);
+
         mentorService.approveResourcesToSend(new ApproveResourcesRequest(orderId, true));
         Mockito.verify(resourceOrderRepository, Mockito.times(1)).save(order);
         Mockito.verify(resourceOrderRepository, Mockito.times(1)).findByIdAndTribute_MentorIdAndPaid(orderId, mentorID, true);
         assertTrue(order.getApproved());
+
         mentorService.approveResourcesToSend(new ApproveResourcesRequest(orderId, false));
         assertFalse(order.getApproved());
     }
@@ -111,6 +115,7 @@ class MentorServiceImplTest {
         Mockito.doReturn(Optional.of(mentor))
                 .when(mentorRepository)
                 .findById(id);
+
         MentorResponse mentorResponse = mentorService.getMentorById(id);
         assertEquals("name", mentorResponse.getName());
         assertEquals(id, mentorResponse.getId());

@@ -37,6 +37,7 @@ public class SecurityServiceImplTest {
     void createSponsor() {
         Sponsor sponsor = new Sponsor("sponsor-username", "some-password", "sponsor-name");
         securityService.createSponsor(sponsor);
+
         assertTrue(CoreMatchers.is(sponsor.getUserRoles()).matches(Collections.singleton(UserRole.SPONSOR)));
         Mockito.verify(encoder, Mockito.times(1)).encode(ArgumentMatchers.anyString());
         Mockito.verify(sponsorRepository, Mockito.times(1)).save(sponsor);
