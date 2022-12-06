@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Chat, ChatMessage } from 'src/app/models/chat';
 import { AuthService } from 'src/app/services/auth.service';
 import { ChatService, ChatServiceInstance, ConnectedChatServiceInstance } from 'src/app/services/chat.service';
@@ -6,8 +6,10 @@ import { ChatService, ChatServiceInstance, ConnectedChatServiceInstance } from '
 @Component({
     selector: 'app-chat',
     templateUrl: './chat.component.html',
+    styleUrls: ['./chat.component.css'],
 })
-export class ChatComponent implements OnInit, OnDestroy {
+export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
+    @ViewChild("chatContainer") chatContainer!: ElementRef;
     @Input() chat!: Chat
 
     messages: ChatMessage[] = []
@@ -36,6 +38,10 @@ export class ChatComponent implements OnInit, OnDestroy {
 
     async ngOnDestroy(): Promise<void> {
         await this.connectedChatServiceInstance.disconnect();
+    }
+
+    ngAfterViewChecked(): void {
+        this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
     }
 
     send(): void {
