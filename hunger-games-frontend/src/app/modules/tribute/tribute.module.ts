@@ -10,12 +10,18 @@ import { FailureComponent } from './components/posting/failure/failure.component
 import { SuccessComponent } from './components/posting/success/success.component';
 import { SharedModule } from '../shared/shared.module';
 import { FormsModule } from '@angular/forms';
+import { MenuComponent } from './components/menu/menu.component';
+import { ChatComponent } from './components/chat/chat.component';
+import { ChatsComponent } from './components/chats/chats.component';
 
 @NgModule({
     declarations: [
         PostingComponent,
         FailureComponent,
         SuccessComponent,
+        MenuComponent,
+        ChatComponent,
+        ChatsComponent,
     ],
     imports: [
         CommonModule,

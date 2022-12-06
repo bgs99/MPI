@@ -21,6 +21,9 @@ export class ConnectedChatServiceInstance {
             })
         )
     }
+    async disconnect(): Promise<void> {
+        await this.stompService.deactivate();
+    }
 }
 
 export class ChatServiceInstance {

@@ -16,10 +16,12 @@ import { ApprovalComponent } from './components/approval/approval.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { ResourcesComponent } from './components/resources/resources.component';
 import { TributesComponent } from './components/tributes/tributes.component';
+import { ChatComponent } from './components/chat/chat.component';
+import { ChatsComponent } from './components/chats/chats.component';
 
 
 @NgModule({
-    declarations: [ApprovalComponent, MenuComponent, ResourcesComponent, TributesComponent],
+    declarations: [ApprovalComponent, MenuComponent, ResourcesComponent, TributesComponent, ChatComponent, ChatsComponent],
     imports: [
         CommonModule,
         FormsModule,
