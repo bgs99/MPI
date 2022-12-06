@@ -13,9 +13,11 @@ import java.util.UUID;
 public class TributeResponse {
     private UUID id;
     private String name;
+    private String username;
 
     public TributeResponse(Tribute tribute) {
         this.id = tribute.getId();
         this.name = tribute.getName();
+        this.username = tribute.getUsername();
     }
 }
