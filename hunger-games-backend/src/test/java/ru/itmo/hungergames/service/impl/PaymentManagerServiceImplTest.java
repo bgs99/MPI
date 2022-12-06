@@ -31,6 +31,7 @@ class PaymentManagerServiceImplTest {
         UUID id = UUID.randomUUID();
         Orders order = Orders.builder().id(id).paid(false).build();
         Mockito.doReturn(Optional.of(order)).when(ordersRepository).findById(id);
+
         paymentManagerService.approvePayment(new PaymentRequest(id));
         Mockito.verify(ordersRepository, Mockito.times(1)).save(order);
         Mockito.verify(ordersRepository, Mockito.times(1)).findById(id);

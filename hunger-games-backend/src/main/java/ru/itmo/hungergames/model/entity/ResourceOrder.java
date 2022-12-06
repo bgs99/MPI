@@ -17,7 +17,7 @@ import java.util.List;
 @Table(name = "resource_orders")
 @SuperBuilder
 public class ResourceOrder extends Orders {
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")
     private List<OrderDetail> orderDetails;
     @ManyToOne

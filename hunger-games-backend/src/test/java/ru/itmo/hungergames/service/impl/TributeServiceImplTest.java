@@ -77,8 +77,10 @@ class TributeServiceImplTest {
         Mockito.doReturn(tribute)
                 .when(securityUtil)
                 .getAuthenticatedUser();
+
         AdvertisingTextResponse advertisingTextResponse = tributeService.sendAdvertisingText(new AdvertisingTextRequest("Some Text"));
         AdvertisementOrder advertisementOrder = advertisementOrderRepository.findById(advertisingTextResponse.getOrderId()).get();
+
         assertEquals("Some Text", advertisementOrder.getAdvertisingText());
         assertNotNull(advertisementOrder.getPrice());
         assertNull(advertisementOrder.getApproved());
