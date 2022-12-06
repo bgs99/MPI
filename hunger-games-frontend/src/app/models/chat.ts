@@ -2,8 +2,9 @@ export class ChatMessage {
     constructor(
         public id: string,
         public role: string,
-        public time: string, // TODO: proper type?
-        public message: string
+        public dateTime: string, // TODO: proper type?
+        public message: string,
+        public senderName: string,
     ) { }
 }
 

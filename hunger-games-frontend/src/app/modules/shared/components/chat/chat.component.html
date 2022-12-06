@@ -1,6 +1,7 @@
 <mat-list>
     <mat-list-item *ngFor="let message of messages">
-        <h4 matListItemTitle>{{message.id}} {{message.time}}</h4>
+        <h4 matListItemTitle>{{message.senderName}}</h4>
+        <small matListItemLine>{{message.dateTime}}</small>
         <p matListItemLine> {{message.message}} </p>
     </mat-list-item>
 </mat-list>
