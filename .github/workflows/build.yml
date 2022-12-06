@@ -36,3 +36,8 @@ jobs:
         target: ~/hunger-games-backend-latest.jar
     - name: Run tests with Gradle Wrapper
       run: ./gradlew test
+    - name: Upload test artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: tests
+        path: hunger-games-backend/build/reports
