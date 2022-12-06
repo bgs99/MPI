@@ -54,9 +54,9 @@ public class SecurityConfig {
                         "/*.js"
                 ).permitAll()
                 .requestMatchers(
-                        "/api/auth/*",
-                        "/api/capitol/*",
-                        "/api/payment/*",
+                        "/api/auth/**",
+                        "/api/capitol/**",
+                        "/api/payment/**",
                         "/ws"
                 ).permitAll()
                 .anyRequest().authenticated();
