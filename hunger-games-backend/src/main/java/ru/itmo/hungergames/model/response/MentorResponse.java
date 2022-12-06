@@ -1,26 +1,14 @@
 package ru.itmo.hungergames.model.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import ru.itmo.hungergames.model.entity.Mentor;
 
-import java.util.UUID;
-
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class MentorResponse {
-    private UUID id;
-    private String name;
-    private String username;
+@SuperBuilder
+public class MentorResponse extends UserResponse {
     private int district;
     public MentorResponse(Mentor mentor) {
-        this.id = mentor.getId();
-        this.name = mentor.getName();
-        this.username = mentor.getUsername();
+        super(mentor);
         this.district = mentor.getDistrict();
     }
 }

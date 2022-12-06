@@ -10,13 +10,6 @@ import org.springframework.security.messaging.access.intercept.MessageMatcherDel
 
 @Configuration
 public class WebSocketAuthorizationSecurityConfig extends AbstractSecurityWebSocketMessageBrokerConfigurer {
-//    @Bean
-//    AuthorizationManager<Message<?>> messageAuthorizationManager(MessageMatcherDelegatingAuthorizationManager.Builder messages) {
-//        messages
-//                .simpDestMatchers("/chat/**", "/app/**").authenticated();
-//
-//        return messages.build();
-//    }
 
     @Override
     protected void configureInbound(final MessageSecurityMetadataSourceRegistry messages) {

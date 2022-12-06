@@ -17,9 +17,10 @@ import lombok.Setter;
                 "accountNonExpired", "accountNonLocked",
                 "credentialsNonExpired", "enabled"})
 public class Sponsor extends User{
-    public Sponsor(String username, String password, String name) {
+    public Sponsor(String username, String password, String name, String avatarUri) {
         this.setUsername(username);
         this.setPassword(password);
         this.setName(name);
+        this.setAvatarUri(avatarUri);
     }
 }
