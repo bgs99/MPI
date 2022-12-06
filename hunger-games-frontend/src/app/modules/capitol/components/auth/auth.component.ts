@@ -50,7 +50,7 @@ export class AuthComponent implements OnInit {
         await this.authService.capitolAuth(this.identity.username, this.role);
         switch (this.role) {
             case UserRole.Tribute:
-                this.router.navigateByUrl('tribute/posting');
+                this.router.navigateByUrl('tribute');
                 break;
             case UserRole.Mentor:
                 this.router.navigateByUrl('mentor');
