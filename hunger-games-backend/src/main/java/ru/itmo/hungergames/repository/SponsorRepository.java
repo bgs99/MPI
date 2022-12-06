@@ -8,4 +8,5 @@ import java.util.UUID;
 
 @Repository
 public interface SponsorRepository extends JpaRepository<Sponsor, UUID> {
+    void deleteByUsername(String username);
 }
