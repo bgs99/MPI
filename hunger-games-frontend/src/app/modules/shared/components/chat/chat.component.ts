@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { send } from 'process';
 import { Chat, ChatMessage } from 'src/app/models/chat';
 import { AuthService } from 'src/app/services/auth.service';
@@ -8,7 +8,7 @@ import { ChatService, ChatServiceInstance, ConnectedChatServiceInstance } from '
     selector: 'app-chat',
     templateUrl: './chat.component.html',
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, OnDestroy {
     @Input() chat!: Chat
 
     messages: ChatMessage[] = []
@@ -33,6 +33,10 @@ export class ChatComponent implements OnInit {
                 console.error(err);
             }
         });
+    }
+
+    async ngOnDestroy(): Promise<void> {
+        await this.connectedChatServiceInstance.disconnect();
     }
 
     send(): void {
