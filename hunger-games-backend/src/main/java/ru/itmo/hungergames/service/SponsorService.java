@@ -12,6 +12,5 @@ public interface SponsorService {
     List<SponsorResponse> getAllSponsors();
     ResourceOrderResponse sendResourcesForApproval(ResourceOrderRequest resourceOrderRequest);
     List<ResourceApprovedAndNotPaidResponse> getOrdersNotPaidAndApproved();
-
     SponsorResponse getSponsorById(UUID sponsorId);
 }

@@ -1,6 +1,7 @@
 package ru.itmo.hungergames.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -20,14 +21,18 @@ public class Message {
     @GenericGenerator(name = "uuid-gen", strategy = "uuid2")
     @GeneratedValue(generator = "uuid-gen")
     private UUID id;
+    @NotNull
     private String message;
-    private LocalDateTime dateTime;
+    @NotNull
+    private LocalDateTime dateTime = LocalDateTime.now();
 
     @ManyToOne
-    @JoinColumn(name = "chat_id", nullable = false)
+    @JoinColumn(name = "chat_id")
+    @NotNull
     private Chat chat;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
+    @NotNull
     private User user;
 }

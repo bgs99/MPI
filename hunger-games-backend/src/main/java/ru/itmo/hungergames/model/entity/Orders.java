@@ -1,6 +1,7 @@
 package ru.itmo.hungergames.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
@@ -25,6 +26,7 @@ public class Orders {
     private Boolean approved;
     @Builder.Default
     private boolean paid = false;
+    @NotNull
     private BigDecimal price;
     @ManyToOne
     private Tribute tribute;

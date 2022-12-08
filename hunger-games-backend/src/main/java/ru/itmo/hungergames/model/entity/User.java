@@ -1,9 +1,12 @@
 package ru.itmo.hungergames.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.URL;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,9 +28,14 @@ public class User implements UserDetails {
     @GenericGenerator(name = "uuid-gen", strategy = "uuid2")
     @GeneratedValue(generator = "uuid-gen")
     private UUID id;
+    @NotEmpty(message = "Name must not be empty")
     private String name;
+    @NotEmpty(message = "Username must not be empty")
     private String username;
+    @NotEmpty(message = "password must not be empty")
     private String password;
+    @URL(protocol = "https")
+    @NotNull
     private String avatarUri;
 
     public User() {}

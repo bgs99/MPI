@@ -1,6 +1,7 @@
 package ru.itmo.hungergames.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,7 +21,8 @@ public class Resource {
     @GenericGenerator(name = "uuid-gen", strategy = "uuid2")
     @GeneratedValue(generator = "uuid-gen")
     private UUID id;
-
+    @NotNull
     private String name;
+    @NotNull
     private BigDecimal price;
 }
