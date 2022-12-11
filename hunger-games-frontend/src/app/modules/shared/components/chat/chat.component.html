@@ -1,10 +1,12 @@
-<mat-list>
-    <mat-list-item *ngFor="let message of messages">
-        <h4 matListItemTitle>{{message.senderName}}</h4>
-        <small matListItemLine>{{message.dateTime}}</small>
-        <p matListItemLine> {{message.message}} </p>
-    </mat-list-item>
-</mat-list>
+<div class="chat-list" #chatContainer>
+    <mat-list>
+        <mat-list-item *ngFor="let message of messages">
+            <h4 matListItemTitle>{{message.senderName}}</h4>
+            <small matListItemLine>{{message.dateTime}}</small>
+            <p matListItemLine> {{message.message}} </p>
+        </mat-list-item>
+    </mat-list>
+</div>
 <form (ngSubmit)="send()">
     <input matInput placeholder="Enter message" type="text" name="msg" [(ngModel)]="this.pendingMessage" />
     <button type="submit">Отправить</button>
