@@ -1,11 +1,41 @@
 <div class="chat-list" #chatContainer>
-    <mat-list>
-        <mat-list-item *ngFor="let message of messages">
-            <h4 matListItemTitle>{{message.senderName}}</h4>
-            <small matListItemLine>{{message.dateTime}}</small>
-            <p matListItemLine> {{message.message}} </p>
-        </mat-list-item>
-    </mat-list>
+    <ul style="list-style-type:none;">
+        <li *ngFor="let message of messages">
+            <mat-card>
+                <mat-card-header matListItemTitle>
+                    <div mat-card-avatar class="message-avatar" *ngIf="message.message.senderAvatarUri !== null"
+                        [ngStyle]="{'background-image': 'url(' + message.message.senderAvatarUri + ')'}"></div>
+                    <mat-card-title>{{message.message.senderName}}</mat-card-title>
+                    <mat-card-subtitle>{{message.message.dateTime}}</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content matListItemLine>
+                    <ng-container *ngIf="message.order !== undefined; then commandMessage else regularMessage">
+                    </ng-container>
+                    <ng-template #regularMessage>
+                        <p>
+                            {{message.message.message}}
+                        </p>
+                    </ng-template>
+                    <ng-template #commandMessage>
+                        <p *ngFor="let detail of message.order!.orderDetailResponses">
+                            {{detail.size}} {{detail.name}}
+                        </p>
+                    </ng-template>
+                </mat-card-content>
+                <ng-container *ngIf="message.order !== undefined">
+                    <mat-card-actions *ngIf="this.role === UserRole.Sponsor">
+                        <div>{{message.order!.sum}}$</div>
+                        <button mat-button>Оплатить</button>
+                    </mat-card-actions>
+                    <mat-card-actions *ngIf="this.role === UserRole.Mentor">
+                        <button mat-button>Одобрить</button>
+                        <button mat-button>Отклонить</button>
+                    </mat-card-actions>
+                </ng-container>
+
+            </mat-card>
+        </li>
+    </ul>
 </div>
 <form (ngSubmit)="send()">
     <input matInput placeholder="Enter message" type="text" name="msg" [(ngModel)]="this.pendingMessage" />

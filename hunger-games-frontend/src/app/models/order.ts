@@ -5,7 +5,10 @@ export class Order {
         public orderId: string,
         public tributeName: string,
         public sponsorName: string,
-        public resources: OrderResource[]
+        public orderDetailResponses: OrderResource[],
+        public paid: boolean,
+        public approved: boolean | null,
+        public sum: number,
     ) { }
 }
 
@@ -19,10 +22,12 @@ export class OrderResource {
 export class OrderDetail {
     resourceId: string;
     size: number;
+    name: string;
 
     constructor(resource: Resource) {
         this.resourceId = resource.id;
         this.size = resource.amount;
+        this.name = resource.name;
     }
 }
 

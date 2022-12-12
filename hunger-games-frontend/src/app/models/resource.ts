@@ -1,4 +1,3 @@
 export class Resource {
-    public amount: number = 0;
-    constructor(public name: string, public price: number, public id: string) { }
+    constructor(public name: string, public price: number, public id: string, public amount: number = 0) { }
 }
