@@ -1,11 +1,12 @@
 import { AfterViewChecked, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { concatMap, filter } from 'rxjs';
+import { Router } from '@angular/router';
+import { concatMap } from 'rxjs';
 import { Chat, ChatMessage } from 'src/app/models/chat';
 import { Order, OrderId } from 'src/app/models/order';
 import { UserRole } from 'src/app/models/person';
 import { AuthService } from 'src/app/services/auth.service';
 import { ChatService, ChatServiceInstance, ConnectedChatServiceInstance } from 'src/app/services/chat.service';
+import { MentorsService } from 'src/app/services/mentors.service';
 import { OrdersService } from 'src/app/services/orders.service';
 import { TributesService } from 'src/app/services/tributes.service';
 
@@ -39,6 +40,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
         private ordersService: OrdersService,
         private router: Router,
         private tributesService: TributesService,
+        private mentorsService: MentorsService
     ) { }
 
     async resolveMessage(message: ChatMessage): Promise<ChatMaybeCommandMessage> {
@@ -104,5 +106,10 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     async sendResources() {
         this.router.navigate(['sponsor', 'chat', this.chat.chatId, this.chat.tributeId, 'createorder']);
+    }
+
+    async considerOrder(order: Order, approve: boolean) {
+        await this.mentorsService.approve(order.orderId, approve);
+        order.approved = approve;
     }
 }

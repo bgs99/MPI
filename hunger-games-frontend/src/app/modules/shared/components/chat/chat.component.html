@@ -43,9 +43,9 @@
                         <div>{{message.order!.sum}}$</div>
                         <button mat-raised-button>Оплатить</button>
                     </mat-card-actions>
-                    <mat-card-actions *ngIf="this.role === UserRole.Mentor && message.order?.approved === null">
-                        <button mat-raised-button>Одобрить</button>
-                        <button mat-raised-button>Отклонить</button>
+                    <mat-card-actions *ngIf="this.role === UserRole.Mentor && message.order!.approved === null">
+                        <button mat-raised-button (click)="this.considerOrder(message.order!, true)">Одобрить</button>
+                        <button mat-raised-button (click)="this.considerOrder(message.order!, false)">Отклонить</button>
                     </mat-card-actions>
                 </ng-container>
 
