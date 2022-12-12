@@ -20,6 +20,8 @@ export class CreateOrderComponent implements OnInit {
     paymentSucceded: boolean | undefined = undefined;
     orderId: OrderId | null = null;
 
+    total: number = 0;
+
     constructor(private route: ActivatedRoute, private sponsorsService: SponsorsService, private tributesService: TributesService) { }
 
     async ngOnInit(): Promise<void> {
