@@ -27,9 +27,11 @@ export class ConnectedChatServiceInstance {
 }
 
 export class ChatServiceInstance {
-    constructor(private chat: Chat, private http: HttpClient, private stompServiceFactory: RxStompServiceFactory) { }
+    constructor(private chat: Chat, private http: HttpClient, private stompServiceFactory: RxStompServiceFactory, private pendingMessages: string[]) { }
     connect(): ConnectedChatServiceInstance {
-        return new ConnectedChatServiceInstance(this.chat, this.stompServiceFactory.make());
+        const connectedInstance = new ConnectedChatServiceInstance(this.chat, this.stompServiceFactory.make());
+        this.pendingMessages.forEach(message => connectedInstance.send(message));
+        return connectedInstance;
     }
     async getMessagesSnapshot(): Promise<ChatMessage[]> {
         return await lastValueFrom(this.http.get<ChatMessage[]>(
@@ -42,6 +44,7 @@ export class ChatServiceInstance {
     providedIn: 'root'
 })
 export class ChatService {
+    private pendingMessages: Map<ChatId, string[]> = new Map();
     private static BASE_URL: string = `${ApiService.baseURL}/chat`;
     constructor(private http: HttpClient, private stompServiceFactory: RxStompServiceFactory) { }
     async createChat(tributeId: string): Promise<Chat> {
@@ -61,6 +64,16 @@ export class ChatService {
     }
 
     instance(chat: Chat): ChatServiceInstance {
-        return new ChatServiceInstance(chat, this.http, this.stompServiceFactory);
+        const pendingMessages = this.pendingMessages.get(chat.chatId) || [];
+        this.pendingMessages.delete(chat.chatId);
+        return new ChatServiceInstance(chat, this.http, this.stompServiceFactory, pendingMessages);
+    }
+
+    addPendingMessage(chatId: ChatId, message: string) {
+        if (this.pendingMessages.has(chatId)) {
+            this.pendingMessages.get(chatId)!.push(message);
+        } else {
+            this.pendingMessages.set(chatId, [message]);
+        }
     }
 }

@@ -1,6 +1,6 @@
 import { AfterViewChecked, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import { concatMap } from 'rxjs';
+import { NavigationEnd, Router } from '@angular/router';
+import { concatMap, filter } from 'rxjs';
 import { Chat, ChatMessage } from 'src/app/models/chat';
 import { Order, OrderId } from 'src/app/models/order';
 import { UserRole } from 'src/app/models/person';
@@ -45,7 +45,6 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
         if (message.message.startsWith('/')) {
             const orderId = message.message.slice(1) as OrderId;
             const order = await this.ordersService.getOrder(orderId);
-            console.log(`Resolved order ${JSON.stringify(order)}`);
             return new ChatMaybeCommandMessage(message, order);
         } else {
             return new ChatMaybeCommandMessage(message);
@@ -53,8 +52,6 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     async ngOnInit(): Promise<void> {
-        console.log(`Got chat ${JSON.stringify(this.chat)}`);
-
         this.self = this.authService.id;
         this.role = this.authService.role;
         this.chatServiceInstance = this.chatService.instance(this.chat);
@@ -98,6 +95,6 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     async sendResources() {
-        this.router.navigate(['sponsor', 'tribute', this.chat.tributeId, 'createorder']);
+        this.router.navigate(['sponsor', 'chat', this.chat.chatId, this.chat.tributeId, 'createorder']);
     }
 }

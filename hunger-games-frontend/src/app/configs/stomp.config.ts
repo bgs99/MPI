@@ -4,7 +4,6 @@ import { AuthService } from '../services/auth.service';
 
 
 export function makeRxStompConfig(authService: AuthService): RxStompConfig {
-    console.log(`Making WS header with token ${authService.token}`);
     return {
         brokerURL: `ws://${ApiService.host}/ws`,
 
@@ -15,10 +14,6 @@ export function makeRxStompConfig(authService: AuthService): RxStompConfig {
 
         connectHeaders: {
             passcode: `Bearer ${authService.token}`
-        },
-
-        debug: (msg: string): void => {
-            console.log(new Date(), msg);
         },
     }
 }
