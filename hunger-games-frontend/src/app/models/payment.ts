@@ -1,6 +1,8 @@
+import { OrderId } from "./order";
+
 export class PaymentResult {
     constructor(
-        public orderId: string,
+        public orderId: OrderId,
         public success: boolean,
     ) { }
 }

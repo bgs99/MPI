@@ -1,11 +1,13 @@
 import { AfterViewChecked, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { concatMap } from 'rxjs';
 import { Chat, ChatMessage } from 'src/app/models/chat';
-import { Order } from 'src/app/models/order';
+import { Order, OrderId } from 'src/app/models/order';
 import { UserRole } from 'src/app/models/person';
 import { AuthService } from 'src/app/services/auth.service';
 import { ChatService, ChatServiceInstance, ConnectedChatServiceInstance } from 'src/app/services/chat.service';
 import { OrdersService } from 'src/app/services/orders.service';
+import { TributesService } from 'src/app/services/tributes.service';
 
 class ChatMaybeCommandMessage {
     constructor(public message: ChatMessage, public order?: Order) { }
@@ -31,11 +33,17 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     pendingMessage: string = '';
 
-    constructor(private chatService: ChatService, private authService: AuthService, private ordersService: OrdersService) { }
+    constructor(
+        private chatService: ChatService,
+        private authService: AuthService,
+        private ordersService: OrdersService,
+        private router: Router,
+        private tributesService: TributesService,
+    ) { }
 
     async resolveMessage(message: ChatMessage): Promise<ChatMaybeCommandMessage> {
         if (message.message.startsWith('/')) {
-            const orderId = message.message.slice(1);
+            const orderId = message.message.slice(1) as OrderId;
             const order = await this.ordersService.getOrder(orderId);
             console.log(`Resolved order ${JSON.stringify(order)}`);
             return new ChatMaybeCommandMessage(message, order);
@@ -45,6 +53,8 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     async ngOnInit(): Promise<void> {
+        console.log(`Got chat ${JSON.stringify(this.chat)}`);
+
         this.self = this.authService.id;
         this.role = this.authService.role;
         this.chatServiceInstance = this.chatService.instance(this.chat);
@@ -81,5 +91,13 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     send(): void {
         this.connectedChatServiceInstance.send(this.pendingMessage);
         this.pendingMessage = '';
+    }
+
+    async requestResources() {
+        this.router.navigate(['mentor', 'resources'], { state: { tribute: await this.tributesService.getTribute(this.chat.tributeId) } });
+    }
+
+    async sendResources() {
+        this.router.navigate(['sponsor', 'tribute', this.chat.tributeId, 'createorder']);
     }
 }

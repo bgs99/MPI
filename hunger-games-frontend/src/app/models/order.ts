@@ -1,8 +1,12 @@
-import { Resource } from "./resource";
+import { Resource, ResourceId } from "./resource";
+import { TributeId } from "./tribute";
+import { UUID } from "./uuid";
+
+export type OrderId = UUID<Order>;
 
 export class Order {
     constructor(
-        public orderId: string,
+        public orderId: OrderId,
         public tributeName: string,
         public sponsorName: string,
         public orderDetailResponses: OrderResource[],
@@ -20,7 +24,7 @@ export class OrderResource {
 }
 
 export class OrderDetail {
-    resourceId: string;
+    resourceId: ResourceId;
     size: number;
     name: string;
 
@@ -34,7 +38,7 @@ export class OrderDetail {
 export class ResourceOrderRequest {
     orderDetails: OrderDetail[];
 
-    constructor(public tributeId: string, resources: Resource[]) {
+    constructor(public tributeId: TributeId, resources: Resource[]) {
         this.tributeId = tributeId;
         this.orderDetails = resources
             .filter((resource: Resource) => resource.amount > 0)
