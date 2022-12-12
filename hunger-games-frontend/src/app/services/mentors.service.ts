@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 import { Mentor } from '../models/mentor';
-import { Order, ResourceOrderRequest } from '../models/order';
+import { Order, OrderId, OrderResource, ResourceOrderRequest } from '../models/order';
 import { ApiService } from './api.service';
 import { Resource } from '../models/resource';
 import { MentorTribute, TributeId } from '../models/tribute';
@@ -23,14 +23,14 @@ export class MentorsService {
             `${MentorsService.BASE_URL}/orders`
         ));
     }
-    async approve(orderId: string, approved: boolean): Promise<void> {
+    async approve(orderId: OrderId, approved: boolean): Promise<void> {
         return await lastValueFrom(this.http.post<void>(
             `${MentorsService.BASE_URL}/order/approve`,
             { orderId, approved }
         ));
     }
-    async requestResources(tributeId: TributeId, resources: Resource[]): Promise<void> {
-        return await lastValueFrom(this.http.post<void>(
+    async requestResources(tributeId: TributeId, resources: Resource[]): Promise<Order> {
+        return await lastValueFrom(this.http.post<Order>(
             `${MentorsService.BASE_URL}/order/create`,
             new ResourceOrderRequest(tributeId, resources)
         ))

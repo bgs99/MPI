@@ -91,7 +91,12 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     async requestResources() {
-        this.router.navigate(['mentor', 'resources'], { state: { tribute: await this.tributesService.getTribute(this.chat.tributeId) } });
+        this.router.navigate(['mentor', 'resources'], {
+            state: {
+                tribute: await this.tributesService.getTribute(this.chat.tributeId),
+                chatId: this.chat.chatId,
+            }
+        });
     }
 
     async sendResources() {

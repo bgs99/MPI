@@ -3,8 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
+import { ChatId } from 'src/app/models/chat';
 import { Resource } from 'src/app/models/resource';
 import { Tribute } from 'src/app/models/tribute';
+import { ChatService } from 'src/app/services/chat.service';
 import { MentorsService } from 'src/app/services/mentors.service';
 import { ResourcesService } from 'src/app/services/resources.service';
 
@@ -18,12 +20,19 @@ export class ResourcesComponent implements OnInit {
     resources = new MatTableDataSource<Resource>([]);
 
     tribute: Tribute | null = null;
+    chatId: ChatId | null = null;
 
-    constructor(private router: Router, private mentorService: MentorsService, private resourcesService: ResourcesService) {
+    constructor(
+        private router: Router,
+        private mentorService: MentorsService,
+        private resourcesService: ResourcesService,
+        private chatService: ChatService,
+    ) {
         router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(e => {
             const state = router.getCurrentNavigation()?.extras.state;
             if (state !== undefined) {
                 this.tribute = state['tribute'] as Tribute | null
+                this.chatId = state['chatId'] as ChatId | null;
             }
         });
     }
@@ -43,8 +52,13 @@ export class ResourcesComponent implements OnInit {
             return;
         }
         try {
-            await this.mentorService.requestResources(this.tribute.id, this.resources.data);
-            this.router.navigateByUrl("/mentor/tributes");
+            const order = await this.mentorService.requestResources(this.tribute.id, this.resources.data);
+            if (this.chatId === null) {
+                this.router.navigateByUrl("/mentor/tributes");
+            } else {
+                this.chatService.addPendingMessage(this.chatId, `/${order.orderId}`);
+                this.router.navigate(['mentor', 'chat', this.chatId]);
+            }
         }
         catch (err: any) {
             console.error(err);
