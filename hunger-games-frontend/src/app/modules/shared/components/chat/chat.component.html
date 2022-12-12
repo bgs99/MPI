@@ -41,3 +41,5 @@
     <input matInput placeholder="Enter message" type="text" name="msg" [(ngModel)]="this.pendingMessage" />
     <button type="submit">Отправить</button>
 </form>
+<button *ngIf="this.role === UserRole.Mentor" (click)="this.requestResources()">Запросить ресурсы</button>
+<button *ngIf="this.role === UserRole.Sponsor" (click)="this.sendResources()">Предложить ресурсы</button>

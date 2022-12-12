@@ -15,6 +15,7 @@ export class Chat {
         public mentorName: string,
         public tributeName: string,
         public sponsorName: string,
+        public tributeId: string,
         public lastMessage: ChatMessage | undefined
     ) { }
 }
