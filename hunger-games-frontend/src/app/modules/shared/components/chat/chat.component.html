@@ -20,16 +20,32 @@
                         <p *ngFor="let detail of message.order!.orderDetailResponses">
                             {{detail.size}} {{detail.name}}
                         </p>
+                        <ng-container *ngIf="message.order!.paid">
+                            <p *ngIf="message.order?.approved === null">
+                                Ожидает рассмотрения ментором
+                            </p>
+                            <p *ngIf="message.order?.approved === false">
+                                Отклонен ментором
+                            </p>
+                            <p *ngIf="message.order?.approved === true">
+                                Отправлен
+                            </p>
+                        </ng-container>
+                        <ng-container *ngIf="!message.order!.paid">
+                            <p>
+                                Ожидает оплаты
+                            </p>
+                        </ng-container>
                     </ng-template>
                 </mat-card-content>
                 <ng-container *ngIf="message.order !== undefined">
-                    <mat-card-actions *ngIf="this.role === UserRole.Sponsor">
+                    <mat-card-actions *ngIf="this.role === UserRole.Sponsor && !message.order.paid">
                         <div>{{message.order!.sum}}$</div>
-                        <button mat-button>Оплатить</button>
+                        <button mat-raised-button>Оплатить</button>
                     </mat-card-actions>
-                    <mat-card-actions *ngIf="this.role === UserRole.Mentor">
-                        <button mat-button>Одобрить</button>
-                        <button mat-button>Отклонить</button>
+                    <mat-card-actions *ngIf="this.role === UserRole.Mentor && message.order?.approved === null">
+                        <button mat-raised-button>Одобрить</button>
+                        <button mat-raised-button>Отклонить</button>
                     </mat-card-actions>
                 </ng-container>
 
