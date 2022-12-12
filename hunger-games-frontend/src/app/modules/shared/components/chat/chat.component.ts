@@ -86,6 +86,9 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     send(): void {
+        if (this.pendingMessage.startsWith('/')) {
+            return;
+        }
         this.connectedChatServiceInstance.send(this.pendingMessage);
         this.pendingMessage = '';
     }
