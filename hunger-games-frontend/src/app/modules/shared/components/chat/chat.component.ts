@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { concatMap } from 'rxjs';
 import { Chat, ChatMessage } from 'src/app/models/chat';
 import { Order, OrderId } from 'src/app/models/order';
+import { PaymentResult } from 'src/app/models/payment';
 import { UserRole } from 'src/app/models/person';
 import { AuthService } from 'src/app/services/auth.service';
 import { ChatService, ChatServiceInstance, ConnectedChatServiceInstance } from 'src/app/services/chat.service';
@@ -111,5 +112,23 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     async considerOrder(order: Order, approve: boolean) {
         await this.mentorsService.approve(order.orderId, approve);
         order.approved = approve;
+    }
+
+    payOrder(order: Order) {
+        // TODO: turn into a Promise?
+        window.addEventListener('message', (event: MessageEvent) => {
+            if (event.origin !== window.origin) { // Capitol origin
+                return;
+            }
+            const data: PaymentResult = event.data;
+            if (data.orderId != order.orderId) {
+                return;
+            }
+
+            if (data.success) {
+                order.paid = true;
+            }
+        });
+        window.open(`/capitol/payment?id=${order.orderId}`);
     }
 }
