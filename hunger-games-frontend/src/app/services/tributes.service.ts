@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
-import { Tribute } from '../models/tribute';
+import { Tribute, TributeId } from '../models/tribute';
 import { PaymentData } from '../models/payment-data';
 import { ApiService } from './api.service';
 
@@ -18,7 +18,7 @@ export class TributesService {
         ));
     }
 
-    async getTribute(id: string): Promise<Tribute | undefined> {
+    async getTribute(id: TributeId): Promise<Tribute | undefined> {
         const tributes = await this.getTributes();
         return tributes.find(tribute => tribute.id === id);
     }

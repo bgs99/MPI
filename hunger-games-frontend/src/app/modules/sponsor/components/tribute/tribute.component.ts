@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Chat } from 'src/app/models/chat';
-import { Tribute } from 'src/app/models/tribute';
+import { Tribute, TributeId } from 'src/app/models/tribute';
 import { ChatService } from 'src/app/services/chat.service';
 import { TributesService } from 'src/app/services/tributes.service';
 
@@ -24,7 +24,7 @@ export class TributeComponent implements OnInit {
     }
 
     async ngOnInit(): Promise<void> {
-        const id = this.route.snapshot.paramMap.get('id')!;
+        const id = this.route.snapshot.paramMap.get('id')! as TributeId;
         this.self = await this.tributesService.getTribute(id)!;
         const chats = await this.chatService.getChats();
         this.chat = chats.find(chat => chat.tributeName == this.self?.name);

@@ -4,7 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { Order, OrderResource } from 'src/app/models/order';
 import { PaymentResult } from 'src/app/models/payment';
-import { Tribute } from 'src/app/models/tribute';
+import { Tribute, TributeId } from 'src/app/models/tribute';
 import { ResourcesService } from 'src/app/services/resources.service';
 import { SponsorsService } from 'src/app/services/sponsors.service';
 import { TributesService } from 'src/app/services/tributes.service';
@@ -75,7 +75,7 @@ export class PayOrderComponent implements OnInit {
             resources.forEach(resource => {
                 this.priceMap.set(resource.name, resource.price);
             });
-            const tributeId = this.route.snapshot.paramMap.get('tribute')!;
+            const tributeId = this.route.snapshot.paramMap.get('tribute')! as TributeId;
             this.tribute = (await this.tributesService.getTribute(tributeId))!;
         } catch (err: any) {
             console.error(err);

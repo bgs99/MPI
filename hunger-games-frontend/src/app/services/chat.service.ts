@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom, Observable, map } from 'rxjs';
 import { ApiService } from './api.service';
-import { Chat, ChatMessage } from '../models/chat';
+import { Chat, ChatId, ChatMessage } from '../models/chat';
 import { RxStompService } from './rxstomp.service';
 import { RxStompServiceFactory } from './rxstomp.factory';
 
@@ -55,7 +55,7 @@ export class ChatService {
             `${ChatService.BASE_URL}`,
         ));
     }
-    async getChat(id: string): Promise<Chat> {
+    async getChat(id: ChatId): Promise<Chat> {
         const chats = await this.getChats();
         return chats.find(chat => chat.chatId === id)!;
     }

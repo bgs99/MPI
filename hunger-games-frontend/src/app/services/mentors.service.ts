@@ -5,7 +5,7 @@ import { Mentor } from '../models/mentor';
 import { Order, ResourceOrderRequest } from '../models/order';
 import { ApiService } from './api.service';
 import { Resource } from '../models/resource';
-import { MentorTribute } from '../models/tribute';
+import { MentorTribute, TributeId } from '../models/tribute';
 
 @Injectable({
     providedIn: 'root'
@@ -29,7 +29,7 @@ export class MentorsService {
             { orderId, approved }
         ));
     }
-    async requestResources(tributeId: string, resources: Resource[]): Promise<void> {
+    async requestResources(tributeId: TributeId, resources: Resource[]): Promise<void> {
         return await lastValueFrom(this.http.post<void>(
             `${MentorsService.BASE_URL}/order/create`,
             new ResourceOrderRequest(tributeId, resources)

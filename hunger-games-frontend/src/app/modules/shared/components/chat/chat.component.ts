@@ -2,7 +2,7 @@ import { AfterViewChecked, Component, ElementRef, Input, OnDestroy, OnInit, View
 import { Router } from '@angular/router';
 import { concatMap } from 'rxjs';
 import { Chat, ChatMessage } from 'src/app/models/chat';
-import { Order } from 'src/app/models/order';
+import { Order, OrderId } from 'src/app/models/order';
 import { UserRole } from 'src/app/models/person';
 import { AuthService } from 'src/app/services/auth.service';
 import { ChatService, ChatServiceInstance, ConnectedChatServiceInstance } from 'src/app/services/chat.service';
@@ -43,7 +43,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     async resolveMessage(message: ChatMessage): Promise<ChatMaybeCommandMessage> {
         if (message.message.startsWith('/')) {
-            const orderId = message.message.slice(1);
+            const orderId = message.message.slice(1) as OrderId;
             const order = await this.ordersService.getOrder(orderId);
             console.log(`Resolved order ${JSON.stringify(order)}`);
             return new ChatMaybeCommandMessage(message, order);
