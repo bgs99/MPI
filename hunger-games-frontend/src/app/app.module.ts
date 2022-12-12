@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider'
 import { MatCardModule } from '@angular/material/card'
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -57,6 +58,7 @@ import { OrdersService } from './services/orders.service';
 
         AppRoutingModule,
 
+        MatButtonModule,
         MatDividerModule,
         MatCardModule,
         MatFormFieldModule,

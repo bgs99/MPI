@@ -1,11 +1,13 @@
 import { AfterViewChecked, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { concatMap, filter } from 'rxjs';
+import { Router } from '@angular/router';
+import { concatMap } from 'rxjs';
 import { Chat, ChatMessage } from 'src/app/models/chat';
 import { Order, OrderId } from 'src/app/models/order';
+import { PaymentResult } from 'src/app/models/payment';
 import { UserRole } from 'src/app/models/person';
 import { AuthService } from 'src/app/services/auth.service';
 import { ChatService, ChatServiceInstance, ConnectedChatServiceInstance } from 'src/app/services/chat.service';
+import { MentorsService } from 'src/app/services/mentors.service';
 import { OrdersService } from 'src/app/services/orders.service';
 import { TributesService } from 'src/app/services/tributes.service';
 
@@ -39,6 +41,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
         private ordersService: OrdersService,
         private router: Router,
         private tributesService: TributesService,
+        private mentorsService: MentorsService
     ) { }
 
     async resolveMessage(message: ChatMessage): Promise<ChatMaybeCommandMessage> {
@@ -86,15 +89,46 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     send(): void {
+        if (this.pendingMessage.startsWith('/')) {
+            return;
+        }
         this.connectedChatServiceInstance.send(this.pendingMessage);
         this.pendingMessage = '';
     }
 
     async requestResources() {
-        this.router.navigate(['mentor', 'resources'], { state: { tribute: await this.tributesService.getTribute(this.chat.tributeId) } });
+        this.router.navigate(['mentor', 'resources'], {
+            state: {
+                tribute: await this.tributesService.getTribute(this.chat.tributeId),
+                chatId: this.chat.chatId,
+            }
+        });
     }
 
     async sendResources() {
         this.router.navigate(['sponsor', 'chat', this.chat.chatId, this.chat.tributeId, 'createorder']);
+    }
+
+    async considerOrder(order: Order, approve: boolean) {
+        await this.mentorsService.approve(order.orderId, approve);
+        order.approved = approve;
+    }
+
+    payOrder(order: Order) {
+        // TODO: turn into a Promise?
+        window.addEventListener('message', (event: MessageEvent) => {
+            if (event.origin !== window.origin) { // Capitol origin
+                return;
+            }
+            const data: PaymentResult = event.data;
+            if (data.orderId != order.orderId) {
+                return;
+            }
+
+            if (data.success) {
+                order.paid = true;
+            }
+        });
+        window.open(`/capitol/payment?id=${order.orderId}`);
     }
 }
