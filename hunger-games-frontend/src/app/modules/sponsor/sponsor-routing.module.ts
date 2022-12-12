@@ -16,6 +16,7 @@ const routes: Routes = [
     { path: 'tribute/:tribute/payorder', component: PayOrderComponent },
     { path: 'chats', component: ChatsComponent },
     { path: 'chat/:id', component: ChatComponent },
+    { path: 'chat/:chatId/:tribute/createorder', component: CreateOrderComponent },
 ];
 
 @NgModule({
