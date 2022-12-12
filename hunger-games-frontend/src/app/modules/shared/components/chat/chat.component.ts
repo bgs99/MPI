@@ -8,6 +8,7 @@ import { UserRole } from 'src/app/models/person';
 import { AuthService } from 'src/app/services/auth.service';
 import { ChatService, ChatServiceInstance, ConnectedChatServiceInstance } from 'src/app/services/chat.service';
 import { MentorsService } from 'src/app/services/mentors.service';
+import { pay } from 'src/app/services/mock/payment.service';
 import { OrdersService } from 'src/app/services/orders.service';
 import { TributesService } from 'src/app/services/tributes.service';
 
@@ -114,21 +115,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
         order.approved = approve;
     }
 
-    payOrder(order: Order) {
-        // TODO: turn into a Promise?
-        window.addEventListener('message', (event: MessageEvent) => {
-            if (event.origin !== window.origin) { // Capitol origin
-                return;
-            }
-            const data: PaymentResult = event.data;
-            if (data.orderId != order.orderId) {
-                return;
-            }
-
-            if (data.success) {
-                order.paid = true;
-            }
-        });
-        window.open(`/capitol/payment?id=${order.orderId}`);
+    async payOrder(order: Order) {
+        order.paid ||= await pay(order.orderId);
     }
 }
