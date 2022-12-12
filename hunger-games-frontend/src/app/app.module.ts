@@ -27,6 +27,7 @@ import { TributesService as MockTributesService } from './services/mock/tributes
 import { MentorsService as MockMentorsService } from './services/mock/mentors.service';
 import { PaymentService as MockPaymentService } from './services/mock/payment.service';
 import { RxStompServiceFactory } from './services/rxstomp.factory';
+import { OrdersService } from './services/orders.service';
 
 @NgModule({
     declarations: [
@@ -41,6 +42,7 @@ import { RxStompServiceFactory } from './services/rxstomp.factory';
         SponsorsService,
         MentorsService,
         MockPaymentService,
+        OrdersService,
         MockTributesService,
         MockMentorsService,
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

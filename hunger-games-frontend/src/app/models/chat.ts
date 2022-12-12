@@ -5,6 +5,7 @@ export class ChatMessage {
         public dateTime: string, // TODO: proper type?
         public message: string,
         public senderName: string,
+        public senderAvatarUri: string | null,
     ) { }
 }
 

@@ -18,6 +18,7 @@ public class ChatResponse {
     private String mentorName;
     private String tributeName;
     private String sponsorName;
+    private UUID tributeId;
 
     public ChatResponse(Chat chat) {
         this.chatId = chat.getId();
@@ -26,5 +27,6 @@ public class ChatResponse {
         this.mentorName = chat.getTribute().getMentor().getName();
         this.tributeName = chat.getTribute().getName();
         this.sponsorName = chat.getSponsor().getName();
+        this.tributeId = chat.getTribute().getId();
     }
 }
