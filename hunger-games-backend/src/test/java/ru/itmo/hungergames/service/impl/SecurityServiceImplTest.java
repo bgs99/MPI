@@ -35,7 +35,7 @@ public class SecurityServiceImplTest {
 
     @Test
     void createSponsor() {
-        Sponsor sponsor = new Sponsor("sponsor-username", "some-password", "sponsor-name");
+        Sponsor sponsor = new Sponsor("sponsor-username", "some-password", "sponsor-name", null);
         securityService.createSponsor(sponsor);
 
         assertTrue(CoreMatchers.is(sponsor.getUserRoles()).matches(Collections.singleton(UserRole.SPONSOR)));

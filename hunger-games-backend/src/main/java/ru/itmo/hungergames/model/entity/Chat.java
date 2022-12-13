@@ -17,7 +17,7 @@ import java.util.UUID;
 @Builder
 public class Chat {
     @Id
-    @Column(name = "message_id")
+    @Column(name = "chat_id")
     @GenericGenerator(name = "uuid-gen", strategy = "uuid2")
     @GeneratedValue(generator = "uuid-gen")
     private UUID id;
@@ -28,7 +28,7 @@ public class Chat {
     private Tribute tribute;
 
     @ManyToOne
-    @JoinColumn(name = "mentor_id", nullable = false)
+    @JoinColumn(name = "sponsor_id", nullable = false)
     @JsonBackReference
     private Sponsor sponsor;
 

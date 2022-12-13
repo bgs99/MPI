@@ -1,0 +1,8 @@
+insert into chats(chat_id, sponsor_id, tribute_id) VALUES ('c0fc15d4-d065-4ca8-b985-2857f1d2d0c5', '4a9f1d37-c6fd-4391-8082-655bb98fb460', '9667900f-24b2-4795-ad20-28b933d9ae32');
+
+insert into messages (message_id, date_time, message, chat_id, user_id) VALUES ('e71f2e9b-f4be-4ae7-94b3-7ba1c2b9d8dd', '2007-12-03T10:15:30', 'message 1', 'c0fc15d4-d065-4ca8-b985-2857f1d2d0c5', '4a9f1d37-c6fd-4391-8082-655bb98fb460');
+insert into messages (message_id, date_time, message, chat_id, user_id) VALUES ('336426af-cd62-49db-893c-f085d389a9bc', '2007-12-03T10:15:31', 'message 2', 'c0fc15d4-d065-4ca8-b985-2857f1d2d0c5', '4a9f1d37-c6fd-4391-8082-655bb98fb460');
+insert into messages (message_id, date_time, message, chat_id, user_id) VALUES ('1c20827a-2242-47dc-900b-a52f14d139fc', '2007-12-03T10:15:32', 'message 3', 'c0fc15d4-d065-4ca8-b985-2857f1d2d0c5', '1d3ad419-e98f-43f1-9ac6-08776036cded');
+insert into messages (message_id, date_time, message, chat_id, user_id) VALUES ('2def889f-38e3-4495-b929-36b8870ebca2', '2007-12-03T10:15:33', 'message 4', 'c0fc15d4-d065-4ca8-b985-2857f1d2d0c5', '1d3ad419-e98f-43f1-9ac6-08776036cded');
+insert into messages (message_id, date_time, message, chat_id, user_id) VALUES ('d0f5e7f3-b008-499d-9e4c-8a1fa32fd111', '2007-12-03T10:15:34', 'message 5', 'c0fc15d4-d065-4ca8-b985-2857f1d2d0c5', '1d3ad419-e98f-43f1-9ac6-08776036cded');
+insert into messages (message_id, date_time, message, chat_id, user_id) VALUES ('e240b26d-edb7-4c7e-a92c-6b850fa31fe5', '2007-12-03T10:15:35', 'message 6', 'c0fc15d4-d065-4ca8-b985-2857f1d2d0c5', '9667900f-24b2-4795-ad20-28b933d9ae32');
