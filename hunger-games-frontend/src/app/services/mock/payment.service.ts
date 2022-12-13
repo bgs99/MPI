@@ -37,7 +37,7 @@ export async function pay(orderId: OrderId): Promise<boolean> {
         });
     });
 
-    window.open(`/capitol/payment?id=${orderId}`);
+    window.open(`/#/capitol/payment?id=${orderId}`);
 
     return promise;
 }
