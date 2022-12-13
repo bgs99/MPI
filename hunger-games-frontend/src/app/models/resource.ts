@@ -1,4 +1,7 @@
+import { UUID } from "./uuid";
+
+export type ResourceId = UUID<Resource>
+
 export class Resource {
-    public amount: number = 0;
-    constructor(public name: string, public price: number, public id: string) { }
+    constructor(public name: string, public price: number, public id: ResourceId, public amount: number = 0) { }
 }

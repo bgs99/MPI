@@ -8,7 +8,7 @@
         <th mat-header-cell *matHeaderCellDef> Количество </th>
         <td mat-cell *matCellDef="let element">
             <mat-form-field class="example-full-width">
-                <input matInput type="number" min='0' [(ngModel)]="element.amount" name="amount">
+                <input matInput type="number" min='0' [(ngModel)]="element.amount" (ngModelChange)="this.onAmountChanged()" name="amount">
             </mat-form-field>
         </td>
     </ng-container>

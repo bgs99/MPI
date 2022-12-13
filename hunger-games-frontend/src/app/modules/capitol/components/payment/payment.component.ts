@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { OrderId } from 'src/app/models/order';
 import { PaymentResult } from 'src/app/models/payment';
 import { PaymentService } from 'src/app/services/mock/payment.service';
 
@@ -9,7 +10,7 @@ import { PaymentService } from 'src/app/services/mock/payment.service';
     styleUrls: ['./payment.component.css']
 })
 export class PaymentComponent implements OnInit {
-    orderId: string | null = null;
+    orderId: OrderId | null = null;
     readonly opener: Window = window.opener;
 
     constructor(private route: ActivatedRoute, private paymentService: PaymentService) { }

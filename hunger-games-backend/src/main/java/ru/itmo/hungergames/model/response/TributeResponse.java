@@ -1,21 +1,12 @@
 package ru.itmo.hungergames.model.response;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.experimental.SuperBuilder;
 import ru.itmo.hungergames.model.entity.Tribute;
 
-import java.util.UUID;
-
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class TributeResponse {
-    private UUID id;
-    private String name;
-
+@SuperBuilder
+public class TributeResponse extends UserResponse {
     public TributeResponse(Tribute tribute) {
-        this.id = tribute.getId();
-        this.name = tribute.getName();
+        super(tribute);
     }
 }

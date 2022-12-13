@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.itmo.hungergames.model.entity.Message;
+import ru.itmo.hungergames.model.entity.User;
 import ru.itmo.hungergames.util.annotation.JsonLocalDateTime;
 
 import java.time.LocalDateTime;
@@ -21,12 +22,15 @@ public class MessageResponse {
     private LocalDateTime dateTime;
     private String message;
     private String senderName;
+    private String senderAvatarUri;
 
     public MessageResponse(Message message) {
+        User sender = message.getUser();
         this.id = message.getId();
-        this.role = message.getUser().getUserRoles().iterator().next().name();
+        this.role = sender.getUserRoles().iterator().next().name();
         this.dateTime = message.getDateTime();
         this.message = message.getMessage();
-        this.senderName = message.getUser().getName();
+        this.senderName = sender.getName();
+        this.senderAvatarUri = sender.getAvatarUri();
     }
 }

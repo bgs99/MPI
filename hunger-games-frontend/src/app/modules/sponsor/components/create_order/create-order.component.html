@@ -4,7 +4,7 @@
 
 <mat-horizontal-stepper #stepper [linear]="true">
     <mat-step label="Выбор ресурсов">
-        <app-resources #resources (resources)="this.resources"></app-resources>
+        <app-resources #resources (totalChanged)="this.total = $event"></app-resources>
 
         <mat-grid-list cols="2" rowHeight="100px">
             <mat-grid-tile>
@@ -12,9 +12,9 @@
             </mat-grid-tile>
             <mat-grid-tile>
                 <h2>Сумма: </h2>
-                <div class="payment-field">{{resources.total}}$</div>
+                <div class="payment-field">{{this.total}}$</div>
                 <button mat-raised-button (click)="pay(resources.resources)"
-                    [disabled]="resources.total <= 0 || !this.paymentEnabled"> Оплатить </button>
+                    [disabled]="this.total <= 0 || !this.paymentEnabled"> Оплатить </button>
             </mat-grid-tile>
         </mat-grid-list>
 

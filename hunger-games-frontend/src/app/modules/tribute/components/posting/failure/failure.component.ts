@@ -1,5 +1,5 @@
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
     templateUrl: './failure.component.html',
     styleUrls: ['./failure.component.css']
 })
-export class FailureComponent implements OnInit {
+export class FailureComponent {
     stepperChanged(event: StepperSelectionEvent): void {
         if (event.selectedIndex == 0) {
             this.router.navigateByUrl("/tribute/posting");
@@ -28,8 +28,5 @@ export class FailureComponent implements OnInit {
     }
 
     constructor(private router: Router) { }
-
-    ngOnInit(): void {
-    }
 
 }

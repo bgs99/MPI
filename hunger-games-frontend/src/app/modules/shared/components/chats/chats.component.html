@@ -1,10 +1,10 @@
 <mat-list>
     <mat-list-item *ngFor="let chat of chats">
-        <h4 mat-line>
+        <h4 matListItemTitle>
             <button [routerLink]="[this.chatLink, chat.chatId]">
                 {{chatName(chat)}}
             </button>
         </h4>
-        <p mat-line> {{chat.lastMessage?.message}} </p>
+        <p matListItemLine> {{chat.lastMessage?.message}} </p>
     </mat-list-item>
 </mat-list>

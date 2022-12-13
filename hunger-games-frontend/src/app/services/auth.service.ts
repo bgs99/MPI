@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpBackend, HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 import { ApiService } from './api.service';
-import { UserRole } from '../models/person';
+import { PersonId, UserRole } from '../models/person';
 
 class LoginResult {
     constructor(
-        public id: string,
+        public id: PersonId,
         public token: string,
         public type: string,
         public username: string,
@@ -16,7 +16,7 @@ class LoginResult {
 
 class AuthData {
     constructor(
-        public id: string,
+        public id: PersonId,
         public name: string,
         public token: string,
         public role: UserRole,
@@ -48,7 +48,7 @@ export class AuthService {
         return this.authData.name;
     }
 
-    get id(): string {
+    get id(): PersonId {
         return this.authData.id;
     }
 

@@ -35,7 +35,8 @@ public class SecurityController {
         securityService.createSponsor(new Sponsor(
                 signUpRequest.getUsername(),
                 signUpRequest.getPassword(),
-                signUpRequest.getName()
+                signUpRequest.getName(),
+                signUpRequest.getAvatarUri()
         ));
         log.info("user {} is created", signUpRequest.getUsername());
         return ResponseEntity.ok().build();
