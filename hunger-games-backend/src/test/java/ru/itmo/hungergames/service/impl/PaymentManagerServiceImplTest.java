@@ -1,6 +1,5 @@
 package ru.itmo.hungergames.service.impl;
 
-import org.hibernate.cache.CacheException;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -28,7 +27,7 @@ class PaymentManagerServiceImplTest {
     OrdersRepository ordersRepository;
     @Test
     void approvePayment() {
-        UUID id = UUID.randomUUID();
+        UUID id = new UUID(1,1);
         Orders order = Orders.builder().id(id).paid(false).build();
         Mockito.doReturn(Optional.of(order)).when(ordersRepository).findById(id);
 
@@ -39,7 +38,7 @@ class PaymentManagerServiceImplTest {
     }
     @Test
     void approvePaymentOrderNotExists(){
-        UUID id = UUID.randomUUID();
+        UUID id = new UUID(1,1);
         Throwable thrown = catchThrowable(()-> paymentManagerService.approvePayment(new PaymentRequest(id)));
         assertThat(thrown).isInstanceOf(ResourceNotFoundException.class);
         assertThat(thrown.getMessage()).contains("Order is not found.");
