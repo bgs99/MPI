@@ -11,14 +11,20 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.itmo.hungergames.model.entity.*;
+import ru.itmo.hungergames.model.entity.Mentor;
+import ru.itmo.hungergames.model.entity.OrderDetail;
+import ru.itmo.hungergames.model.entity.ResourceOrder;
+import ru.itmo.hungergames.model.entity.Tribute;
 import ru.itmo.hungergames.model.request.ApproveResourcesRequest;
 import ru.itmo.hungergames.model.request.OrderDetailRequest;
 import ru.itmo.hungergames.model.request.ResourceOrderRequest;
 import ru.itmo.hungergames.model.response.MentorResponse;
 import ru.itmo.hungergames.model.response.ResourceOrderResponse;
 import ru.itmo.hungergames.model.response.TributeResponse;
-import ru.itmo.hungergames.repository.*;
+import ru.itmo.hungergames.repository.MentorRepository;
+import ru.itmo.hungergames.repository.OrderDetailRepository;
+import ru.itmo.hungergames.repository.ResourceOrderRepository;
+import ru.itmo.hungergames.repository.TributeRepository;
 import ru.itmo.hungergames.util.SecurityUtil;
 
 import java.util.ArrayList;
@@ -27,6 +33,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 class MentorServiceImplTest {
@@ -42,36 +49,41 @@ class MentorServiceImplTest {
     SecurityUtil securityUtil;
     @Autowired
     OrderDetailRepository orderDetailRepository;
+
     @Test
-    @Sql(value = {"/initScripts/create-mentor.sql"},executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(value = {"/initScripts/drop-mentor.sql"},executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(value = {"/initScripts/create-mentor.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {"/initScripts/drop-mentor.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getAllMentors() {
         mentorService.getAllMentors();
         Mockito.verify(mentorRepository, Mockito.times(1)).findAll();
     }
 
     @Test
-    @Sql(value = {"/initScripts/create-mentor.sql"},executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(value = {"/initScripts/drop-mentor.sql"},executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(value = {"/initScripts/create-mentor.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {"/initScripts/drop-mentor.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getOrdersForApproval() {
         UUID mentorID = UUID.fromString("1d3ad419-e98f-43f1-9ac6-08776036cded");
         Mentor mentor = new Mentor();
         mentor.setId(mentorID);
+
         Mockito.doReturn(Optional.of(mentor))
                 .when(mentorRepository)
                 .findById(mentorID);
         Mockito.doReturn(mentor)
                 .when(securityUtil)
                 .getAuthenticatedUser();
+
         mentorService.getOrdersForApproval();
-        Mockito.verify(resourceOrderRepository, Mockito.times(1)).findAllByTribute_MentorIdAndPaidAndApproved(mentorID,true, null);
+
+        Mockito.verify(resourceOrderRepository, Mockito.times(1)).findAllByTribute_MentorIdAndPaidAndApproved(mentorID, true, null);
     }
 
     @Test
-    @Sql(value = {"/initScripts/create-mentor.sql"},executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(value = {"/initScripts/drop-mentor.sql"},executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(value = {"/initScripts/create-mentor.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {"/initScripts/drop-mentor.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void approveResourcesToSend() {
         UUID mentorID = UUID.fromString("1d3ad419-e98f-43f1-9ac6-08776036cded");
+
         Mentor mentor = new Mentor();
         mentor.setId(mentorID);
 
@@ -82,7 +94,7 @@ class MentorServiceImplTest {
                 .when(securityUtil)
                 .getAuthenticatedUser();
 
-        UUID orderId = new UUID(1,1);
+        UUID orderId = new UUID(1, 1);
         ResourceOrder order = ResourceOrder.builder().id(orderId).paid(true).build();
         Mockito.doReturn(Optional.of(order)).when(resourceOrderRepository).findByIdAndTribute_MentorIdAndPaid(orderId, mentorID, true);
 
@@ -100,8 +112,8 @@ class MentorServiceImplTest {
 
     @Test
     @DirtiesContext
-    @Sql(value = {"/initScripts/create-mentor.sql", "/initScripts/create-resources.sql", "/initScripts/create-tribute.sql"},executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(value = {"/initScripts/drop-mentor.sql", "/initScripts/drop-resources.sql", "/initScripts/drop-tribute.sql"},executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(value = {"/initScripts/create-mentor.sql", "/initScripts/create-resources.sql", "/initScripts/create-tribute.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {"/initScripts/drop-mentor.sql", "/initScripts/drop-resources.sql", "/initScripts/drop-tribute.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void sendResourcesToSponsor() {
         UUID tributeId = UUID.fromString("9667900f-24b2-4795-ad20-28b933d9ae32");
         Tribute tribute = new Tribute();
@@ -145,8 +157,8 @@ class MentorServiceImplTest {
     }
 
     @Test
-    @Sql(value = {"/initScripts/create-mentor-with-tributes.sql"},executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(value = {"/initScripts/drop-mentor-with-tributes.sql"},executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(value = {"/initScripts/create-mentor-with-tributes.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {"/initScripts/drop-mentor-with-tributes.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getAllTributes() {
         UUID mentorID = UUID.fromString("1d3ad419-e98f-43f1-9ac6-08776036cded");
         Mockito.doReturn(mentorID)
@@ -157,7 +169,7 @@ class MentorServiceImplTest {
         initialUUIDs.add(UUID.fromString("c0b91cca-27ba-49d2-85e1-290cbd73d45e"));
         initialUUIDs.add(UUID.fromString("3ee25464-bdec-4237-a335-94c1f376e8d6"));
 
-        List<TributeResponse> tributeResponses = mentorService.getAllTributes();;
+        List<TributeResponse> tributeResponses = mentorService.getAllTributes();
         List<UUID> uuids = tributeResponses.stream().map(TributeResponse::getId).toList();
 
         assertTrue(uuids.containsAll(initialUUIDs));

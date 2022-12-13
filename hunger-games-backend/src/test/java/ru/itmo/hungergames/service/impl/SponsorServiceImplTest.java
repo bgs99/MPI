@@ -80,7 +80,6 @@ class SponsorServiceImplTest {
         Mockito.when(tributeRepository.findById(tributeId))
                 .thenReturn(Optional.of(tribute));
         UUID sponsorId = UUID.fromString("4a9f1d37-c6fd-4391-8082-655bb98fb460");
-
         Sponsor sponsor = new Sponsor();
         sponsor.setId(sponsorId);
         Mockito.when(sponsorRepository.findById(sponsorId))
@@ -124,8 +123,10 @@ class SponsorServiceImplTest {
 
         List<OrderDetailRequest> orderDetailRequestList = new ArrayList<>();
         UUID tributeId = new UUID(1,1);
+
         ResourceOrderRequest resourceOrderRequest = new ResourceOrderRequest(tributeId, orderDetailRequestList);
         Throwable thrown = catchThrowable(()->sponsorService.sendResourcesForApproval(resourceOrderRequest));
+
         assertThat(thrown).isInstanceOf(ResourceNotFoundException.class);
         assertThat(thrown.getMessage()).contains("There's no tribute with the ID");
     }
@@ -152,6 +153,7 @@ class SponsorServiceImplTest {
     void getSponsorById() {
         UUID id = UUID.fromString("4a9f1d37-c6fd-4391-8082-655bb98fb460");
         SponsorResponse sponsorById = sponsorService.getSponsorById(id);
+
         assertEquals(id, sponsorById.getId());
         assertEquals("sponsor-test", sponsorById.getName());
         assertEquals("sponsor-name", sponsorById.getUsername());
@@ -161,6 +163,7 @@ class SponsorServiceImplTest {
     void getSponsorByIdNotExists() {
         UUID id = new UUID(1,1);
         Throwable thrown = catchThrowable(()->sponsorService.getSponsorById(id));
+
         Mockito.verify(sponsorRepository, Mockito.times(1)).findById(id);
         assertThat(thrown).isInstanceOf(ResourceNotFoundException.class);
         assertThat(thrown.getMessage()).contains(String.format("Sponsor with id=%s doesn't exist", id));
