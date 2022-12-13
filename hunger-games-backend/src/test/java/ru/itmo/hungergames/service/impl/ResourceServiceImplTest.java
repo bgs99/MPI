@@ -6,6 +6,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.itmo.hungergames.model.entity.Resource;
 import ru.itmo.hungergames.repository.ResourceRepository;
@@ -25,6 +26,8 @@ class ResourceServiceImplTest {
     ResourceRepository resourceRepository;
 
     @Test
+    @Sql(value = {"/initScripts/create-resources.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {"/initScripts/drop-resources.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getAllResources() {
         List<UUID> initialUUIDs = new ArrayList<>();
         initialUUIDs.add(UUID.fromString("33ff5ee9-c0d7-4955-b2cd-a0aa3d484b98"));
