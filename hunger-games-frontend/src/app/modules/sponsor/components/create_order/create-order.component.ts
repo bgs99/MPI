@@ -9,6 +9,7 @@ import { TributesService } from 'src/app/services/tributes.service';
 import { OrderId } from 'src/app/models/order';
 import { ChatId } from 'src/app/models/chat';
 import { ChatService } from 'src/app/services/chat.service';
+import { pay } from 'src/app/services/mock/payment.service';
 
 @Component({
     templateUrl: './create-order.component.html',
@@ -20,7 +21,6 @@ export class CreateOrderComponent implements OnInit {
 
     paymentEnabled: boolean = true;
     paymentSucceded: boolean | undefined = undefined;
-    orderId: OrderId | null = null;
     chatId: ChatId | null = null;
 
     total: number = 0;
@@ -47,26 +47,14 @@ export class CreateOrderComponent implements OnInit {
         try {
             this.paymentEnabled = false;
             const paymentData = await this.sponsorsService.orderResources(this.tribute.id, resources);
-            this.orderId = paymentData.orderId;
-            window.addEventListener('message', (event: MessageEvent) => {
-                if (event.origin !== window.origin) { // Capitol origin
-                    return;
-                }
-                const data: PaymentResult = event.data;
-                if (data.orderId != paymentData.orderId) {
-                    return;
-                }
-
-                this.paymentSucceded = data.success;
-                this.paymentEnabled = true;
-
-                if (this.paymentSucceded && this.chatId !== null) {
-                    this.chatService.addPendingMessage(this.chatId, `/${data.orderId}`);
-                    this.router.navigate(['sponsor', 'chat', this.chatId]);
-                }
-            });
-            window.open(`/capitol/payment?id=${paymentData.orderId}`);
-            this.stepper.next();
+            this.paymentSucceded = await pay(paymentData.orderId);
+            this.paymentEnabled = true;
+            if (this.paymentSucceded && this.chatId !== null) {
+                this.chatService.addPendingMessage(this.chatId, `/${paymentData.orderId}`);
+                await this.router.navigate(['sponsor', 'chat', this.chatId]);
+            } else {
+                this.stepper.next();
+            }
         }
         catch (err: any) {
             console.error(err);

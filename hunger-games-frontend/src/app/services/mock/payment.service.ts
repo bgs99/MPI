@@ -3,6 +3,7 @@ import { HttpBackend, HttpClient } from '@angular/common/http';
 import { lastValueFrom } from 'rxjs';
 import { ApiService } from '../api.service';
 import { OrderId } from 'src/app/models/order';
+import { PaymentResult } from 'src/app/models/payment';
 
 @Injectable({
     providedIn: 'root'
@@ -19,4 +20,24 @@ export class PaymentService {
             { orderId }
         ));
     }
+}
+
+export async function pay(orderId: OrderId): Promise<boolean> {
+    const promise = new Promise<boolean>(resolve => {
+        window.addEventListener('message', (event: MessageEvent) => {
+            if (event.origin !== window.origin) { // Capitol origin
+                return;
+            }
+            const data: PaymentResult = event.data;
+            if (data.orderId != orderId) {
+                return;
+            }
+
+            resolve(data.success);
+        });
+    });
+
+    window.open(`/#/capitol/payment?id=${orderId}`);
+
+    return promise;
 }
