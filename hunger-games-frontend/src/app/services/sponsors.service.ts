@@ -6,6 +6,7 @@ import { ApiService } from './api.service';
 import { Resource } from '../models/resource';
 import { PaymentData } from '../models/payment-data';
 import { Order, ResourceOrderRequest } from '../models/order';
+import { TributeId } from '../models/tribute';
 
 
 @Injectable({
@@ -19,7 +20,7 @@ export class SponsorsService {
             `${SponsorsService.BASE_URL}/all`
         ));
     }
-    async orderResources(tributeId: string, resources: Resource[]): Promise<PaymentData> {
+    async orderResources(tributeId: TributeId, resources: Resource[]): Promise<PaymentData> {
         return await lastValueFrom(this.http.post<PaymentData>(
             `${SponsorsService.BASE_URL}/send`,
             new ResourceOrderRequest(tributeId, resources)

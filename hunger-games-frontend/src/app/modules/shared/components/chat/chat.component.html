@@ -1,11 +1,61 @@
-<mat-list>
-    <mat-list-item *ngFor="let message of messages">
-        <h4 matListItemTitle>{{message.senderName}}</h4>
-        <small matListItemLine>{{message.dateTime}}</small>
-        <p matListItemLine> {{message.message}} </p>
-    </mat-list-item>
-</mat-list>
+<div class="chat-list" #chatContainer>
+    <ul style="list-style-type:none;">
+        <li *ngFor="let message of messages">
+            <mat-card>
+                <mat-card-header matListItemTitle>
+                    <div mat-card-avatar class="message-avatar" *ngIf="message.message.senderAvatarUri !== null"
+                        [ngStyle]="{'background-image': 'url(' + message.message.senderAvatarUri + ')'}"></div>
+                    <mat-card-title>{{message.message.senderName}}</mat-card-title>
+                    <mat-card-subtitle>{{message.message.dateTime}}</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content matListItemLine>
+                    <ng-container *ngIf="message.order !== undefined; then commandMessage else regularMessage">
+                    </ng-container>
+                    <ng-template #regularMessage>
+                        <p>
+                            {{message.message.message}}
+                        </p>
+                    </ng-template>
+                    <ng-template #commandMessage>
+                        <p *ngFor="let detail of message.order!.orderDetailResponses">
+                            {{detail.size}} {{detail.name}}
+                        </p>
+                        <ng-container *ngIf="message.order!.paid">
+                            <p *ngIf="message.order?.approved === null">
+                                Ожидает рассмотрения ментором
+                            </p>
+                            <p *ngIf="message.order?.approved === false">
+                                Отклонен ментором
+                            </p>
+                            <p *ngIf="message.order?.approved === true">
+                                Отправлен
+                            </p>
+                        </ng-container>
+                        <ng-container *ngIf="!message.order!.paid">
+                            <p>
+                                Ожидает оплаты
+                            </p>
+                        </ng-container>
+                    </ng-template>
+                </mat-card-content>
+                <ng-container *ngIf="message.order !== undefined">
+                    <mat-card-actions *ngIf="this.role === UserRole.Sponsor && !message.order.paid">
+                        <div>{{message.order!.sum}}$</div>
+                        <button mat-raised-button (click)="this.payOrder(message.order!)">Оплатить</button>
+                    </mat-card-actions>
+                    <mat-card-actions *ngIf="this.role === UserRole.Mentor && message.order!.approved === null">
+                        <button mat-raised-button (click)="this.considerOrder(message.order!, true)">Одобрить</button>
+                        <button mat-raised-button (click)="this.considerOrder(message.order!, false)">Отклонить</button>
+                    </mat-card-actions>
+                </ng-container>
+
+            </mat-card>
+        </li>
+    </ul>
+</div>
 <form (ngSubmit)="send()">
     <input matInput placeholder="Enter message" type="text" name="msg" [(ngModel)]="this.pendingMessage" />
     <button type="submit">Отправить</button>
 </form>
+<button *ngIf="this.role === UserRole.Mentor" (click)="this.requestResources()">Запросить ресурсы</button>
+<button *ngIf="this.role === UserRole.Sponsor" (click)="this.sendResources()">Предложить ресурсы</button>

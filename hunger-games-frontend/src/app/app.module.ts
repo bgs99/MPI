@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider'
 import { MatCardModule } from '@angular/material/card'
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -27,6 +28,7 @@ import { TributesService as MockTributesService } from './services/mock/tributes
 import { MentorsService as MockMentorsService } from './services/mock/mentors.service';
 import { PaymentService as MockPaymentService } from './services/mock/payment.service';
 import { RxStompServiceFactory } from './services/rxstomp.factory';
+import { OrdersService } from './services/orders.service';
 
 @NgModule({
     declarations: [
@@ -41,6 +43,7 @@ import { RxStompServiceFactory } from './services/rxstomp.factory';
         SponsorsService,
         MentorsService,
         MockPaymentService,
+        OrdersService,
         MockTributesService,
         MockMentorsService,
         { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
@@ -55,6 +58,7 @@ import { RxStompServiceFactory } from './services/rxstomp.factory';
 
         AppRoutingModule,
 
+        MatButtonModule,
         MatDividerModule,
         MatCardModule,
         MatFormFieldModule,

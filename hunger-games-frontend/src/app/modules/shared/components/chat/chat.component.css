@@ -1,0 +1,12 @@
+.chat-list {
+    height: 80vh;
+    overflow-y: scroll;
+}
+
+li {
+    padding: 16px;
+}
+
+.message-avatar {
+    background-size: cover;
+}
