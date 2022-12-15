@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.itmo.hungergames.model.entity.Orders;
+import ru.itmo.hungergames.model.entity.order.Orders;
 import ru.itmo.hungergames.model.request.PaymentRequest;
 import ru.itmo.hungergames.repository.OrdersRepository;
 

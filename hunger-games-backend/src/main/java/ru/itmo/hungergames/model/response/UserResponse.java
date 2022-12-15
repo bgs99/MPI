@@ -1,11 +1,10 @@
 package ru.itmo.hungergames.model.response;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import ru.itmo.hungergames.model.entity.User;
+import ru.itmo.hungergames.model.entity.user.User;
 
 import java.util.UUID;
 

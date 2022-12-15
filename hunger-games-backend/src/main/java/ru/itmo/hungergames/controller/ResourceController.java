@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.itmo.hungergames.model.entity.Resource;
+import ru.itmo.hungergames.model.entity.order.Resource;
 import ru.itmo.hungergames.service.ResourceService;
 
 import java.util.List;

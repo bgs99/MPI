@@ -1,8 +1,9 @@
-package ru.itmo.hungergames.model.entity;
+package ru.itmo.hungergames.model.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,17 +11,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity(name = "Sponsor")
-@Table(name = "sponsors")
+@Table(name = "mentors")
+@Entity(name="Mentor")
 @JsonIgnoreProperties(
         value = {"password", "userRoles", "authorities",
                 "accountNonExpired", "accountNonLocked",
                 "credentialsNonExpired", "enabled"})
-public class Sponsor extends User{
-    public Sponsor(String username, String password, String name, String avatarUri) {
-        this.setUsername(username);
-        this.setPassword(password);
-        this.setName(name);
-        this.setAvatarUri(avatarUri);
-    }
+public class Mentor extends User {
+    @Size(min = 1, max = 12)
+    private int district;
 }

@@ -1,8 +1,7 @@
 package ru.itmo.hungergames.model.response;
 
-import lombok.Builder;
 import lombok.Data;
-import ru.itmo.hungergames.model.entity.ResourceOrder;
+import ru.itmo.hungergames.model.entity.order.ResourceOrder;
 
 import java.math.BigDecimal;
 import java.util.List;

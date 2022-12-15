@@ -9,10 +9,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.itmo.hungergames.model.entity.Sponsor;
-import ru.itmo.hungergames.model.entity.User;
-import ru.itmo.hungergames.model.entity.UserRole;
+import ru.itmo.hungergames.model.entity.user.Settings;
+import ru.itmo.hungergames.model.entity.user.Sponsor;
+import ru.itmo.hungergames.model.entity.user.User;
+import ru.itmo.hungergames.model.entity.user.UserRole;
 import ru.itmo.hungergames.model.response.JwtResponse;
+import ru.itmo.hungergames.repository.SettingsRepository;
 import ru.itmo.hungergames.repository.SponsorRepository;
 import ru.itmo.hungergames.repository.UserRepository;
 import ru.itmo.hungergames.security.UserDetailsServiceImpl;
@@ -34,9 +36,17 @@ public class SecurityServiceImpl implements SecurityService {
     private final SecurityUtil securityUtil;
     private final SponsorRepository sponsorRepository;
     private final UserDetailsServiceImpl userDetailsService;
+    private final SettingsRepository settingsRepository;
 
     @Autowired
-    public SecurityServiceImpl(AuthenticationProvider authenticationProvider, JwtUtil jwtUtil, BCryptPasswordEncoder encoder, UserRepository userRepository, SecurityUtil securityUtil, SponsorRepository sponsorRepository, UserDetailsServiceImpl userDetailsService) {
+    public SecurityServiceImpl(AuthenticationProvider authenticationProvider,
+                               JwtUtil jwtUtil,
+                               BCryptPasswordEncoder encoder,
+                               UserRepository userRepository,
+                               SecurityUtil securityUtil,
+                               SponsorRepository sponsorRepository,
+                               UserDetailsServiceImpl userDetailsService,
+                               SettingsRepository settingsRepository) {
         this.authenticationProvider = authenticationProvider;
         this.jwtUtil = jwtUtil;
         this.encoder = encoder;
@@ -44,6 +54,7 @@ public class SecurityServiceImpl implements SecurityService {
         this.securityUtil = securityUtil;
         this.sponsorRepository = sponsorRepository;
         this.userDetailsService = userDetailsService;
+        this.settingsRepository = settingsRepository;
     }
 
     @Override
@@ -74,6 +85,9 @@ public class SecurityServiceImpl implements SecurityService {
         securityUtil.validateBeforeSigningUp(user);
         user.setPassword(encoder.encode(user.getPassword()));
         user.getUserRoles().add(UserRole.SPONSOR);
+        Settings settings = new Settings();
+        user.setSettings(settings);
+        settingsRepository.save(settings);
         userRepository.save(user);
     }
 
@@ -83,18 +97,23 @@ public class SecurityServiceImpl implements SecurityService {
         securityUtil.validateBeforeSigningUp(sponsor);
         sponsor.setPassword(encoder.encode(sponsor.getPassword()));
         sponsor.getUserRoles().add(UserRole.SPONSOR);
+        Settings settings = new Settings();
+        sponsor.setSettings(settings);
+        settingsRepository.save(settings);
         sponsorRepository.save(sponsor);
     }
 
     @Override
-    public JwtResponse authenticateTributeAndMentor(User user) {
+    public JwtResponse authenticateTributeAndMentorAndModerator(User user) {
         User userDetails = (User)userDetailsService.loadUserByUsername(user.getUsername());
         Set<String> roles = userDetails
                 .getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toSet());
         Authentication authentication;
-        if (roles.contains(UserRole.MENTOR.toString()) || roles.contains(UserRole.TRIBUTE.toString())) {
+        if (roles.contains(UserRole.MENTOR.toString()) ||
+                roles.contains(UserRole.TRIBUTE.toString()) ||
+                roles.contains(UserRole.MODERATOR.toString())) {
              authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), userDetails.getAuthorities());
         } else {
              authentication = authenticationProvider.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));

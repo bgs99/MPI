@@ -1,0 +1,41 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  datasource:
+    url: jdbc:postgresql://localhost:6969/studs
+    username: s242322
+    password: password
+  jpa:
+    generate-ddl: true
+    open-in-view: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${SPRING_MAIL_USERNAME:mpihg13@gmail.com}
+    password: ${SPRING_MAIL_PASSWORD:}
+    test-connection: true
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+server:
+  port: 42322
+
+hunger-games:
+  jwt:
+    secret: wthisgoingon
+    expirationMs: 86400000
+  schedule:
+    sendNews:
+      cron: 0 0 * * * ? # every hour

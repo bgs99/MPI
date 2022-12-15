@@ -1,7 +1,7 @@
 package ru.itmo.hungergames.model.response;
 
 import lombok.*;
-import ru.itmo.hungergames.model.entity.ResourceOrder;
+import ru.itmo.hungergames.model.entity.order.ResourceOrder;
 
 import java.util.List;
 import java.util.UUID;

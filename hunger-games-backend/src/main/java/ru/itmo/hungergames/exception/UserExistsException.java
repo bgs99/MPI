@@ -1,6 +1,6 @@
 package ru.itmo.hungergames.exception;
 
-import ru.itmo.hungergames.model.entity.User;
+import ru.itmo.hungergames.model.entity.user.User;
 
 public class UserExistsException extends RuntimeException {
     public UserExistsException(final User user) {

@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.itmo.hungergames.model.entity.Message;
-import ru.itmo.hungergames.model.entity.User;
+import ru.itmo.hungergames.model.entity.chat.Message;
+import ru.itmo.hungergames.model.entity.user.User;
 import ru.itmo.hungergames.util.annotation.JsonLocalDateTime;
 
 import java.time.LocalDateTime;

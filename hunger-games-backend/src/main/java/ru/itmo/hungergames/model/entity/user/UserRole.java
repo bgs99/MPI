@@ -1,9 +1,10 @@
-package ru.itmo.hungergames.model.entity;
+package ru.itmo.hungergames.model.entity.user;
 
 public enum UserRole {
     TRIBUTE,
     MENTOR,
-    SPONSOR;
+    SPONSOR,
+    MODERATOR;
 
     @Override
     public String toString() {

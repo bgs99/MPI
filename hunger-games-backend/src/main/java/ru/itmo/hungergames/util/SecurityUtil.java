@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import ru.itmo.hungergames.exception.UserExistsException;
-import ru.itmo.hungergames.model.entity.User;
-import ru.itmo.hungergames.model.entity.UserRole;
+import ru.itmo.hungergames.model.entity.user.User;
+import ru.itmo.hungergames.model.entity.user.UserRole;
 import ru.itmo.hungergames.repository.UserRepository;
 
 import java.util.UUID;

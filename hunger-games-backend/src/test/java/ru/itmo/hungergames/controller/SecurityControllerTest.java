@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
-import ru.itmo.hungergames.model.entity.Sponsor;
+import ru.itmo.hungergames.model.entity.user.Sponsor;
 import ru.itmo.hungergames.repository.SponsorRepository;
 import ru.itmo.hungergames.service.SecurityService;
 

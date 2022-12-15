@@ -1,8 +1,7 @@
 package ru.itmo.hungergames.model.response;
 
-import lombok.Builder;
 import lombok.experimental.SuperBuilder;
-import ru.itmo.hungergames.model.entity.Mentor;
+import ru.itmo.hungergames.model.entity.user.Mentor;
 
 @SuperBuilder
 public class MentorResponse extends UserResponse {

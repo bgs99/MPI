@@ -1,12 +1,17 @@
-package ru.itmo.hungergames.model.entity;
+package ru.itmo.hungergames.model.entity.user;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.URL;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.itmo.hungergames.model.request.SettingsChangeRequest;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -18,6 +23,7 @@ import java.util.stream.Collectors;
 @Table(name = "users")
 @Getter
 @Setter
+@SuperBuilder
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User implements UserDetails {
     @Id
@@ -25,10 +31,19 @@ public class User implements UserDetails {
     @GenericGenerator(name = "uuid-gen", strategy = "uuid2")
     @GeneratedValue(generator = "uuid-gen")
     private UUID id;
+    @NotEmpty(message = "Name must not be empty")
     private String name;
+    @NotEmpty(message = "Username must not be empty")
     private String username;
+    @NotEmpty(message = "password must not be empty")
     private String password;
+    @URL(protocol = "https")
+    @NotNull
     private String avatarUri;
+    @OneToOne
+    @NotNull
+    @JoinColumn(name = "setting_id")
+    private Settings settings;
 
     public User() {}
 
@@ -75,5 +90,10 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public User updateSettings(SettingsChangeRequest settingsChangeRequest) {
+        getSettings().setEmail(settingsChangeRequest.getEmail());
+        return this;
     }
 }
