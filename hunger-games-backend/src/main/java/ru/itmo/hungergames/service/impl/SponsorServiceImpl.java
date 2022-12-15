@@ -118,6 +118,7 @@ public class SponsorServiceImpl implements SponsorService {
     }
 
     @Override
+    @Transactional
     public NewsSubscriptionOrderResponse subscribeToNews(NewsSubscriptionOrderRequest newsSubscriptionOrderRequest) {
         Sponsor sponsor = sponsorRepository
                 .findById(securityUtil.getAuthenticatedUserId())
