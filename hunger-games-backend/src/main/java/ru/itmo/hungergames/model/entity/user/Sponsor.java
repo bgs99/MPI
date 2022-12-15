@@ -2,9 +2,11 @@ package ru.itmo.hungergames.model.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import ru.itmo.hungergames.model.entity.order.NewsSubscriptionOrder;
 
 @Getter
 @Setter
@@ -18,8 +20,8 @@ import lombok.experimental.SuperBuilder;
                 "accountNonExpired", "accountNonLocked",
                 "credentialsNonExpired", "enabled"})
 public class Sponsor extends User {
-    @Builder.Default
-    private boolean newsSubscribed = false;
+    @OneToOne
+    private NewsSubscriptionOrder newsSubscriptionOrder;
     public Sponsor(String username, String password, String name, String avatarUri) {
         this.setUsername(username);
         this.setPassword(password);

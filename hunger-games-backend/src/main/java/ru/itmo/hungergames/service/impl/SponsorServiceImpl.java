@@ -13,14 +13,12 @@ import ru.itmo.hungergames.model.entity.user.Tribute;
 import ru.itmo.hungergames.model.request.NewsSubscriptionOrderRequest;
 import ru.itmo.hungergames.model.request.OrderDetailRequest;
 import ru.itmo.hungergames.model.request.ResourceOrderRequest;
-import ru.itmo.hungergames.model.response.ResourceApprovedAndNotPaidResponse;
-import ru.itmo.hungergames.model.response.ResourceOrderResponse;
-import ru.itmo.hungergames.model.response.SponsorResponse;
-import ru.itmo.hungergames.model.response.NewsSubscriptionOrderResponse;
+import ru.itmo.hungergames.model.response.*;
 import ru.itmo.hungergames.repository.*;
 import ru.itmo.hungergames.service.SponsorService;
 import ru.itmo.hungergames.util.ApplicationParameters;
 import ru.itmo.hungergames.util.SecurityUtil;
+import ru.itmo.hungergames.util.SponsorUtil;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -38,7 +36,9 @@ public class SponsorServiceImpl implements SponsorService {
     private final OrderDetailRepository orderDetailRepository;
     private final ResourceOrderRepository resourceOrderRepository;
     private final NewsSubscriptionOrderRepository newsSubscriptionOrderRepository;
+    private final NewsRepository newsRepository;
     private final SecurityUtil securityUtil;
+    private final SponsorUtil sponsorUtil;
 
     @Autowired
     public SponsorServiceImpl(SponsorRepository sponsorRepository,
@@ -47,14 +47,18 @@ public class SponsorServiceImpl implements SponsorService {
                               OrderDetailRepository orderDetailRepository,
                               ResourceOrderRepository resourceOrderRepository,
                               NewsSubscriptionOrderRepository newsSubscriptionOrderRepository,
-                              SecurityUtil securityUtil) {
+                              NewsRepository newsRepository,
+                              SecurityUtil securityUtil,
+                              SponsorUtil sponsorUtil) {
         this.sponsorRepository = sponsorRepository;
         this.tributeRepository = tributeRepository;
         this.resourceRepository = resourceRepository;
         this.orderDetailRepository = orderDetailRepository;
         this.resourceOrderRepository = resourceOrderRepository;
         this.newsSubscriptionOrderRepository = newsSubscriptionOrderRepository;
+        this.newsRepository = newsRepository;
         this.securityUtil = securityUtil;
+        this.sponsorUtil = sponsorUtil;
     }
 
     @Override
@@ -136,5 +140,18 @@ public class SponsorServiceImpl implements SponsorService {
     @Override
     public BigDecimal getPriceOfNewsSubscription() {
         return ApplicationParameters.newsSubscriptionPrice;
+    }
+
+    @Override
+    public List<NewsResponse> getNews() {
+        sponsorUtil.checkIfSponsorCanSeeNews(sponsorRepository
+                .findById(securityUtil.getAuthenticatedUserId())
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(String.format(
+                                "There's no sponsor with id=%s", securityUtil.getAuthenticatedUserId()))));
+        return newsRepository
+                .findAll().stream()
+                .map(NewsResponse::new)
+                .toList();
     }
 }
