@@ -3,6 +3,7 @@ package ru.itmo.hungergames.model.entity.user;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -22,8 +23,5 @@ public class Settings {
     @GeneratedValue(generator = "uuid-gen")
     private UUID id;
     @Email
-    @NotNull
     private String email;
-    @OneToOne
-    private User user;
 }

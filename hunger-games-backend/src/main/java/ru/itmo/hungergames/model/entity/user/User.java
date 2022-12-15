@@ -3,7 +3,6 @@ package ru.itmo.hungergames.model.entity.user;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
@@ -43,7 +42,8 @@ public class User implements UserDetails {
     private String avatarUri;
     @OneToOne
     @NotNull
-    private Settings settings = new Settings();
+    @JoinColumn(name = "setting_id")
+    private Settings settings;
 
     public User() {}
 
@@ -55,7 +55,6 @@ public class User implements UserDetails {
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
-    @Builder.Default
     private Set<UserRole> userRoles = new HashSet<>();
 
     @Override

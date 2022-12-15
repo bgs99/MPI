@@ -8,5 +8,5 @@ public interface SecurityService {
     JwtResponse authenticateUser(User user);
     void createUser(User user);
     void createSponsor(Sponsor user);
-    JwtResponse authenticateTributeAndMentor(User user);
+    JwtResponse authenticateTributeAndMentorAndModerator(User user);
 }

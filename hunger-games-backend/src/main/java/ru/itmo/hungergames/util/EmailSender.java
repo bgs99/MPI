@@ -15,8 +15,6 @@ public class EmailSender {
     private final JavaMailSender javaMailSender;
     @Value("${spring.mail.username}")
     private String fromAddress;
-    @Value("${Auckland.mail.senderName}")
-    private String senderName;
 
     @Autowired
     public EmailSender(JavaMailSender javaMailSender) {
@@ -25,14 +23,14 @@ public class EmailSender {
 
     public void sendNews(User to, List<NewsResponse> newsResponses) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("noreply@baeldung.com");
+        message.setFrom(fromAddress);
         message.setTo(to.getSettings().getEmail());
         message.setSubject("New news");
 
         StringBuilder stringBuilder = new StringBuilder("There are last news:\n");
         for (NewsResponse newsResponse : newsResponses) {
             stringBuilder.append(String.format("%s\n%s\n", newsResponse.getName(), newsResponse.getContent()));
-            stringBuilder.append("----------");
+            stringBuilder.append("----------\n");
         }
 
         message.setText(stringBuilder.toString());

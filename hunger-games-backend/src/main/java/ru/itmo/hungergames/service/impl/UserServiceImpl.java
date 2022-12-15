@@ -8,7 +8,6 @@ import ru.itmo.hungergames.model.entity.user.Settings;
 import ru.itmo.hungergames.model.entity.user.User;
 import ru.itmo.hungergames.model.request.SettingsChangeRequest;
 import ru.itmo.hungergames.model.response.SettingsResponse;
-import ru.itmo.hungergames.repository.SettingsRepository;
 import ru.itmo.hungergames.repository.UserRepository;
 import ru.itmo.hungergames.service.UserService;
 import ru.itmo.hungergames.util.SecurityUtil;
@@ -16,15 +15,12 @@ import ru.itmo.hungergames.util.SecurityUtil;
 @Service
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
-    private final SettingsRepository settingsRepository;
     private final UserRepository userRepository;
     private final SecurityUtil securityUtil;
 
     @Autowired
-    public UserServiceImpl(SettingsRepository settingsRepository,
-                           UserRepository userRepository,
+    public UserServiceImpl(UserRepository userRepository,
                            SecurityUtil securityUtil) {
-        this.settingsRepository = settingsRepository;
         this.userRepository = userRepository;
         this.securityUtil = securityUtil;
     }

@@ -127,13 +127,19 @@ public class SponsorServiceImpl implements SponsorService {
         Sponsor sponsor = sponsorRepository
                 .findById(securityUtil.getAuthenticatedUserId())
                 .orElseThrow(() -> new ResourceNotFoundException(String.format("There's no sponsor with id=%s", securityUtil.getAuthenticatedUserId())));
+        sponsorUtil.checkIfAlreadySubscribed(sponsor);
         NewsSubscriptionOrder order = NewsSubscriptionOrder.builder()
                 .sponsor(sponsor)
                 .email(newsSubscriptionOrderRequest.getEmail())
+                .price(ApplicationParameters.newsSubscriptionPrice)
                 .build();
 
+        NewsSubscriptionOrder savedOrder = newsSubscriptionOrderRepository.save(order);
+        sponsor.setNewsSubscriptionOrder(savedOrder);
+        sponsorRepository.save(sponsor);
+
         return NewsSubscriptionOrderResponse.builder()
-                .subscribeOrderId(newsSubscriptionOrderRepository.save(order).getId())
+                .subscribeOrderId(savedOrder.getId())
                 .build();
     }
 

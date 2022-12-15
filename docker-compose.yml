@@ -15,7 +15,7 @@ services:
     command: '-p 6969'
     networks:
       - hg-network
-  pgadmin:
+  pgadmin: # use `host.docker.internal` as a host to connect to psql
     image: dpage/pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: 'pg@pg.org'
