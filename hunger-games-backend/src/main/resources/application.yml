@@ -12,6 +12,24 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  mail:
+    host: smtp.yandex.ru
+    port: 465
+    username: mpi-hg@yandex.ru
+    password:
+    properties:
+      "mail.smtp.auth": true
+      "mail.smtp.starttls.enable": true
+      "mail.smtp.starttls.required": true
+      "mail.smtp.ssl.": smtp.yandex.ru
+      "mail.smtp.connectiontimeout": 5000
+      "mail.smtp.timeout": 5000
+      "mail.smtp.writetimeout": 5000
+    default-encoding: UTF-8
+    protocol: smtps
 
 server:
   port: 42322
@@ -20,3 +38,6 @@ hunger-games:
   jwt:
     secret: wthisgoingon
     expirationMs: 86400000
+  schedule:
+    sendNews:
+      cron: 0 0 * * * ?
