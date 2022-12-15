@@ -13,6 +13,7 @@ import ru.itmo.hungergames.service.ModeratorService;
 import ru.itmo.hungergames.util.SecurityUtil;
 
 @Service
+@Transactional(readOnly = true)
 public class ModeratorServiceImpl implements ModeratorService {
     private final ModeratorRepository moderatorRepository;
     private final NewsRepository newsRepository;

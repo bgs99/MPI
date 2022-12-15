@@ -12,6 +12,7 @@ import org.hibernate.validator.constraints.URL;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.itmo.hungergames.model.request.SettingsChangeRequest;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -40,6 +41,9 @@ public class User implements UserDetails {
     @URL(protocol = "https")
     @NotNull
     private String avatarUri;
+    @OneToOne
+    @NotNull
+    private Settings settings = new Settings();
 
     public User() {}
 
@@ -87,5 +91,10 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public User updateSettings(SettingsChangeRequest settingsChangeRequest) {
+        getSettings().setEmail(settingsChangeRequest.getEmail());
+        return this;
     }
 }
