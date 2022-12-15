@@ -139,7 +139,7 @@ public class SponsorServiceImpl implements SponsorService {
         sponsorRepository.save(sponsor);
 
         return NewsSubscriptionOrderResponse.builder()
-                .subscribeOrderId(savedOrder.getId())
+                .orderId(savedOrder.getId())
                 .build();
     }
 
