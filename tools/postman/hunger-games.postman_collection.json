@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "5a28ada5-e386-4eec-bee7-9349b5490742",
+		"_postman_id": "9ee8c189-178f-4d65-8605-9374c3f132a0",
 		"name": "hunger-games",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -493,7 +493,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"orderId\": \"4\"\r\n}",
+							"raw": "{\r\n    \"orderId\": \"8ac5affd-30f0-4bef-98a9-2dd4e2b437cb\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -647,6 +647,220 @@
 			]
 		},
 		{
+			"name": "News",
+			"item": [
+				{
+					"name": "Subscribe to News",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"ranodomemail@yandex.ru\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/sponsor/subscription/news",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"sponsor",
+								"subscription",
+								"news"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get News Subscription Price",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/sponsor/subscription/price",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"sponsor",
+								"subscription",
+								"price"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create News",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"News Title 3\",\r\n    \"content\": \"Some news are here\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/moderator/publish/news",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"moderator",
+								"publish",
+								"news"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get News",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/sponsor/news",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"sponsor",
+								"news"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Change Settings",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"randomemail@yandex.ru\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/user/settings",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"settings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get settings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/user/settings",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"settings"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
 			"name": "Security",
 			"item": [
 				{
@@ -670,7 +884,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"username\": \"mentor-1\"\r\n}",
+									"raw": "{\r\n    \"username\": \"moderator-1\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -744,7 +958,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"username\": \"hihi\",\r\n    \"password\": \"haha\",\r\n    \"name\": \"hihi-name\"\r\n}",
+									"raw": "{\r\n    \"username\": \"hihi\",\r\n    \"password\": \"haha\",\r\n    \"name\": \"hihi-name\",\r\n    \"avatarUri\": \"https://www.wallpaperflare.com/static/642/294/549/cat-grass-leaves-autumn-wallpaper.jpg\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
