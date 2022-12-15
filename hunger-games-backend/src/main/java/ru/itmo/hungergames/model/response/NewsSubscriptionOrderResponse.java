@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
@@ -13,5 +12,5 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class NewsSubscriptionOrderResponse {
-    private UUID subscribeOrderId;
+    private UUID orderId;
 }
