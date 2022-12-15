@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.itmo.hungergames.exception.ChatExistsException;
 import ru.itmo.hungergames.exception.NoAccessToChatException;
-import ru.itmo.hungergames.model.entity.UserRole;
+import ru.itmo.hungergames.model.entity.user.UserRole;
 import ru.itmo.hungergames.model.request.ChatCreateRequest;
 import ru.itmo.hungergames.repository.ChatRepository;
 

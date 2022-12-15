@@ -3,7 +3,7 @@ package ru.itmo.hungergames.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.itmo.hungergames.model.entity.Resource;
+import ru.itmo.hungergames.model.entity.order.Resource;
 import ru.itmo.hungergames.repository.ResourceRepository;
 import ru.itmo.hungergames.service.ResourceService;
 

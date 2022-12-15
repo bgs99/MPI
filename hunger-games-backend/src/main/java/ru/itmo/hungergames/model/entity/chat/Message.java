@@ -1,9 +1,11 @@
-package ru.itmo.hungergames.model.entity;
+package ru.itmo.hungergames.model.entity.chat;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import ru.itmo.hungergames.model.entity.chat.Chat;
+import ru.itmo.hungergames.model.entity.user.User;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -24,6 +26,7 @@ public class Message {
     @NotNull
     private String message;
     @NotNull
+    @Builder.Default
     private LocalDateTime dateTime = LocalDateTime.now();
 
     @ManyToOne

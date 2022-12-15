@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.itmo.hungergames.model.entity.Orders;
+import ru.itmo.hungergames.model.entity.order.Orders;
 import ru.itmo.hungergames.model.request.PaymentRequest;
 import ru.itmo.hungergames.repository.OrdersRepository;
 import ru.itmo.hungergames.service.PaymentManagerService;

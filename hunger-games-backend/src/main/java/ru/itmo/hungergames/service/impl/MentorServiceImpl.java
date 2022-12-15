@@ -4,7 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.itmo.hungergames.model.entity.*;
+import ru.itmo.hungergames.model.entity.order.OrderDetail;
+import ru.itmo.hungergames.model.entity.order.Resource;
+import ru.itmo.hungergames.model.entity.order.ResourceOrder;
+import ru.itmo.hungergames.model.entity.user.Mentor;
+import ru.itmo.hungergames.model.entity.user.Tribute;
 import ru.itmo.hungergames.model.request.ApproveResourcesRequest;
 import ru.itmo.hungergames.model.request.OrderDetailRequest;
 import ru.itmo.hungergames.model.request.ResourceOrderRequest;
@@ -61,7 +65,7 @@ public class MentorServiceImpl implements MentorService {
     public List<ResourceApprovalResponse> getOrdersForApproval() {
         List<ResourceOrder> orders = resourceOrderRepository
                 .findAllByTribute_MentorIdAndPaidAndApproved(
-                        securityUtil.getAuthenticatedUser().getId(), true, null);
+                        securityUtil.getAuthenticatedUserId(), true, null);
         return orders.stream().map(ResourceApprovalResponse::new).collect(Collectors.toList());
     }
 
@@ -69,13 +73,13 @@ public class MentorServiceImpl implements MentorService {
     @Transactional
     public void approveResourcesToSend(ApproveResourcesRequest approveResourcesRequest) {
         Mentor mentor = mentorRepository
-                .findById(securityUtil.getAuthenticatedUser().getId())
+                .findById(securityUtil.getAuthenticatedUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("There's no mentor with such ID"));
         Optional<ResourceOrder> orderOptional = resourceOrderRepository
                 .findByIdAndTribute_MentorIdAndPaid(
                         approveResourcesRequest.getOrderId(), mentor.getId(), true);
 
-        if (!orderOptional.isPresent()) {
+        if (orderOptional.isEmpty()) {
             return;
         }
         ResourceOrder order = orderOptional.get();
@@ -94,7 +98,7 @@ public class MentorServiceImpl implements MentorService {
         BigDecimal price = new BigDecimal(0);
         for (OrderDetailRequest orderDetailRequest : resourceOrderRequest.getOrderDetails()) {
             Optional<Resource> resourceOptional = resourceRepository.findById(orderDetailRequest.getResourceId());
-            if (!resourceOptional.isPresent()) {
+            if (resourceOptional.isEmpty()) {
                 continue;
             }
             Resource resource = resourceOptional.get();

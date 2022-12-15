@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
-import ru.itmo.hungergames.model.entity.Resource;
+import ru.itmo.hungergames.model.entity.order.Resource;
 import ru.itmo.hungergames.repository.ResourceRepository;
 
 import java.util.ArrayList;

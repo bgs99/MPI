@@ -4,7 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.itmo.hungergames.model.entity.*;
+import ru.itmo.hungergames.model.entity.chat.Chat;
+import ru.itmo.hungergames.model.entity.chat.Message;
+import ru.itmo.hungergames.model.entity.user.Sponsor;
+import ru.itmo.hungergames.model.entity.user.Tribute;
+import ru.itmo.hungergames.model.entity.user.User;
 import ru.itmo.hungergames.model.request.ChatCreateRequest;
 import ru.itmo.hungergames.model.request.MessageRequest;
 import ru.itmo.hungergames.model.response.ChatResponse;
@@ -72,7 +76,7 @@ public class ChatServiceImpl implements ChatService {
     @Transactional
     public MessageResponse sendMessage(UUID chatId, MessageRequest messageRequest) {
         User user = userRepository
-                .findById(securityUtil.getAuthenticatedUser().getId())
+                .findById(securityUtil.getAuthenticatedUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("There's no user with the ID"));
         Chat chat = chatRepository
                 .findById(chatId)
@@ -99,20 +103,13 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public List<ChatResponse> getChatsByUserId() {
         List<Chat> chats;
-        UUID userId = securityUtil.getAuthenticatedUser().getId();
-        switch (securityUtil.getAuthenticatedUserRole()) {
-            case MENTOR:
-                chats = chatRepository.findAllByTribute_Mentor_Id(userId);
-                break;
-            case SPONSOR:
-                chats = chatRepository.findAllBySponsor_Id(userId);
-                break;
-            case TRIBUTE:
-                chats = chatRepository.findAllByTribute_Id(userId);
-                break;
-            default:
-                chats = Collections.emptyList();
-        }
+        UUID userId = securityUtil.getAuthenticatedUserId();
+        chats = switch (securityUtil.getAuthenticatedUserRole()) {
+            case MENTOR -> chatRepository.findAllByTribute_Mentor_Id(userId);
+            case SPONSOR -> chatRepository.findAllBySponsor_Id(userId);
+            case TRIBUTE -> chatRepository.findAllByTribute_Id(userId);
+            default -> Collections.emptyList();
+        };
         return chats.stream()
                 .map(ChatResponse::new)
                 .collect(Collectors.toList());

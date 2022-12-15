@@ -1,10 +1,13 @@
 package ru.itmo.hungergames.service;
 
+import ru.itmo.hungergames.model.request.NewsSubscriptionOrderRequest;
 import ru.itmo.hungergames.model.request.ResourceOrderRequest;
 import ru.itmo.hungergames.model.response.ResourceApprovedAndNotPaidResponse;
 import ru.itmo.hungergames.model.response.ResourceOrderResponse;
 import ru.itmo.hungergames.model.response.SponsorResponse;
+import ru.itmo.hungergames.model.response.NewsSubscriptionOrderResponse;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,4 +16,6 @@ public interface SponsorService {
     ResourceOrderResponse sendResourcesForApproval(ResourceOrderRequest resourceOrderRequest);
     List<ResourceApprovedAndNotPaidResponse> getOrdersNotPaidAndApproved();
     SponsorResponse getSponsorById(UUID sponsorId);
+    NewsSubscriptionOrderResponse subscribeToNews(NewsSubscriptionOrderRequest newsSubscriptionOrderRequest);
+    BigDecimal getPriceOfNewsSubscription();
 }

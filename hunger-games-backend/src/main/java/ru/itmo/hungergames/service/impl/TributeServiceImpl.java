@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.itmo.hungergames.model.entity.AdvertisementOrder;
-import ru.itmo.hungergames.model.entity.Tribute;
+import ru.itmo.hungergames.model.entity.order.AdvertisementOrder;
+import ru.itmo.hungergames.model.entity.user.Tribute;
 import ru.itmo.hungergames.model.request.AdvertisingTextRequest;
 import ru.itmo.hungergames.model.response.AdvertisingTextResponse;
 import ru.itmo.hungergames.model.response.TributeResponse;
@@ -54,7 +54,7 @@ public class TributeServiceImpl implements TributeService {
     @Transactional
     public AdvertisingTextResponse sendAdvertisingText(AdvertisingTextRequest advertisingTextRequest) {
         Tribute tribute = tributeRepository
-                .findById(securityUtil.getAuthenticatedUser().getId())
+                .findById(securityUtil.getAuthenticatedUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("There's no tribute with such ID"));
 
         AdvertisementOrder order = advertisementOrderRepository.save(AdvertisementOrder.builder()

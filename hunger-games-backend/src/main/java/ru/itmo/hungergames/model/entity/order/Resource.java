@@ -1,30 +1,28 @@
-package ru.itmo.hungergames.model.entity;
+package ru.itmo.hungergames.model.entity.order;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "order_details")
-@AllArgsConstructor
-@Builder
-public class OrderDetail {
+@Table(name = "resources")
+public class Resource {
     @Id
-    @Column(name = "order_detail_id")
+    @Column(name = "resource_id")
     @GenericGenerator(name = "uuid-gen", strategy = "uuid2")
     @GeneratedValue(generator = "uuid-gen")
     private UUID id;
-    @Size(min = 1)
-    private int size;
-
-    @OneToOne
     @NotNull
-    private Resource resource;
+    private String name;
+    @NotNull
+    private BigDecimal price;
 }

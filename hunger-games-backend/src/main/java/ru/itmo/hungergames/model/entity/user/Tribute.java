@@ -1,4 +1,4 @@
-package ru.itmo.hungergames.model.entity;
+package ru.itmo.hungergames.model.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Entity;

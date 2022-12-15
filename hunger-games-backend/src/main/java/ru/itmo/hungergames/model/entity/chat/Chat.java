@@ -1,10 +1,12 @@
-package ru.itmo.hungergames.model.entity;
+package ru.itmo.hungergames.model.entity.chat;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import ru.itmo.hungergames.model.entity.user.Sponsor;
+import ru.itmo.hungergames.model.entity.user.Tribute;
 
 import java.util.List;
 import java.util.UUID;
@@ -30,7 +32,7 @@ public class Chat {
     private Tribute tribute;
 
     @ManyToOne
-    @JoinColumn(name = "sponsor_id", nullable = false)
+    @JoinColumn(name = "sponsor_id")
     @JsonBackReference
     @NotNull
     private Sponsor sponsor;

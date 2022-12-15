@@ -1,4 +1,4 @@
-package ru.itmo.hungergames.model.entity;
+package ru.itmo.hungergames.model.entity.order;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -15,7 +15,6 @@ import java.util.UUID;
 @Entity
 @AllArgsConstructor
 @SuperBuilder
-@Table(indexes = @Index(columnList = "tribute_user_id"), name = "orders")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Orders {
     @Id
@@ -28,6 +27,4 @@ public class Orders {
     private boolean paid = false;
     @NotNull
     private BigDecimal price;
-    @ManyToOne
-    private Tribute tribute;
 }

@@ -1,7 +1,7 @@
 package ru.itmo.hungergames.model.response;
 
 import lombok.*;
-import ru.itmo.hungergames.model.entity.OrderDetail;
+import ru.itmo.hungergames.model.entity.order.OrderDetail;
 
 @Getter
 @Setter

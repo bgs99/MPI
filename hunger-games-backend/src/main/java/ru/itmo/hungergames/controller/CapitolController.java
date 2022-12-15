@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.itmo.hungergames.model.entity.User;
+import ru.itmo.hungergames.model.entity.user.User;
 import ru.itmo.hungergames.model.request.CapitolSignInRequest;
 import ru.itmo.hungergames.model.response.MentorResponse;
 import ru.itmo.hungergames.model.response.TributeResponse;

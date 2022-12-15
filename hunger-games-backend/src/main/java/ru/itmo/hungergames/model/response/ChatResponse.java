@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import ru.itmo.hungergames.model.entity.Chat;
+import ru.itmo.hungergames.model.entity.chat.Chat;
 
 import java.util.UUID;
 

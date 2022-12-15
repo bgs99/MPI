@@ -1,10 +1,12 @@
-package ru.itmo.hungergames.model.entity;
+package ru.itmo.hungergames.model.entity.user;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 @Table(name = "users")
 @Getter
 @Setter
+@SuperBuilder
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User implements UserDetails {
     @Id
@@ -48,6 +51,7 @@ public class User implements UserDetails {
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
+    @Builder.Default
     private Set<UserRole> userRoles = new HashSet<>();
 
     @Override
