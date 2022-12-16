@@ -38,10 +38,8 @@ public class User implements UserDetails {
     @NotEmpty(message = "password must not be empty")
     private String password;
     @URL(protocol = "https")
-    @NotNull
     private String avatarUri;
     @OneToOne
-    @NotNull
     @JoinColumn(name = "setting_id")
     private Settings settings;
 
