@@ -10,6 +10,8 @@ import ru.itmo.hungergames.repository.SponsorRepository;
 import ru.itmo.hungergames.service.NewsService;
 import ru.itmo.hungergames.util.EmailSender;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -33,6 +35,7 @@ public class NewsServiceImpl implements NewsService {
     public void sendNewsToAllSubscribers() {
         List<NewsResponse> newsResponses = newsRepository
                 .findAll().stream()
+                .filter(n -> ChronoUnit.HOURS.between(LocalDateTime.now(), n.getDateTime()) >= 1)
                 .map(NewsResponse::new)
                 .toList();
         List<Sponsor> sponsors = sponsorRepository.findAllByNewsSubscriptionOrder_paid(true);
