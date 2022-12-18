@@ -104,7 +104,7 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public JwtResponse authenticateTributeAndMentorAndModerator(User user) {
+    public JwtResponse authenticateTributeAndMentor(User user) {
         User userDetails = (User)userDetailsService.loadUserByUsername(user.getUsername());
         Set<String> roles = userDetails
                 .getAuthorities().stream()
@@ -112,8 +112,7 @@ public class SecurityServiceImpl implements SecurityService {
                 .collect(Collectors.toSet());
         Authentication authentication;
         if (roles.contains(UserRole.MENTOR.toString()) ||
-                roles.contains(UserRole.TRIBUTE.toString()) ||
-                roles.contains(UserRole.MODERATOR.toString())) {
+                roles.contains(UserRole.TRIBUTE.toString())) {
              authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), userDetails.getAuthorities());
         } else {
              authentication = authenticationProvider.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
