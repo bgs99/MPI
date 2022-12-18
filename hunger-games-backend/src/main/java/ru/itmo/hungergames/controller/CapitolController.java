@@ -32,7 +32,7 @@ public class CapitolController {
     @PostMapping("/signin")
     public ResponseEntity<?> generateToken(@Valid @RequestBody CapitolSignInRequest capitolSignInRequest) {
         return ResponseEntity.ok(securityService
-                .authenticateTributeAndMentorAndModerator(new User(
+                .authenticateTributeAndMentor(new User(
                 capitolSignInRequest.getUsername(),
                         null
                 )));
