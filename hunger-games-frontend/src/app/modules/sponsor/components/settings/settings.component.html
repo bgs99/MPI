@@ -1,0 +1,10 @@
+Текущая электронная почта
+<input type="email" disabled="true" [ngModel]="oldEmail">
+Новая электронная почта
+<input type="email" [(ngModel)]="email">
+
+<ng-container *ngIf="this.subscriptionPrice !== null">
+    <h2>Цена подписки: </h2>
+    <div>{{this.subscriptionPrice}}$</div>
+    <button (click)="this.subscribe()">Подписаться</button>
+</ng-container>

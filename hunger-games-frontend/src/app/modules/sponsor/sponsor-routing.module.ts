@@ -7,6 +7,8 @@ import { TributesComponent } from './components/tributes/tributes.component';
 import { TributeComponent } from './components/tribute/tribute.component';
 import { ChatsComponent } from './components/chats/chats.component';
 import { ChatComponent } from './components/chat/chat.component';
+import { NewsComponent } from './components/news/news.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
 const routes: Routes = [
     { path: '', component: MenuComponent },
@@ -17,6 +19,8 @@ const routes: Routes = [
     { path: 'chats', component: ChatsComponent },
     { path: 'chat/:id', component: ChatComponent },
     { path: 'chat/:chatId/:tribute/createorder', component: CreateOrderComponent },
+    { path: 'news', component: NewsComponent },
+    { path: 'settings', component: SettingsComponent },
 ];
 
 @NgModule({

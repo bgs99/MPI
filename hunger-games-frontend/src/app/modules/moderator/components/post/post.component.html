@@ -1,0 +1,7 @@
+<app-header></app-header>
+
+<input type="text" [(ngModel)]="title">
+
+<angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="htmlContent"></angular-editor>
+
+<button mat-raised-button (click)="post()">Опубликовать</button>

@@ -1,0 +1,15 @@
+<app-header></app-header>
+<div class="chat-list" #chatContainer>
+    <ul style="list-style-type:none;">
+        <li *ngFor="let post of this.news">
+            <mat-card>
+                <mat-card-header matListItemTitle>
+                    <mat-card-title>{{post.name}}</mat-card-title>
+                    <mat-card-subtitle>{{post.timestamp}}</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content [innerHTML]="post.content">
+                </mat-card-content>
+            </mat-card>
+        </li>
+    </ul>
+</div>
