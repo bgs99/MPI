@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Range;
 
 @Getter
 @Setter
@@ -18,6 +19,6 @@ import lombok.Setter;
                 "accountNonExpired", "accountNonLocked",
                 "credentialsNonExpired", "enabled"})
 public class Mentor extends User {
-    @Size(min = 1, max = 12)
+    @Range(min = 1, max = 12)
     private int district;
 }

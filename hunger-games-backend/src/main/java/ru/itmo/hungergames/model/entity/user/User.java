@@ -33,6 +33,7 @@ public class User implements UserDetails {
     private UUID id;
     @NotEmpty(message = "Name must not be empty")
     private String name;
+    @Column(unique=true)
     @NotEmpty(message = "Username must not be empty")
     private String username;
     @NotEmpty(message = "password must not be empty")
