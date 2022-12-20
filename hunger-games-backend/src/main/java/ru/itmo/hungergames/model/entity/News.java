@@ -19,7 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class News {
     @Id
-    @Column(name = "message_id")
+    @Column(name = "news_id")
     @GenericGenerator(name = "uuid-gen", strategy = "uuid2")
     @GeneratedValue(generator = "uuid-gen")
     private UUID id;

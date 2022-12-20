@@ -72,6 +72,9 @@ class MentorServiceImplTest {
         Mockito.doReturn(mentor)
                 .when(securityUtil)
                 .getAuthenticatedUser();
+        Mockito.doReturn(mentorID)
+                .when(securityUtil)
+                .getAuthenticatedUserId();
 
         mentorService.getOrdersForApproval();
 
@@ -79,6 +82,7 @@ class MentorServiceImplTest {
     }
 
     @Test
+    @DirtiesContext
     @Sql(value = {"/initScripts/create-mentor.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(value = {"/initScripts/drop-mentor.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void approveResourcesToSend() {
@@ -93,10 +97,18 @@ class MentorServiceImplTest {
         Mockito.doReturn(mentor)
                 .when(securityUtil)
                 .getAuthenticatedUser();
+        Mockito.doReturn(mentorID)
+                .when(securityUtil)
+                .getAuthenticatedUserId();
 
         UUID orderId = new UUID(1, 1);
         ResourceOrder order = ResourceOrder.builder().id(orderId).paid(true).build();
-        Mockito.doReturn(Optional.of(order)).when(resourceOrderRepository).findByIdAndTribute_MentorIdAndPaid(orderId, mentorID, true);
+        Mockito.doReturn(Optional.of(order))
+                .when(resourceOrderRepository)
+                .findByIdAndTribute_MentorIdAndPaid(orderId, mentorID, true);
+        Mockito.doReturn(order)
+                .when(resourceOrderRepository)
+                .save(ArgumentMatchers.any(ResourceOrder.class));
 
         mentorService.approveResourcesToSend(new ApproveResourcesRequest(orderId, true));
         Mockito.verify(resourceOrderRepository, Mockito.times(1)).save(order);

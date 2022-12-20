@@ -87,8 +87,8 @@ class SponsorServiceImplTest {
         sponsor.setId(sponsorId);
         Mockito.when(sponsorRepository.findById(sponsorId))
                 .thenReturn(Optional.of(sponsor));
-        Mockito.when(securityUtil.getAuthenticatedUser())
-                .thenReturn(sponsor);
+        Mockito.when(securityUtil.getAuthenticatedUserId())
+                .thenReturn(sponsorId);
 
         List<OrderDetailRequest> orderDetailRequestList = new ArrayList<>();
         orderDetailRequestList.add(new OrderDetailRequest(UUID.fromString("33ff5ee9-c0d7-4955-b2cd-a0aa3d484b98"), 1));

@@ -108,6 +108,9 @@ class ChatServiceImplTest {
         Mockito.doReturn(user)
                 .when(securityUtil)
                 .getAuthenticatedUser();
+        Mockito.doReturn(userUUID)
+                .when(securityUtil)
+                .getAuthenticatedUserId();
 
         MessageResponse messageResponse = chatService.sendMessage(chatUUID, new MessageRequest(textMessage));
         Message message = messageRepository.findById(messageResponse.getId()).orElseThrow();
