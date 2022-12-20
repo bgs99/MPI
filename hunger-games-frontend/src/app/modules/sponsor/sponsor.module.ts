@@ -21,6 +21,8 @@ import { ChatsComponent } from './components/chats/chats.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { TributesComponent } from './components/tributes/tributes.component';
 import { TributeComponent } from './components/tribute/tribute.component';
+import { SettingsComponent } from './components/settings/settings.component';
+import { NewsComponent } from './components/news/news.component';
 
 
 @NgModule({
@@ -32,6 +34,8 @@ import { TributeComponent } from './components/tribute/tribute.component';
         ChatComponent,
         TributesComponent,
         TributeComponent,
+        SettingsComponent,
+        NewsComponent,
     ],
     imports: [
         CommonModule,

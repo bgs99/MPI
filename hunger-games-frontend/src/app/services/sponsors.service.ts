@@ -7,6 +7,7 @@ import { Resource } from '../models/resource';
 import { PaymentData } from '../models/payment-data';
 import { Order, ResourceOrderRequest } from '../models/order';
 import { TributeId } from '../models/tribute';
+import { News } from '../models/news';
 
 
 @Injectable({
@@ -40,5 +41,38 @@ export class SponsorsService {
         });
 
         return result;
+    }
+
+    async isSubscribed(): Promise<boolean> {
+        return false; // TODO:
+    }
+
+    async setEmail(email: string): Promise<void> {
+        // TODO:
+    }
+
+    async getEmail(): Promise<string> {
+        return ''; // TODO:
+    }
+
+    async getNews(): Promise<News[]> {
+        return await lastValueFrom(this.http.get<News[]>(
+            `${SponsorsService.BASE_URL}/news`
+        ));
+    }
+
+    private static SUBSCRIPTION_URL: string = `${SponsorsService.BASE_URL}/subscription`;
+
+    async getSubscriptionPrice(): Promise<number> {
+        return await lastValueFrom(this.http.get<number>(
+            `${SponsorsService.SUBSCRIPTION_URL}/price`
+        ));
+    }
+
+    async subscribe(email: string): Promise<Order> {
+        return await lastValueFrom(this.http.post<Order>(
+            `${SponsorsService.SUBSCRIPTION_URL}/news`,
+            { email }
+        ));
     }
 }
