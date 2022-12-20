@@ -1,6 +1,3 @@
 <app-header></app-header>
-<h1>TODO: Proper menu UI</h1>
-<button [routerLink]="['chats']">Чаты</button>
-<button [routerLink]="['tributes']">Трибуты</button>
-<button [routerLink]="['news']">Новости</button>
-<button [routerLink]="['settings']">Настройки</button>
+<app-menu [menuItems]="this.menuItems"></app-menu>
+

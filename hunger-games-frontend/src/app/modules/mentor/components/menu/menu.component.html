@@ -1,5 +1,2 @@
 <app-header></app-header>
-<h1>TODO: Proper menu UI</h1>
-<button [routerLink]="['/mentor/approval']">Рассмотреть предложения спонсоров</button>
-<button [routerLink]="['/mentor/tributes']">Запросить ресурсы</button>
-<button [routerLink]="['chats']">Чаты</button>
+<app-menu [menuItems]="this.menuItems"></app-menu>

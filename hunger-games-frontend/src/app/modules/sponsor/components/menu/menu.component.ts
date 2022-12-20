@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { MenuItem } from 'src/app/modules/shared/components/menu/menu.component';
 
 @Component({
-  selector: 'app-sponsor-menu',
-  templateUrl: './menu.component.html'
+    templateUrl: './menu.component.html',
 })
 export class MenuComponent {
-
-  constructor(public router: Router) { }
+    menuItems: MenuItem[] = [
+        new MenuItem('chats', 'Чаты', 'message'),
+        new MenuItem('tributes', 'Трибуты', 'people'),
+        new MenuItem('news', 'Новости', 'email'),
+        new MenuItem('settings', 'настройки', 'message'),
+    ];
 }

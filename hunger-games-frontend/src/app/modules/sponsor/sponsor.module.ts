@@ -24,6 +24,7 @@ import { TributeComponent } from './components/tribute/tribute.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { NewsComponent } from './components/news/news.component';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import { MatCardModule } from '@angular/material/card';
         CapitolModule,
 
         MatCardModule,
+        MatIconModule,
         MatListModule,
         MatStepperModule,
         MatTableModule,
