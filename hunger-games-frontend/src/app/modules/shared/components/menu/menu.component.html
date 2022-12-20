@@ -1,0 +1,7 @@
+<div id="menu">
+    <button mat-raised-button *ngFor="let item of this.menuItems" [routerLink]="[item.path]">
+        <mat-icon class="icon">{{item.icon}}</mat-icon>
+        <span>{{item.label}}</span>
+    </button>
+</div>
+

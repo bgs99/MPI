@@ -17,6 +17,7 @@ import { TributesComponent } from './components/tributes/tributes.component';
 import { ResourcesComponent } from './components/resources/resources.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { ChatsComponent } from './components/chats/chats.component';
+import { MenuComponent } from './components/menu/menu.component';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { ChatsComponent } from './components/chats/chats.component';
         ResourcesComponent,
         ChatComponent,
         ChatsComponent,
+        MenuComponent,
     ],
     imports: [
         CommonModule,
@@ -47,6 +49,7 @@ import { ChatsComponent } from './components/chats/chats.component';
         ResourcesComponent,
         ChatComponent,
         ChatsComponent,
+        MenuComponent,
     ]
 })
 export class SharedModule { }

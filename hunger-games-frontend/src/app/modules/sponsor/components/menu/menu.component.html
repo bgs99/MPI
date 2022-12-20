@@ -1,25 +1,3 @@
 <app-header></app-header>
-<div id="menu">
-    <button mat-raised-button [routerLink]="['chats']">
-        <mat-icon class="icon">message</mat-icon>
-        <br/>
-        Чаты
-    </button>
-    <button mat-raised-button [routerLink]="['tributes']">
-        <mat-icon class="icon">people</mat-icon>
-        <br/>
-        Трибуты
-    </button>
-    <button mat-raised-button [routerLink]="['news']">
-        <mat-icon class="icon">email</mat-icon>
-        <br/>
-        Новости
-    </button>
-    
-    <button mat-raised-button [routerLink]="['settings']">
-        <mat-icon class="icon">settings</mat-icon>
-        <br/>
-        Настройки
-    </button>
-</div>
+<app-menu [menuItems]="this.menuItems"></app-menu>
 

@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { MenuItem } from 'src/app/modules/shared/components/menu/menu.component';
 
 @Component({
-  selector: 'app-menu',
-  templateUrl: './menu.component.html'
+    templateUrl: './menu.component.html'
 })
 export class MenuComponent {
-    constructor(public router: Router) { }
+    menuItems: MenuItem[] = [
+        new MenuItem('post', 'Опубликовать новость', 'publish'),
+        new MenuItem('review', 'Рассмотреть посты', 'rate_review'),
+    ];
 }
