@@ -86,12 +86,16 @@ class TributeServiceImplTest {
     @Sql(value = {"/initScripts/create-tribute.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(value = {"/initScripts/drop-tribute.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void sendAdvertisingText() {
-        UUID id = UUID.fromString("9667900f-24b2-4795-ad20-28b933d9ae32");
+        UUID tributeId = UUID.fromString("9667900f-24b2-4795-ad20-28b933d9ae32");
         Tribute tribute = new Tribute();
-        tribute.setId(id);
+        tribute.setId(tributeId);
+
         Mockito.doReturn(Optional.of(tribute))
                 .when(tributeRepository)
-                .findById(id);
+                .findById(tributeId);
+        Mockito.doReturn(tributeId)
+                .when(securityUtil)
+                .getAuthenticatedUserId();
         Mockito.doReturn(tribute)
                 .when(securityUtil)
                 .getAuthenticatedUser();

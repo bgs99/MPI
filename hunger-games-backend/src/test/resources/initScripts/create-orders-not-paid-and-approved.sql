@@ -13,11 +13,12 @@ INSERT INTO users (user_id, name, username) VALUES ('9667900f-24b2-4795-ad20-28b
 INSERT INTO user_roles(user_id, role) VALUES ('9667900f-24b2-4795-ad20-28b933d9ae32', 'TRIBUTE');
 INSERT INTO tributes (user_id, mentor_user_id) values  ('9667900f-24b2-4795-ad20-28b933d9ae32', '1d3ad419-e98f-43f1-9ac6-08776036cded');
 
-INSERT INTO orders(order_id, approved, paid, price, tribute_user_id) VALUES ('3d6e3de8-3311-4d89-9c92-4b5bf13f55c7', true, false, 250, '9667900f-24b2-4795-ad20-28b933d9ae32');
-INSERT INTO resource_orders(order_id) VALUES('3d6e3de8-3311-4d89-9c92-4b5bf13f55c7');
+INSERT INTO orders(order_id, approved, paid, price) VALUES ('3d6e3de8-3311-4d89-9c92-4b5bf13f55c7', true, false, 250);
+INSERT INTO resource_orders(order_id, tribute_user_id) VALUES('3d6e3de8-3311-4d89-9c92-4b5bf13f55c7', '9667900f-24b2-4795-ad20-28b933d9ae32');
 
-INSERT INTO orders(order_id, approved, paid, price, tribute_user_id) VALUES ('61091dd1-84db-44ae-a7fe-4d98316a63cc', true, false, 200, '9667900f-24b2-4795-ad20-28b933d9ae32');
-INSERT INTO resource_orders(order_id) VALUES('61091dd1-84db-44ae-a7fe-4d98316a63cc');
+INSERT INTO orders(order_id, approved, paid, price) VALUES ('61091dd1-84db-44ae-a7fe-4d98316a63cc', true, false, 200);
+INSERT INTO resource_orders(order_id, tribute_user_id) VALUES('61091dd1-84db-44ae-a7fe-4d98316a63cc', '9667900f-24b2-4795-ad20-28b933d9ae32');
+
 
 INSERT INTO order_details(order_detail_id, size, resource_resource_id, order_id) VALUES ('a11bddd0-5b7c-4231-897b-a7e484467948', 1, '33ff5ee9-c0d7-4955-b2cd-a0aa3d484b98', '61091dd1-84db-44ae-a7fe-4d98316a63cc');
 INSERT INTO order_details(order_detail_id, size, resource_resource_id, order_id) VALUES ('61653708-23f6-404b-bbe4-4a5b954522b5', 2, '47f75e81-4f14-4af5-bce2-b6d5af372d94', '61091dd1-84db-44ae-a7fe-4d98316a63cc');

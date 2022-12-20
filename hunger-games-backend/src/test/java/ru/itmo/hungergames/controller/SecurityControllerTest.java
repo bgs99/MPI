@@ -44,7 +44,8 @@ public class SecurityControllerTest {
                                 {
                                     "username": "hoho",
                                     "password": "haha",
-                                    "name": "hihi-name"
+                                    "name": "hihi-name",
+                                    "avatarUri": ""
                                 }""")
                         .accept(MediaType.APPLICATION_JSON)
                 )
@@ -101,7 +102,8 @@ public class SecurityControllerTest {
                                 {
                                     "username": "testsponsor",
                                     "password": "ahaha",
-                                    "name": "hihi-name"
+                                    "name": "hihi-name",
+                                    "avatarUri": ""
                                 }""")
                         .accept(MediaType.APPLICATION_JSON)
                 ).andExpect(status().isConflict())
