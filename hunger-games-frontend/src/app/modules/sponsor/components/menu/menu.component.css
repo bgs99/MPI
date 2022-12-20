@@ -1,0 +1,16 @@
+#menu {
+    display: flex;
+    justify-content: space-around;
+}
+
+#menu button {
+    width: 20vw;
+    height: 20vw;
+    font-size: 2vw;
+}
+
+.icon {
+    font-size: 5vw;
+    width: 20vw;
+    height: 10vw;
+}
