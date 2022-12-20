@@ -11,6 +11,7 @@ const routes: Routes = [
     { path: 'mentor', loadChildren: () => import('./modules/mentor/mentor.module').then(m => m.MentorModule) },
     { path: 'sponsor', loadChildren: () => import('./modules/sponsor/sponsor.module').then(m => m.SponsorModule) },
     { path: 'tribute', loadChildren: () => import('./modules/tribute/tribute.module').then(m => m.TributeModule) },
+    { path: 'moderator', loadChildren: () => import('./modules/moderator/moderator.module').then(m => m.ModeratorModule) },
 ];
 
 @NgModule({

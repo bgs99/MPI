@@ -61,6 +61,18 @@ export class AuthService {
         this.http = new HttpClient(backend);
     }
 
+    logout() {
+        this._authData = null;
+        localStorage.removeItem('auth');
+    }
+
+    async loginModerator(username: string, password: string): Promise<void> {
+        const url: string = `${ApiService.baseURL}/moderator/signin`;
+        const login = await lastValueFrom(this.http.post<LoginResult>(url, { username, password }));
+        this._authData = new AuthData(login.id, login.name, login.token, UserRole.Moderator);
+        localStorage.setItem('auth', JSON.stringify(this._authData))
+    }
+
     async login(username: string, password: string): Promise<void> {
         const url: string = `${this.BASE_URL}/signin`;
         const login = await lastValueFrom(this.http.post<LoginResult>(url, { username, password }));
