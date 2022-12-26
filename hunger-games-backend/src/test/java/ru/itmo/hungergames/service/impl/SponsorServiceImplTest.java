@@ -213,7 +213,6 @@ class SponsorServiceImplTest {
     @Sql(value = {"/initScripts/create-sponsor.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(value = {"/initScripts/drop-sponsor.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getNewsWithoutSubscription(){
-        String email = "example@email.com";
         UUID sponsorId = UUID.fromString("4a9f1d37-c6fd-4391-8082-655bb98fb460");
         Mockito.when(securityUtil.getAuthenticatedUserId())
                 .thenReturn(sponsorId);
@@ -227,7 +226,6 @@ class SponsorServiceImplTest {
     @Sql(value = {"/initScripts/create-sponsor-with-subscription.sql","/initScripts/create-moderators-and-news.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(value = {"/initScripts/drop-sponsor-with-subscription.sql","/initScripts/drop-moderators-and-news.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getNews(){
-        String email = "example@email.com";
         UUID sponsorId = UUID.fromString("4a9f1d37-c6fd-4391-8082-655bb98fb460");
         int expectedSize = 4;
         Mockito.when(securityUtil.getAuthenticatedUserId())
