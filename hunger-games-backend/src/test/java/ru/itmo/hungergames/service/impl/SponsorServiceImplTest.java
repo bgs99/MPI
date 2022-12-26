@@ -12,6 +12,7 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.itmo.hungergames.exception.NotNewsSubscribedException;
 import ru.itmo.hungergames.model.entity.order.NewsSubscriptionOrder;
 import ru.itmo.hungergames.model.entity.order.OrderDetail;
 import ru.itmo.hungergames.model.entity.order.ResourceOrder;
@@ -20,10 +21,7 @@ import ru.itmo.hungergames.model.entity.user.Tribute;
 import ru.itmo.hungergames.model.request.NewsSubscriptionOrderRequest;
 import ru.itmo.hungergames.model.request.OrderDetailRequest;
 import ru.itmo.hungergames.model.request.ResourceOrderRequest;
-import ru.itmo.hungergames.model.response.NewsSubscriptionOrderResponse;
-import ru.itmo.hungergames.model.response.ResourceApprovedAndNotPaidResponse;
-import ru.itmo.hungergames.model.response.ResourceOrderResponse;
-import ru.itmo.hungergames.model.response.SponsorResponse;
+import ru.itmo.hungergames.model.response.*;
 import ru.itmo.hungergames.repository.*;
 import ru.itmo.hungergames.service.SponsorService;
 import ru.itmo.hungergames.util.SecurityUtil;
@@ -58,6 +56,8 @@ class SponsorServiceImplTest {
     SponsorUtil sponsorUtil;
     @SpyBean
     NewsSubscriptionOrderRepository newsSubscriptionOrderRepository;
+    @SpyBean
+    NewsRepository newsRepository;
 
     @Test
     @Sql(value = {"/initScripts/create-multiple-sponsors.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -180,7 +180,7 @@ class SponsorServiceImplTest {
     @Test
     @DirtiesContext
     @Sql(value = {"/initScripts/create-sponsor.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    //@Sql(value = {"/initScripts/drop-sponsor.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    @Sql(value = {"/initScripts/drop-sponsor.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void subscribeToNews() {
         String email = "example@email.com";
         UUID sponsorId = UUID.fromString("4a9f1d37-c6fd-4391-8082-655bb98fb460");
@@ -205,6 +205,38 @@ class SponsorServiceImplTest {
         assertEquals(sponsorId, newsSubscriptionOrder.getSponsor().getId());
         assertEquals(email, newsSubscriptionOrder.getEmail());
 
-        //newsSubscriptionOrderRepository.delete(newsSubscriptionOrder);
+        sponsor.setNewsSubscriptionOrder(null);
+        sponsorRepository.save(sponsor);
+        newsSubscriptionOrderRepository.delete(newsSubscriptionOrder);
+    }
+    @Test
+    @Sql(value = {"/initScripts/create-sponsor.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {"/initScripts/drop-sponsor.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    void getNewsWithoutSubscription(){
+        String email = "example@email.com";
+        UUID sponsorId = UUID.fromString("4a9f1d37-c6fd-4391-8082-655bb98fb460");
+        Mockito.when(securityUtil.getAuthenticatedUserId())
+                .thenReturn(sponsorId);
+
+        Throwable thrown = catchThrowable(()->sponsorService.getNews());
+        assertThat(thrown).isInstanceOf(NotNewsSubscribedException.class);
+        assertThat(thrown.getMessage()).contains("You have no access to news. Buy subscription");
+    }
+
+    @Test
+    @Sql(value = {"/initScripts/create-sponsor-with-subscription.sql","/initScripts/create-moderators-and-news.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(value = {"/initScripts/drop-sponsor-with-subscription.sql","/initScripts/drop-moderators-and-news.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    void getNews(){
+        String email = "example@email.com";
+        UUID sponsorId = UUID.fromString("4a9f1d37-c6fd-4391-8082-655bb98fb460");
+        int expectedSize = 4;
+        Mockito.when(securityUtil.getAuthenticatedUserId())
+                .thenReturn(sponsorId);
+        List<NewsResponse> news = sponsorService.getNews();
+
+        Mockito.verify(sponsorUtil, Mockito.times(1)).checkIfSponsorCanSeeNews(ArgumentMatchers.any(Sponsor.class));
+        Mockito.verify(newsRepository, Mockito.times(1)).findAll();
+
+        assertTrue(news.size()>=expectedSize);
     }
 }
