@@ -12,21 +12,22 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.itmo.hungergames.model.entity.order.NewsSubscriptionOrder;
 import ru.itmo.hungergames.model.entity.order.OrderDetail;
 import ru.itmo.hungergames.model.entity.order.ResourceOrder;
 import ru.itmo.hungergames.model.entity.user.Sponsor;
 import ru.itmo.hungergames.model.entity.user.Tribute;
+import ru.itmo.hungergames.model.request.NewsSubscriptionOrderRequest;
 import ru.itmo.hungergames.model.request.OrderDetailRequest;
 import ru.itmo.hungergames.model.request.ResourceOrderRequest;
+import ru.itmo.hungergames.model.response.NewsSubscriptionOrderResponse;
 import ru.itmo.hungergames.model.response.ResourceApprovedAndNotPaidResponse;
 import ru.itmo.hungergames.model.response.ResourceOrderResponse;
 import ru.itmo.hungergames.model.response.SponsorResponse;
-import ru.itmo.hungergames.repository.OrderDetailRepository;
-import ru.itmo.hungergames.repository.ResourceOrderRepository;
-import ru.itmo.hungergames.repository.SponsorRepository;
-import ru.itmo.hungergames.repository.TributeRepository;
+import ru.itmo.hungergames.repository.*;
 import ru.itmo.hungergames.service.SponsorService;
 import ru.itmo.hungergames.util.SecurityUtil;
+import ru.itmo.hungergames.util.SponsorUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,10 @@ class SponsorServiceImplTest {
     ResourceOrderRepository resourceOrderRepository;
     @Autowired
     OrderDetailRepository orderDetailRepository;
+    @SpyBean
+    SponsorUtil sponsorUtil;
+    @SpyBean
+    NewsSubscriptionOrderRepository newsSubscriptionOrderRepository;
 
     @Test
     @Sql(value = {"/initScripts/create-multiple-sponsors.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -170,5 +175,36 @@ class SponsorServiceImplTest {
         Mockito.verify(sponsorRepository, Mockito.times(1)).findById(id);
         assertThat(thrown).isInstanceOf(ResourceNotFoundException.class);
         assertThat(thrown.getMessage()).contains(String.format("Sponsor with id=%s doesn't exist", id));
+    }
+
+    @Test
+    @DirtiesContext
+    @Sql(value = {"/initScripts/create-sponsor.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    //@Sql(value = {"/initScripts/drop-sponsor.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    void subscribeToNews() {
+        String email = "example@email.com";
+        UUID sponsorId = UUID.fromString("4a9f1d37-c6fd-4391-8082-655bb98fb460");
+        Mockito.when(securityUtil.getAuthenticatedUserId())
+                .thenReturn(sponsorId);
+
+        NewsSubscriptionOrderRequest newsSubscriptionOrderRequest = new NewsSubscriptionOrderRequest(email);
+        NewsSubscriptionOrderResponse newsSubscriptionOrderResponse = sponsorService.subscribeToNews(newsSubscriptionOrderRequest);
+
+        Sponsor sponsor = sponsorRepository.findById(sponsorId).orElseThrow();
+        NewsSubscriptionOrder newsSubscriptionOrder = sponsor.getNewsSubscriptionOrder();
+
+        Mockito.verify(sponsorUtil, Mockito.times(1))
+                .checkIfAlreadySubscribed(ArgumentMatchers.any(Sponsor.class));
+        Mockito.verify(newsSubscriptionOrderRepository, Mockito.times(1))
+                .save(ArgumentMatchers.any(NewsSubscriptionOrder.class));
+        Mockito.verify(sponsorRepository, Mockito.times(1))
+                .save(ArgumentMatchers.any(Sponsor.class));
+
+
+        assertEquals(newsSubscriptionOrderResponse.getOrderId(), newsSubscriptionOrder.getId());
+        assertEquals(sponsorId, newsSubscriptionOrder.getSponsor().getId());
+        assertEquals(email, newsSubscriptionOrder.getEmail());
+
+        //newsSubscriptionOrderRepository.delete(newsSubscriptionOrder);
     }
 }
