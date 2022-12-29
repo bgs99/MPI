@@ -21,8 +21,8 @@ jobs:
       uses: gradle/gradle-build-action@v2
     - name: Setup Selenium Firefox WebDriver
       uses: browser-actions/setup-geckodriver@latest
+    - name: Log Geckodriver and Firefox versions
       run: |
-        echo "geckodriver/firefox"
         which geckodriver
         geckodriver --version
         which firefox
