@@ -10,12 +10,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.itmo.hungergames.model.entity.News;
+import ru.itmo.hungergames.model.entity.order.AdvertisementOrder;
 import ru.itmo.hungergames.model.entity.user.Moderator;
 import ru.itmo.hungergames.model.entity.user.User;
 import ru.itmo.hungergames.model.entity.user.UserRole;
+import ru.itmo.hungergames.model.request.ApproveAdvertisingTextRequest;
 import ru.itmo.hungergames.model.request.NewsRequest;
+import ru.itmo.hungergames.model.response.AdvertisingTextResponse;
 import ru.itmo.hungergames.model.response.JwtResponse;
 import ru.itmo.hungergames.model.response.UserResponse;
+import ru.itmo.hungergames.repository.AdvertisementOrderRepository;
 import ru.itmo.hungergames.repository.ModeratorRepository;
 import ru.itmo.hungergames.repository.NewsRepository;
 import ru.itmo.hungergames.security.UserDetailsServiceImpl;
@@ -32,15 +36,23 @@ import java.util.stream.Collectors;
 public class ModeratorServiceImpl implements ModeratorService {
     private final ModeratorRepository moderatorRepository;
     private final NewsRepository newsRepository;
+    private final AdvertisementOrderRepository advertisementOrderRepository;
     private final UserDetailsServiceImpl userDetailsService;
     private final AuthenticationProvider authenticationProvider;
     private final JwtUtil jwtUtil;
     private final SecurityUtil securityUtil;
 
     @Autowired
-    public ModeratorServiceImpl(ModeratorRepository moderatorRepository, NewsRepository newsRepository, UserDetailsServiceImpl userDetailsService, AuthenticationProvider authenticationProvider, JwtUtil jwtUtil, SecurityUtil securityUtil) {
+    public ModeratorServiceImpl(ModeratorRepository moderatorRepository,
+                                NewsRepository newsRepository,
+                                AdvertisementOrderRepository advertisementOrderRepository,
+                                UserDetailsServiceImpl userDetailsService,
+                                AuthenticationProvider authenticationProvider,
+                                JwtUtil jwtUtil,
+                                SecurityUtil securityUtil) {
         this.moderatorRepository = moderatorRepository;
         this.newsRepository = newsRepository;
+        this.advertisementOrderRepository = advertisementOrderRepository;
         this.userDetailsService = userDetailsService;
         this.authenticationProvider = authenticationProvider;
         this.jwtUtil = jwtUtil;
@@ -92,5 +104,23 @@ public class ModeratorServiceImpl implements ModeratorService {
                 roles,
                 userDetails.getName()
         );
+    }
+
+    @Override
+    public AdvertisingTextResponse getAnotherAdvertisingText() {
+        return new AdvertisingTextResponse(advertisementOrderRepository
+                .findFirstByApproved(false)
+                .orElseThrow(() -> new ResourceNotFoundException("There's no advertising text")));
+    }
+
+    @Override
+    @Transactional
+    public void approveAdvertisingText(ApproveAdvertisingTextRequest approveAdvertisingTextRequest) {
+        AdvertisementOrder advertisementOrder = advertisementOrderRepository
+                .findById(approveAdvertisingTextRequest.getAdvertisingTextId())
+                .orElseThrow(() -> new ResourceNotFoundException("There's no advertising text with the ID"));
+
+        advertisementOrder.setApproved(approveAdvertisingTextRequest.isApproved());
+        advertisementOrderRepository.save(advertisementOrder);
     }
 }

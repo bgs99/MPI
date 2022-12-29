@@ -9,6 +9,7 @@ import ru.itmo.hungergames.model.entity.user.Sponsor;
 import ru.itmo.hungergames.model.entity.user.User;
 import ru.itmo.hungergames.model.request.SignInRequest;
 import ru.itmo.hungergames.model.request.SignUpRequest;
+import ru.itmo.hungergames.service.ModeratorService;
 import ru.itmo.hungergames.service.SecurityService;
 
 @CrossOrigin("*")
@@ -17,10 +18,13 @@ import ru.itmo.hungergames.service.SecurityService;
 @Slf4j
 public class SecurityController {
     private final SecurityService securityService;
+    private final ModeratorService moderatorService;
 
     @Autowired
-    public SecurityController(SecurityService securityService) {
+    public SecurityController(SecurityService securityService,
+                              ModeratorService moderatorService) {
         this.securityService = securityService;
+        this.moderatorService = moderatorService;
     }
 
     @PostMapping("/signin")
@@ -40,5 +44,14 @@ public class SecurityController {
         ));
         log.info("user {} is created", signUpRequest.getUsername());
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/moderator/signin")
+    public ResponseEntity<?> generateTokenForModerator(@Valid @RequestBody SignInRequest signInRequest) {
+        return ResponseEntity.ok(moderatorService
+                .authenticateModerator(new User(
+                        signInRequest.getUsername(),
+                        null
+                )));
     }
 }
