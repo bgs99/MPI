@@ -74,6 +74,74 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Subscribe to News",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"ranodomemail@yandex.ru\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/sponsor/subscription/news",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"sponsor",
+								"subscription",
+								"news"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get News Subscription Price",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/sponsor/subscription/price",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"sponsor",
+								"subscription",
+								"price"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get News",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/sponsor/news",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"sponsor",
+								"news"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"auth": {
@@ -112,26 +180,12 @@
 			"item": [
 				{
 					"name": "Get All Resources",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"username\": \"hihi\",\r\n    \"password\": \"haha\",\r\n    \"name\": \"hihi-name\"\r\n}",
+							"raw": "{\r\n    \"tributeId\": \"3\",\r\n    \"orderDetails\": [\r\n        {\r\n            \"resourceId\": \"1\",\r\n            \"size\": \"1\"\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -139,14 +193,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{host}}/api/resource/all",
+							"raw": "{{host}}/api/sponsor/send",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"resource",
-								"all"
+								"sponsor",
+								"send"
 							]
 						}
 					},
@@ -194,7 +248,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"text\": \"text\"\r\n}",
+							"raw": "{\r\n    \"text\": \"text2\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -229,6 +283,121 @@
 								"api",
 								"tribute",
 								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Event",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"dateTime\": \"\",\r\n    \"eventType\": \"\",\r\n    \"eventPlace\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/tribute/event",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"tribute",
+								"event"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modify Event",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"\",\r\n    \"dateTime\": \"2022-12-29 08:08:00\",\r\n    \"eventType\": \"MEETING\",\r\n    \"eventPlace\": \"Hall\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/tribute/event/change",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"tribute",
+								"event",
+								"change"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Event Types",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/tribute/event/type",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"tribute",
+								"event",
+								"type"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Events",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/tribute/events",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"tribute",
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Current Time",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/tribute/time",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"tribute",
+								"time"
 							]
 						}
 					},
@@ -647,138 +816,6 @@
 			]
 		},
 		{
-			"name": "News",
-			"item": [
-				{
-					"name": "Subscribe to News",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"email\": \"ranodomemail@yandex.ru\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/api/sponsor/subscription/news",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"sponsor",
-								"subscription",
-								"news"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get News Subscription Price",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/sponsor/subscription/price",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"sponsor",
-								"subscription",
-								"price"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Create News",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"News Title 3\",\r\n    \"content\": \"Some news are here\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{host}}/api/moderator/publish/news",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"moderator",
-								"publish",
-								"news"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Get News",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{host}}/api/sponsor/news",
-							"host": [
-								"{{host}}"
-							],
-							"path": [
-								"api",
-								"sponsor",
-								"news"
-							]
-						}
-					},
-					"response": []
-				}
-			],
-			"auth": {
-				"type": "bearer",
-				"bearer": [
-					{
-						"key": "token",
-						"value": "{{token}}",
-						"type": "string"
-					}
-				]
-			},
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				}
-			]
-		},
-		{
 			"name": "User",
 			"item": [
 				{
@@ -861,6 +898,118 @@
 			]
 		},
 		{
+			"name": "Moderator",
+			"item": [
+				{
+					"name": "Get Another Advertising Text",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/moderator/advertisingText",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"moderator",
+								"advertisingText"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Approve Advertising Text",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"advertisingTextId\":\"9a8769ea-c5f7-4aa1-8252-be9136f417dc\",\r\n    \"approved\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/moderator/advertisingText/approve",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"moderator",
+								"advertisingText",
+								"approve"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create News",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"News Title 3\",\r\n    \"content\": \"Some news are here\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/moderator/publish/news",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"moderator",
+								"publish",
+								"news"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
 			"name": "Security",
 			"item": [
 				{
@@ -884,7 +1033,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"username\": \"moderator-1\"\r\n}",
+									"raw": "{\r\n    \"username\": \"tribute-1\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1012,6 +1161,51 @@
 									"path": [
 										"api",
 										"auth",
+										"signin"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Moderator",
+					"item": [
+						{
+							"name": "Sign In",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.environment.set('token', pm.response.json().token)"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"moderator-1\",\r\n    \"password\": \"Password\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/auth/moderator/signin",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"auth",
+										"moderator",
 										"signin"
 									]
 								}

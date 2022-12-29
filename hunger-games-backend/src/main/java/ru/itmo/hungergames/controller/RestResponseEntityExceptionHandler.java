@@ -1,5 +1,6 @@
 package ru.itmo.hungergames.controller;
 
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +15,16 @@ import ru.itmo.hungergames.exception.UserExistsException;
 public class RestResponseEntityExceptionHandler {
     @ExceptionHandler(value = {ChatExistsException.class, UserExistsException.class})
     protected ResponseEntity<Object> handleExistsException(RuntimeException ex, WebRequest request) {
-        return new ResponseEntity<>(
-                ex.getMessage(), new HttpHeaders(), HttpStatus.CONFLICT);
+        return new ResponseEntity<>(ex.getMessage(), new HttpHeaders(), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(value = {NoAccessToChatException.class})
     protected ResponseEntity<Object> handleNoAccessToChatException(RuntimeException ex, WebRequest request) {
-        return new ResponseEntity<>(
-                ex.getMessage(), new HttpHeaders(), HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(ex.getMessage(), new HttpHeaders(), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(value = {ResourceNotFoundException.class})
+    protected ResponseEntity<Object> handleResourceNotFoundException(RuntimeException ex, WebRequest request) {
+        return new ResponseEntity<>(ex.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
 }

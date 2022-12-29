@@ -54,7 +54,7 @@ public class User implements UserDetails {
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
-    private Set<UserRole> userRoles = new HashSet<>();
+    private final Set<UserRole> userRoles = new HashSet<>();
 
     @Override
     public String getUsername() {
