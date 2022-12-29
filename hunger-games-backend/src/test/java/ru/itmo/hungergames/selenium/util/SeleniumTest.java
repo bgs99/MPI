@@ -21,9 +21,6 @@ import static org.springframework.test.context.TestExecutionListeners.MergeMode.
         listeners = SeleniumTestExecutionListener.class,
         mergeMode = MERGE_WITH_DEFAULTS)
 public @interface SeleniumTest {
-
-    Class<? extends WebDriver> driver() default FirefoxDriver.class;
-
     String baseUrl() default "http://localhost:42322";
 
 }

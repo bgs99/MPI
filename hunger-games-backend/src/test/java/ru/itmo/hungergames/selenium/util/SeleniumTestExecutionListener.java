@@ -1,6 +1,8 @@
 package ru.itmo.hungergames.selenium.util;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ApplicationContext;
@@ -28,10 +30,8 @@ public class SeleniumTestExecutionListener extends AbstractTestExecutionListener
         }
         ApplicationContext context = testContext.getApplicationContext();
         if (context instanceof ConfigurableApplicationContext) {
-
-            SeleniumTest annotation = findAnnotation(
-                    testContext.getTestClass(), SeleniumTest.class);
-            webDriver = BeanUtils.instantiate(annotation.driver());
+            var options = new FirefoxOptions().setHeadless(true); // TODO: separate profile (debug?) for non-headless mode
+            webDriver = new FirefoxDriver(options);
 
             ConfigurableApplicationContext configurableApplicationContext = (ConfigurableApplicationContext) context;
             ConfigurableListableBeanFactory bf = configurableApplicationContext.getBeanFactory();
