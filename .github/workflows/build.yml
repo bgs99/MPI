@@ -21,6 +21,12 @@ jobs:
       uses: gradle/gradle-build-action@v2
     - name: Setup Selenium Firefox WebDriver
       uses: browser-actions/setup-geckodriver@latest
+      run: |
+        echo "geckodriver/firefox"
+        which geckodriver
+        geckodriver --version
+        which firefox
+        firefox --version
     - name: Run build with Gradle Wrapper
       run: ./gradlew build
     - name: Upload test artifacts
