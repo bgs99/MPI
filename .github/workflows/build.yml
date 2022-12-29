@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 'main'
-      - 'tests/selenium'
 
 jobs:
   build-gradle-project:
@@ -21,12 +20,6 @@ jobs:
       uses: gradle/gradle-build-action@v2
     - name: Setup Selenium Firefox WebDriver
       uses: browser-actions/setup-geckodriver@latest
-    - name: Log Geckodriver and Firefox versions
-      run: |
-        which geckodriver
-        geckodriver --version
-        which firefox
-        firefox --version
     - name: Run build with Gradle Wrapper
       run: ./gradlew build
     - name: Upload test artifacts
