@@ -3,6 +3,7 @@ package ru.itmo.hungergames.model.entity.user;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
+@EqualsAndHashCode
 @Getter
 @Setter
 @SuperBuilder
