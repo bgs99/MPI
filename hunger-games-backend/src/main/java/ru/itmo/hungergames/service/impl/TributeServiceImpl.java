@@ -11,7 +11,7 @@ import ru.itmo.hungergames.model.request.AdvertisingTextRequest;
 import ru.itmo.hungergames.model.request.EventModifyRequest;
 import ru.itmo.hungergames.model.request.EventRequest;
 import ru.itmo.hungergames.model.entity.EventType;
-import ru.itmo.hungergames.model.response.AdvertisingTextResponse;
+import ru.itmo.hungergames.model.response.AdvertisingTextOrderResponse;
 import ru.itmo.hungergames.model.response.EventResponse;
 import ru.itmo.hungergames.model.response.TributeResponse;
 import ru.itmo.hungergames.repository.AdvertisementOrderRepository;
@@ -67,12 +67,12 @@ public class TributeServiceImpl implements TributeService {
 
     @Override
     @Transactional
-    public AdvertisingTextResponse sendAdvertisingText(AdvertisingTextRequest advertisingTextRequest) {
+    public AdvertisingTextOrderResponse sendAdvertisingText(AdvertisingTextRequest advertisingTextRequest) {
         Tribute tribute = tributeRepository
                 .findById(securityUtil.getAuthenticatedUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("There's no tribute with such ID"));
 
-        return new AdvertisingTextResponse(
+        return new AdvertisingTextOrderResponse(
                 advertisementOrderRepository.save(
                         AdvertisementOrder.builder()
                                 .tribute(tribute)

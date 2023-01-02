@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.itmo.hungergames.model.entity.order.AdvertisementOrder;
 import ru.itmo.hungergames.model.entity.user.Tribute;
 import ru.itmo.hungergames.model.request.AdvertisingTextRequest;
-import ru.itmo.hungergames.model.response.AdvertisingTextResponse;
+import ru.itmo.hungergames.model.response.AdvertisingTextOrderResponse;
 import ru.itmo.hungergames.model.response.TributeResponse;
 import ru.itmo.hungergames.repository.AdvertisementOrderRepository;
 import ru.itmo.hungergames.repository.TributeRepository;
@@ -100,8 +100,8 @@ class TributeServiceImplTest {
                 .when(securityUtil)
                 .getAuthenticatedUser();
 
-        AdvertisingTextResponse advertisingTextResponse = tributeService.sendAdvertisingText(new AdvertisingTextRequest("Some Text"));
-        AdvertisementOrder advertisementOrder = advertisementOrderRepository.findById(advertisingTextResponse.getOrderId()).orElseThrow();
+        AdvertisingTextOrderResponse advertisingTextOrderResponse = tributeService.sendAdvertisingText(new AdvertisingTextRequest("Some Text"));
+        AdvertisementOrder advertisementOrder = advertisementOrderRepository.findById(advertisingTextOrderResponse.getOrderId()).orElseThrow();
 
         assertEquals("Some Text", advertisementOrder.getAdvertisingText());
         assertNotNull(advertisementOrder.getPrice());

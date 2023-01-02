@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.itmo.hungergames.model.request.AdvertisingTextRequest;
 import ru.itmo.hungergames.model.request.EventModifyRequest;
 import ru.itmo.hungergames.model.request.EventRequest;
-import ru.itmo.hungergames.model.response.AdvertisingTextResponse;
+import ru.itmo.hungergames.model.response.AdvertisingTextOrderResponse;
 import ru.itmo.hungergames.model.response.EventResponse;
 import ru.itmo.hungergames.model.response.TributeResponse;
 import ru.itmo.hungergames.service.TributeService;
@@ -34,7 +34,7 @@ public class TributeController {
     }
 
     @PostMapping("/advertisement")
-    public AdvertisingTextResponse sendAdvertisingText(@RequestBody AdvertisingTextRequest advertisingTextRequest) {
+    public AdvertisingTextOrderResponse sendAdvertisingText(@RequestBody AdvertisingTextRequest advertisingTextRequest) {
         return tributeService.sendAdvertisingText(advertisingTextRequest);
     }
 
