@@ -8,5 +8,6 @@ export class MenuComponent {
     menuItems: MenuItem[] = [
         new MenuItem('posting', 'Добавить пост', 'font_download'),
         new MenuItem('chats', 'Чаты', 'message'),
+        new MenuItem('events', 'События', 'event'),
     ];
 }

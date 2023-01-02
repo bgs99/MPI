@@ -4,6 +4,7 @@ import { lastValueFrom } from 'rxjs';
 import { Tribute, TributeId } from '../models/tribute';
 import { PaymentData } from '../models/payment-data';
 import { ApiService } from './api.service';
+import { Event } from '../models/event';
 
 @Injectable({
     providedIn: 'root'
@@ -33,6 +34,26 @@ export class TributesService {
     async getAds(): Promise<string[]> {
         return await lastValueFrom(this.http.get<string[]>(
             TributesService.BASE_URL + "/advertisement"
+        ));
+    }
+
+    async getEvents(): Promise<Event[]> {
+        return await lastValueFrom(this.http.get<Event[]>(
+            TributesService.BASE_URL + "/events"
+        ));
+    }
+
+    async addEvent(request: Event): Promise<void> {
+        await lastValueFrom(this.http.post<void>(
+            TributesService.BASE_URL + "/event",
+            request,
+        ));
+    }
+
+    async editEvent(event: Event): Promise<void> {
+        await lastValueFrom(this.http.post<void>(
+            TributesService.BASE_URL + "/event/change",
+            event,
         ));
     }
 }
