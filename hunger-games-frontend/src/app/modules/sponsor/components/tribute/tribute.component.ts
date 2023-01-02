@@ -12,6 +12,7 @@ import { TributesService } from 'src/app/services/tributes.service';
 export class TributeComponent implements OnInit {
     self: Tribute | undefined
     chat: Chat | undefined
+    ads: string[] = []
 
     constructor(
         private route: ActivatedRoute,
@@ -29,6 +30,7 @@ export class TributeComponent implements OnInit {
         this.self = await this.tributesService.getTribute(id)!;
         const chats = await this.chatService.getChats();
         this.chat = chats.find(chat => chat.tributeName == this.self?.name);
+        this.ads = (await this.tributesService.getAds()).reverse();
     }
 
 }

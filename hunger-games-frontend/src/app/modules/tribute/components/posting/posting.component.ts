@@ -16,9 +16,9 @@ export class PostingComponent {
     async order(): Promise<void> {
         const text: string = this.htmlContent;
         this.htmlContent = '';
-        console.log(`Posting ${text}`);
-        const paymentData = await this.tributesService.orderAd(text)
-        console.log(`Paying ${paymentData.orderId}`);
+
+        const paymentData = await this.tributesService.orderAd(text);
+
         const success = await pay(paymentData.orderId);
     }
 }
