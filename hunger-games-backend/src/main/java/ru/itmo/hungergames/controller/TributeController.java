@@ -40,7 +40,7 @@ public class TributeController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/advertisement")
-    public List<AdvertisingTextResponse> getAllAdvertisingTexts() {
+    public List<String> getAllAdvertisingTexts() {
         return tributeService.getApprovedAndPaidAdvertisingTexts();
     }
 

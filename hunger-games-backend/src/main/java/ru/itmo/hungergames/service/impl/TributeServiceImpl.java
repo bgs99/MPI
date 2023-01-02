@@ -117,10 +117,10 @@ public class TributeServiceImpl implements TributeService {
     }
 
     @Override
-    public List<AdvertisingTextResponse> getApprovedAndPaidAdvertisingTexts() {
+    public List<String> getApprovedAndPaidAdvertisingTexts() {
         return advertisementOrderRepository
                 .findAllByApprovedAndPaid(true, true).stream()
-                .map(AdvertisingTextResponse::new)
+                .map(advertisementOrder -> advertisementOrder.getAdvertisingText())
                 .collect(Collectors.toList());
     }
 
