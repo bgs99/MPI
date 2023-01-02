@@ -1,17 +1,21 @@
 <app-header></app-header>
-<h1>Трибут {{this.self?.name}}</h1>
-<h2>Дистрикт {{this.self?.mentor?.district}}</h2>
-<button mat-raised-button [routerLink]="['createorder']">
-    Предложить ресурсы
-</button>
-<button mat-raised-button [routerLink]="['payorder']">
-    Оплатить ресурсы
-</button>
-<button *ngIf="this.chat !== undefined" mat-raised-button [routerLink]="['../../chat', this.chat.chatId]">
-    Перейти к чату
-</button>
-<button *ngIf="this.chat === undefined" mat-raised-button (click)="createChat()">
-    Начать чат
-</button>
+<mat-card class="example-card">
+    <mat-card-header>
+        <mat-card-title>Трибут {{this.self?.name}}</mat-card-title>
+        <mat-card-subtitle>Дистрикт {{this.self?.mentor?.district}}</mat-card-subtitle>
+    </mat-card-header>
+    <img id="avatar" mat-card-image [src]="this.self?.avatarUri" alt="Аватар трибута">
+    <mat-card-actions>
+        <button mat-raised-button [routerLink]="['createorder']">Предложить ресурсы</button>
+        <button mat-raised-button [routerLink]="['payorder']">Оплатить ресурсы</button>
+        <button *ngIf="this.chat !== undefined" mat-raised-button [routerLink]="['../../chat', this.chat.chatId]">
+            Перейти к чату
+        </button>
+        <button *ngIf="this.chat === undefined" mat-raised-button (click)="createChat()">
+            Начать чат
+        </button>
+    </mat-card-actions>
+</mat-card>
+
 <h2>Посты</h2>
 ...

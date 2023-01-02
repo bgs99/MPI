@@ -7,6 +7,7 @@ import { TributesService } from 'src/app/services/tributes.service';
 
 @Component({
     templateUrl: './tribute.component.html',
+    styleUrls: ['./tribute.component.css'],
 })
 export class TributeComponent implements OnInit {
     self: Tribute | undefined

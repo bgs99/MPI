@@ -7,16 +7,18 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
+import { AngularEditorModule } from '@kolkov/angular-editor';
+
 import { ModeratorRoutingModule } from './moderator-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { LoginComponent } from './components/login/login.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { PostComponent } from './components/post/post.component';
-import { AngularEditorModule } from '@kolkov/angular-editor';
+import { ApproveComponent } from './components/review/review.component';
 
 
 @NgModule({
-    declarations: [MenuComponent, LoginComponent, PostComponent],
+    declarations: [MenuComponent, LoginComponent, PostComponent, ApproveComponent],
     imports: [
         CommonModule,
         FormsModule,

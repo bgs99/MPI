@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { pay } from 'src/app/services/mock/payment.service';
 import { TributesService } from 'src/app/services/tributes.service';
 
 @Component({
@@ -15,14 +16,9 @@ export class PostingComponent {
     async order(): Promise<void> {
         const text: string = this.htmlContent;
         this.htmlContent = '';
-        try {
-            const paymentData = await this.tributesService.orderAd(text)
-            localStorage.setItem('htmlContent', this.htmlContent);
-            localStorage.setItem('order', JSON.stringify(paymentData.orderId));
-            this.router.navigate(["/capitol/payment"], { queryParams: { id: paymentData.orderId, path: '/tribute/posting' } });
-        }
-        catch (err) {
-            console.error(err);
-        }
+        console.log(`Posting ${text}`);
+        const paymentData = await this.tributesService.orderAd(text)
+        console.log(`Paying ${paymentData.orderId}`);
+        const success = await pay(paymentData.orderId);
     }
 }

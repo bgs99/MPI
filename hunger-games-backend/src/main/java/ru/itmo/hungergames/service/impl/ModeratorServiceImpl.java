@@ -109,7 +109,7 @@ public class ModeratorServiceImpl implements ModeratorService {
     @Override
     public AdvertisingTextResponse getAnotherAdvertisingText() {
         return new AdvertisingTextResponse(advertisementOrderRepository
-                .findFirstByApproved(false)
+                .findFirstByApproved(null)
                 .orElseThrow(() -> new ResourceNotFoundException("There's no advertising text")));
     }
 

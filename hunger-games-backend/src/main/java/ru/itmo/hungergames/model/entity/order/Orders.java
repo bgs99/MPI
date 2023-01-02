@@ -22,7 +22,8 @@ public class Orders {
     @GenericGenerator(name = "uuid-gen", strategy = "uuid2")
     @GeneratedValue(generator = "uuid-gen")
     private UUID id;
-    private Boolean approved;
+    @Builder.Default
+    private Boolean approved = null;
     @Builder.Default
     private boolean paid = false;
     @NotNull
