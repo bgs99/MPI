@@ -21,7 +21,7 @@ public interface TributeService {
 
     List<EventResponse> getEvents();
 
-    List<AdvertisingTextResponse> getApprovedAndPaidAdvertisingTexts();
+    List<String> getApprovedAndPaidAdvertisingTexts();
 
     EventResponse modifyEvent(EventModifyRequest eventModifyRequest);
 }
