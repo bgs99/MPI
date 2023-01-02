@@ -40,7 +40,7 @@ public class SecurityController {
                 signUpRequest.getUsername(),
                 signUpRequest.getPassword(),
                 signUpRequest.getName(),
-                signUpRequest.getAvatarUri()
+                null
         ));
         log.info("user {} is created", signUpRequest.getUsername());
         return ResponseEntity.ok().build();

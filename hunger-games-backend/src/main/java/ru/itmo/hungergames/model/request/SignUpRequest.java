@@ -23,8 +23,4 @@ public class SignUpRequest {
     @NotBlank(message="Password should not be blank")
     @Size(min=3,max=255)
     private String password;
-
-    @URL(protocol = "https")
-    @NotNull
-    private String avatarUri;
 }
