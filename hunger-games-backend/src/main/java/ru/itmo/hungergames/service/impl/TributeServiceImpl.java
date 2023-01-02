@@ -78,7 +78,6 @@ public class TributeServiceImpl implements TributeService {
                                 .tribute(tribute)
                                 .advertisingText(advertisingTextRequest.getText())
                                 .price(BigDecimal.valueOf(200))
-                                .approved(false)
                                 .build()));
     }
 
