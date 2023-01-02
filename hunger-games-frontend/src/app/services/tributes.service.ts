@@ -29,4 +29,10 @@ export class TributesService {
             { text }
         ));
     }
+
+    async getAds(): Promise<string[]> {
+        return await lastValueFrom(this.http.get<string[]>(
+            TributesService.BASE_URL + "/advertisement"
+        ));
+    }
 }
