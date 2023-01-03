@@ -25,9 +25,7 @@ class AuthData {
 
 @Injectable()
 export class AuthService {
-    private BASE_URL: string = `${ApiService.baseURL}/auth`;
-    private _authData: AuthData | null = null;
-    private get authData(): AuthData {
+    private get maybeAuthData(): AuthData | null {
         if (this._authData !== null) {
             return this._authData;
         }
@@ -37,7 +35,20 @@ export class AuthService {
             this._authData = authData;
             return authData;
         }
+        return null;
+    }
+
+    private BASE_URL: string = `${ApiService.baseURL}/auth`;
+    private _authData: AuthData | null = null;
+    private get authData(): AuthData {
+        if (this.maybeAuthData !== null) {
+            return this.maybeAuthData;
+        }
         throw new Error("Accessing auth data before login");
+    }
+
+    get authenticated(): boolean {
+        return this.maybeAuthData !== null;
     }
 
     get token(): string {

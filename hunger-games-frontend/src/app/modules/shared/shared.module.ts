@@ -46,6 +46,7 @@ import { EventsComponent } from './components/events/events.component';
         MatIconModule,
     ],
     exports: [
+        EventsComponent,
         HeaderComponent,
         TributesComponent,
         ResourcesComponent,
