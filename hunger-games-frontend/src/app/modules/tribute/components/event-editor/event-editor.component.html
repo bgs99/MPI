@@ -1,0 +1,24 @@
+<mat-list>
+    <mat-form-field>
+        <mat-label for="picker">Дата и время события: </mat-label>
+        <input matInput [ngxMatDatetimePicker]="picker" placeholder="Дата и время события" [(ngModel)]="this.dateTime">
+        <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
+        <ngx-mat-datetime-picker #picker [showSeconds]="false"></ngx-mat-datetime-picker>
+    </mat-form-field>
+    <br />
+
+    <mat-form-field>
+        <mat-label>Место проведения:</mat-label>
+        <input matInput type="text" [(ngModel)]="this.place">
+    </mat-form-field>
+    <br />
+
+    <mat-label>Тип события:</mat-label>
+    <mat-radio-group [(ngModel)]="this.eventType">
+        <mat-radio-button *ngFor="let type of this.eventTypes"
+            [value]="type">{{this.eventTypeName(type)}}</mat-radio-button>
+    </mat-radio-group>
+    <br />
+
+    <button matInput type="submit" (click)="this.submitEvent()" mat-raised-button>Готово</button>
+</mat-list>

@@ -18,7 +18,7 @@ import ru.itmo.hungergames.service.ChatService;
 import ru.itmo.hungergames.util.ChatUtil;
 import ru.itmo.hungergames.util.SecurityUtil;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -87,7 +87,7 @@ public class ChatServiceImpl implements ChatService {
                     .message(messageRequest.getMessage())
                     .user(user)
                     .chat(chat)
-                    .dateTime(LocalDateTime.now())
+                    .dateTime(Instant.now())
                     .build()));
     }
 

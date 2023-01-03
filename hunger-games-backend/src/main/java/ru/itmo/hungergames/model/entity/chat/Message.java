@@ -7,7 +7,7 @@ import org.hibernate.annotations.GenericGenerator;
 import ru.itmo.hungergames.model.entity.chat.Chat;
 import ru.itmo.hungergames.model.entity.user.User;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -27,7 +27,7 @@ public class Message {
     private String message;
     @NotNull
     @Builder.Default
-    private LocalDateTime dateTime = LocalDateTime.now();
+    private Instant dateTime = Instant.now();
 
     @ManyToOne
     @JoinColumn(name = "chat_id")

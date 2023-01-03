@@ -25,9 +25,7 @@ class AuthData {
 
 @Injectable()
 export class AuthService {
-    private BASE_URL: string = `${ApiService.baseURL}/auth`;
-    private _authData: AuthData | null = null;
-    private get authData(): AuthData {
+    private get maybeAuthData(): AuthData | null {
         if (this._authData !== null) {
             return this._authData;
         }
@@ -37,7 +35,20 @@ export class AuthService {
             this._authData = authData;
             return authData;
         }
+        return null;
+    }
+
+    private BASE_URL: string = `${ApiService.baseURL}/auth`;
+    private _authData: AuthData | null = null;
+    private get authData(): AuthData {
+        if (this.maybeAuthData !== null) {
+            return this.maybeAuthData;
+        }
         throw new Error("Accessing auth data before login");
+    }
+
+    get authenticated(): boolean {
+        return this.maybeAuthData !== null;
     }
 
     get token(): string {
@@ -66,24 +77,27 @@ export class AuthService {
         localStorage.removeItem('auth');
     }
 
+    private storeAuth(authData: AuthData): void {
+        this._authData = authData;
+        localStorage.setItem('auth', JSON.stringify(this._authData))
+    }
+
     async loginModerator(username: string, password: string): Promise<void> {
         const url: string = `${ApiService.baseURL}/moderator/signin`;
         const login = await lastValueFrom(this.http.post<LoginResult>(url, { username, password }));
-        this._authData = new AuthData(login.id, login.name, login.token, UserRole.Moderator);
-        localStorage.setItem('auth', JSON.stringify(this._authData))
+        this.storeAuth(new AuthData(login.id, login.name, login.token, UserRole.Moderator));
     }
 
     async login(username: string, password: string): Promise<void> {
         const url: string = `${this.BASE_URL}/signin`;
         const login = await lastValueFrom(this.http.post<LoginResult>(url, { username, password }));
-        this._authData = new AuthData(login.id, login.name, login.token, UserRole.Sponsor);
-        localStorage.setItem('auth', JSON.stringify(this._authData))
+        this.storeAuth(new AuthData(login.id, login.name, login.token, UserRole.Sponsor));
     }
 
     async capitolAuth(username: string, role: UserRole): Promise<void> {
         const url = `${ApiService.baseURL}/capitol/signin`;
         const login = await lastValueFrom(this.http.post<LoginResult>(url, { username }));
-        this._authData = new AuthData(login.id, login.name, login.token, role);
+        this.storeAuth(new AuthData(login.id, login.name, login.token, role));
     }
 
     async register(username: string, name: string, password: string): Promise<void> {

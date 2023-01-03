@@ -18,6 +18,7 @@ import { ResourcesComponent } from './components/resources/resources.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { ChatsComponent } from './components/chats/chats.component';
 import { MenuComponent } from './components/menu/menu.component';
+import { EventComponent } from './components/event/event.component';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { MenuComponent } from './components/menu/menu.component';
         ChatComponent,
         ChatsComponent,
         MenuComponent,
+        EventComponent,
     ],
     imports: [
         CommonModule,
@@ -44,6 +46,7 @@ import { MenuComponent } from './components/menu/menu.component';
         MatIconModule,
     ],
     exports: [
+        EventComponent,
         HeaderComponent,
         TributesComponent,
         ResourcesComponent,

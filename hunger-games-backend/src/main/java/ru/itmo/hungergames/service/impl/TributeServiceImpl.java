@@ -22,7 +22,7 @@ import ru.itmo.hungergames.util.SecurityUtil;
 import ru.itmo.hungergames.util.TributeUtil;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -110,7 +110,7 @@ public class TributeServiceImpl implements TributeService {
                 .orElseThrow(() -> new ResourceNotFoundException("There's no tribute with such ID"));
 
         return eventRepository
-                .findAllByTributeAndDateTimeBefore(tribute, LocalDateTime.now()).stream()
+                .findAllByTributeAndDateTimeAfter(tribute, Instant.now()).stream()
                 .map(EventResponse::new)
                 .collect(Collectors.toList());
     }
