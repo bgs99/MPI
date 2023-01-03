@@ -5,9 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.itmo.hungergames.model.entity.News;
-import ru.itmo.hungergames.util.annotation.JsonLocalDateTime;
+import ru.itmo.hungergames.util.annotation.JsonDateTime;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Data
 @AllArgsConstructor
@@ -16,8 +16,8 @@ import java.time.LocalDateTime;
 public class NewsResponse {
     private String name;
     private String content;
-    @JsonLocalDateTime
-    private LocalDateTime dateTime;
+    @JsonDateTime
+    private Instant dateTime;
 
     public NewsResponse(News news) {
         this.name = news.getName();

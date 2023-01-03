@@ -6,9 +6,10 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.itmo.hungergames.model.entity.Event;
 import ru.itmo.hungergames.model.entity.EventType;
-import ru.itmo.hungergames.util.annotation.JsonLocalDateTime;
+import ru.itmo.hungergames.util.annotation.JsonDateTime;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.time.Instant;
 import java.util.UUID;
 
 @Getter
@@ -17,8 +18,8 @@ import java.util.UUID;
 @Builder
 public class EventResponse {
     private UUID id;
-    @JsonLocalDateTime
-    private LocalDateTime dateTime;
+    @JsonDateTime
+    private Instant dateTime;
     private String eventPlace;
     private EventType eventType;
 

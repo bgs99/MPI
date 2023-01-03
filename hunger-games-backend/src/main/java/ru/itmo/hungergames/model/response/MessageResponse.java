@@ -6,9 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.itmo.hungergames.model.entity.chat.Message;
 import ru.itmo.hungergames.model.entity.user.User;
-import ru.itmo.hungergames.util.annotation.JsonLocalDateTime;
+import ru.itmo.hungergames.util.annotation.JsonDateTime;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 @Data
@@ -18,8 +18,8 @@ import java.util.UUID;
 public class MessageResponse {
     private UUID id;
     private String role;
-    @JsonLocalDateTime
-    private LocalDateTime dateTime;
+    @JsonDateTime
+    private Instant dateTime;
     private String message;
     private String senderName;
     private String senderAvatarUri;

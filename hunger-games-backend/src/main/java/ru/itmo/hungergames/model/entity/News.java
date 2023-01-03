@@ -7,7 +7,8 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import ru.itmo.hungergames.model.entity.user.Moderator;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -32,5 +33,5 @@ public class News {
     private Moderator moderator;
     @NotNull
     @Builder.Default
-    private LocalDateTime dateTime = LocalDateTime.now();
+    private Instant dateTime = Instant.now();
 }

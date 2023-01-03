@@ -5,7 +5,8 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import ru.itmo.hungergames.model.entity.user.Tribute;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -24,7 +25,7 @@ public class Event {
     @Enumerated(EnumType.STRING)
     private EventType eventType;
     private String eventPlace;
-    private LocalDateTime dateTime;
+    private Instant dateTime;
     @OneToOne
     @JoinColumn(name = "tribute_id")
     private Tribute tribute;

@@ -11,7 +11,7 @@ import ru.itmo.hungergames.model.response.EventResponse;
 import ru.itmo.hungergames.model.response.TributeResponse;
 import ru.itmo.hungergames.service.TributeService;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -71,6 +71,6 @@ public class TributeController {
 
     @GetMapping("/time") // for debugging
     public String getCurrentTime() {
-        return LocalDateTime.now().toString();
+        return Instant.now().toString();
     }
 }

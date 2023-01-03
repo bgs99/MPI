@@ -4,10 +4,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import ru.itmo.hungergames.model.entity.Event;
 import ru.itmo.hungergames.model.entity.user.Tribute;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
 public interface EventRepository extends JpaRepository<Event, UUID> {
-    List<Event> findAllByTributeAndDateTimeAfter(Tribute tribute, LocalDateTime dateTime);
+    List<Event> findAllByTributeAndDateTimeAfter(Tribute tribute, Instant dateTime);
 }

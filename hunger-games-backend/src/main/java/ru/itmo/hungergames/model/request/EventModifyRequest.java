@@ -6,9 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.itmo.hungergames.model.entity.EventType;
-import ru.itmo.hungergames.util.annotation.JsonLocalDateTime;
+import ru.itmo.hungergames.util.annotation.JsonDateTime;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 @Data
@@ -17,9 +17,9 @@ import java.util.UUID;
 public class EventModifyRequest {
     @NotNull
     private UUID id;
-    @JsonLocalDateTime
+    @JsonDateTime
     @NotNull
-    private LocalDateTime dateTime;
+    private Instant dateTime;
     @NotNull
     private EventType eventType;
     @NotBlank(message = "Event place should not be blank")
