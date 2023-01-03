@@ -110,7 +110,7 @@ public class TributeServiceImpl implements TributeService {
                 .orElseThrow(() -> new ResourceNotFoundException("There's no tribute with such ID"));
 
         return eventRepository
-                .findAllByTributeAndDateTimeBefore(tribute, LocalDateTime.now()).stream()
+                .findAllByTributeAndDateTimeAfter(tribute, LocalDateTime.now()).stream()
                 .map(EventResponse::new)
                 .collect(Collectors.toList());
     }

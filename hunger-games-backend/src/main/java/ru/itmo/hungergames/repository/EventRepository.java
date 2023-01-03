@@ -9,5 +9,5 @@ import java.util.List;
 import java.util.UUID;
 
 public interface EventRepository extends JpaRepository<Event, UUID> {
-    List<Event> findAllByTributeAndDateTimeBefore(Tribute tribute, LocalDateTime dateTime);
+    List<Event> findAllByTributeAndDateTimeAfter(Tribute tribute, LocalDateTime dateTime);
 }
