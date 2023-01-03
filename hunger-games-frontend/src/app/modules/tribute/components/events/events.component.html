@@ -1,3 +1,6 @@
 <app-header></app-header>
 <app-event-editor (eventChanged)="this.addEvent($event)"></app-event-editor>
-<app-events></app-events>
+<mat-card *ngFor="let event of this.events">
+    <app-event [event]="event"></app-event>
+    <mat-card-actions>Изменить</mat-card-actions>
+</mat-card>

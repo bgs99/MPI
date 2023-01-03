@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { Event, EventId, EventType, eventTypeName, eventTypes, eventTypeToString } from 'src/app/models/event';
+import { Event, EventId, EventType, eventTypes, eventTypeName } from 'src/app/models/event';
 
 @Component({
     selector: 'app-event-editor',
@@ -32,7 +32,7 @@ export class EventEditorComponent {
         if (this.dateTime === null || this.place === '' || this.eventType === null) {
             return;
         }
-        const event = new Event('' as EventId, this.dateTime.toISOString(), this.place, eventTypeToString(this.eventType));
+        const event = new Event('' as EventId, this.dateTime, this.place, this.eventType);
         console.log(JSON.stringify(event));
         this.eventChanged.emit(event);
     }
