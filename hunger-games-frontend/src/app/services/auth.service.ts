@@ -77,24 +77,27 @@ export class AuthService {
         localStorage.removeItem('auth');
     }
 
+    private storeAuth(authData: AuthData): void {
+        this._authData = authData;
+        localStorage.setItem('auth', JSON.stringify(this._authData))
+    }
+
     async loginModerator(username: string, password: string): Promise<void> {
         const url: string = `${ApiService.baseURL}/moderator/signin`;
         const login = await lastValueFrom(this.http.post<LoginResult>(url, { username, password }));
-        this._authData = new AuthData(login.id, login.name, login.token, UserRole.Moderator);
-        localStorage.setItem('auth', JSON.stringify(this._authData))
+        this.storeAuth(new AuthData(login.id, login.name, login.token, UserRole.Moderator));
     }
 
     async login(username: string, password: string): Promise<void> {
         const url: string = `${this.BASE_URL}/signin`;
         const login = await lastValueFrom(this.http.post<LoginResult>(url, { username, password }));
-        this._authData = new AuthData(login.id, login.name, login.token, UserRole.Sponsor);
-        localStorage.setItem('auth', JSON.stringify(this._authData))
+        this.storeAuth(new AuthData(login.id, login.name, login.token, UserRole.Sponsor));
     }
 
     async capitolAuth(username: string, role: UserRole): Promise<void> {
         const url = `${ApiService.baseURL}/capitol/signin`;
         const login = await lastValueFrom(this.http.post<LoginResult>(url, { username }));
-        this._authData = new AuthData(login.id, login.name, login.token, role);
+        this.storeAuth(new AuthData(login.id, login.name, login.token, role));
     }
 
     async register(username: string, name: string, password: string): Promise<void> {
