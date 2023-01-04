@@ -57,4 +57,10 @@ export class TributesService {
             event.toSerDe(),
         ));
     }
+
+    async deleteEvent(event: Event): Promise<void> {
+        await lastValueFrom(this.http.delete<void>(
+            TributesService.BASE_URL + `/event/${event.id}`
+        ));
+    }
 }

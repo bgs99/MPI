@@ -9,7 +9,7 @@
         <app-event [event]="event"></app-event>
         <mat-card-actions>
             <button mat-raised-button (click)="this.editedEvent=i">Изменить</button>
-            <button mat-raised-button>Удалить</button>
+            <button mat-raised-button (click)="this.deleteEvent(event)">Удалить</button>
         </mat-card-actions>
     </mat-card>
     <app-event-editor *ngIf="this.editedEvent === i" [sourceEvent]="event" (eventChanged)="this.editEvent(i, $event)"
