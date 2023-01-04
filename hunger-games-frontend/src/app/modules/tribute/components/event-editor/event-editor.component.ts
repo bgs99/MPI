@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Event, EventId, EventType, eventTypes, eventTypeName } from 'src/app/models/event';
 
 @Component({
     selector: 'app-event-editor',
     templateUrl: './event-editor.component.html',
 })
-export class EventEditorComponent {
+export class EventEditorComponent implements OnInit {
     public dateTime: Date | null = null;
     public place: string = '';
     public eventType: EventType | null = null;
@@ -15,7 +15,18 @@ export class EventEditorComponent {
         return eventTypeName(eventType);
     }
 
+    @Input() sourceEvent: Event | undefined;
     @Output() eventChanged = new EventEmitter<Event>();
+    @Output() cancelled = new EventEmitter<void>();
+
+    ngOnInit(): void {
+        if (this.sourceEvent === undefined) {
+            return;
+        }
+        this.dateTime = this.sourceEvent.dateTime;
+        this.place = this.sourceEvent.place;
+        this.eventType = this.sourceEvent.type;
+    }
 
     static padDate(number: number): string {
         if (number < 10) {
@@ -33,7 +44,10 @@ export class EventEditorComponent {
             return;
         }
         const event = new Event('' as EventId, this.dateTime, this.place, this.eventType);
-        console.log(JSON.stringify(event));
         this.eventChanged.emit(event);
+    }
+
+    cancel() {
+        this.cancelled.emit();
     }
 }

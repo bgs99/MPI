@@ -1,6 +1,17 @@
 <app-header></app-header>
-<app-event-editor (eventChanged)="this.addEvent($event)"></app-event-editor>
-<mat-card *ngFor="let event of this.events">
-    <app-event [event]="event"></app-event>
-    <mat-card-actions>Изменить</mat-card-actions>
-</mat-card>
+<button mat-raised-button *ngIf="!this.addingEvent" (click)="this.addingEvent = true">Добавить</button>
+<br />
+<app-event-editor *ngIf="this.addingEvent" (eventChanged)="this.addEvent($event)"
+    (cancelled)="this.addingEvent = false"></app-event-editor>
+<ng-container *ngFor="let event of this.events; index as i">
+    <br />
+    <mat-card *ngIf="this.editedEvent !== i">
+        <app-event [event]="event"></app-event>
+        <mat-card-actions>
+            <button mat-raised-button (click)="this.editedEvent=i">Изменить</button>
+            <button mat-raised-button>Удалить</button>
+        </mat-card-actions>
+    </mat-card>
+    <app-event-editor *ngIf="this.editedEvent === i" [sourceEvent]="event" (eventChanged)="this.editEvent(i, $event)"
+        (cancelled)="this.editedEvent = null"></app-event-editor>
+</ng-container>

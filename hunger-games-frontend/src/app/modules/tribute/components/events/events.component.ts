@@ -7,6 +7,8 @@ import { TributesService } from 'src/app/services/tributes.service';
 })
 export class EventsComponent implements OnInit {
     events: Event[] = [];
+    addingEvent: boolean = false;
+    editedEvent: number | null = null;
 
     constructor(private tributesService: TributesService) { }
 
@@ -16,6 +18,14 @@ export class EventsComponent implements OnInit {
 
     async addEvent(event: Event): Promise<void> {
         await this.tributesService.addEvent(event);
+        this.addingEvent = false;
+        await this.loadEvents();
+    }
+
+    async editEvent(index: number, event: Event): Promise<void> {
+        event.id = this.events[index].id;
+        await this.tributesService.editEvent(event);
+        this.editedEvent = null;
         await this.loadEvents();
     }
 

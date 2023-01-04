@@ -44,7 +44,7 @@ export class EventSerDe {
 }
 
 export class Event {
-    constructor(public id: EventId, public dateTime: Date, public place: string, private type: EventType) { }
+    constructor(public id: EventId, public dateTime: Date, public place: string, public type: EventType) { }
 
     toSerDe(): EventSerDe {
         return new EventSerDe(this.id, this.dateTime.toISOString(), this.place, eventTypeToString(this.type));
