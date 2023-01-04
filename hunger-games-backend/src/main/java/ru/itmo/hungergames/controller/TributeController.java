@@ -49,6 +49,11 @@ public class TributeController {
         return tributeService.getTributeById(tributeId);
     }
 
+    @DeleteMapping("/event/{eventId}")
+    public void deleteEventById(@PathVariable UUID eventId) {
+        tributeService.deleteEventById(eventId);
+    }
+
     @PostMapping("/event")
     public EventResponse addEvent(@RequestBody EventRequest eventRequest) {
         return tributeService.addEvent(eventRequest);

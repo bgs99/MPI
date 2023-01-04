@@ -137,4 +137,10 @@ public class TributeServiceImpl implements TributeService {
                         .eventType(eventModifyRequest.getEventType())
                         .dateTime(eventModifyRequest.getDateTime()).build()));
     }
+
+    @Override
+    @Transactional
+    public void deleteEventById(UUID eventId) {
+        eventRepository.deleteById(eventId);
+    }
 }

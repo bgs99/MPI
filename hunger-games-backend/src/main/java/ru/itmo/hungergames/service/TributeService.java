@@ -24,4 +24,6 @@ public interface TributeService {
     List<String> getApprovedAndPaidAdvertisingTexts();
 
     EventResponse modifyEvent(EventModifyRequest eventModifyRequest);
+
+    void deleteEventById(UUID eventId);
 }

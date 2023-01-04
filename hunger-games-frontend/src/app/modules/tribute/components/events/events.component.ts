@@ -32,4 +32,9 @@ export class EventsComponent implements OnInit {
     async loadEvents(): Promise<void> {
         this.events = await this.tributesService.getEvents();
     }
+
+    async deleteEvent(event: Event): Promise<void> {
+        await this.tributesService.deleteEvent(event);
+        await this.loadEvents();
+    }
 }
