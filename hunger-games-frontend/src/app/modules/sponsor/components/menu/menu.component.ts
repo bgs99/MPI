@@ -9,6 +9,6 @@ export class MenuComponent {
         new MenuItem('chats', 'Чаты', 'message'),
         new MenuItem('tributes', 'Трибуты', 'people'),
         new MenuItem('news', 'Новости', 'email'),
-        new MenuItem('settings', 'настройки', 'message'),
+        new MenuItem('settings', 'Настройки', 'message'),
     ];
 }

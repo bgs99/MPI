@@ -2,6 +2,7 @@ package ru.itmo.hungergames.selenium.util;
 
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -23,7 +24,8 @@ import static org.springframework.test.context.TestExecutionListeners.MergeMode.
         mergeMode = MERGE_WITH_DEFAULTS)
 
 @RunWith(SpringRunner.class)
+@DirtiesContext // Force Spring to close ports between tests
 @SpringBootTest(properties = "server.port=42322", webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public @interface SeleniumTest {
-    String baseUrl() default "http://localhost:42322";
+    String relativeUrl();
 }

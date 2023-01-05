@@ -7,8 +7,8 @@ export class Person {
 }
 
 export enum UserRole {
-    Sponsor,
     Tribute,
     Mentor,
+    Sponsor,
     Moderator,
 }
