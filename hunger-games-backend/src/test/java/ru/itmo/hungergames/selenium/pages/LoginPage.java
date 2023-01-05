@@ -21,4 +21,7 @@ public class LoginPage {
 
     @FindBy(xpath = "//input[@type='image']")
     private WebElement capitolAuthLink;
+
+    @FindBy(xpath = "//mat-error")
+    private WebElement loginError;
 }
