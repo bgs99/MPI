@@ -4,6 +4,7 @@ import org.hamcrest.CoreMatchers;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +15,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.core.AuthenticationException;
 import ru.itmo.hungergames.model.entity.user.User;
 import ru.itmo.hungergames.model.response.JwtResponse;
 import ru.itmo.hungergames.selenium.pages.LoginPage;
@@ -60,9 +61,8 @@ public class LoginPageTests {
         assertThat(driver.getCurrentUrl(), CoreMatchers.endsWith("/capitol/auth"));
     }
 
-    @Transactional
     @Test
-    public void LoginSponsor() {
+    public void LoginSponsorSuccess() {
         String username = "username";
         String password = "password";
         String name = "name";
@@ -79,6 +79,31 @@ public class LoginPageTests {
         Utils.redirectWait(driver, loginPageUrl);
 
         assertThat(driver.getCurrentUrl(), CoreMatchers.endsWith("/sponsor"));
+    }
+
+    @Test
+    public void LoginSponsorFailure() {
+        String username = "username";
+        String password = "password";
+
+        class MyAuthException extends AuthenticationException {
+            public MyAuthException() {
+                super("test");
+            }
+        }
+
+        doThrow(new MyAuthException())
+                .when(securityService)
+                .authenticateUser(new User(username, password));
+
+        loginPage.getSponsorLoginInput().sendKeys(username);
+        loginPage.getSponsorPasswordInput().sendKeys(password);
+
+        loginPage.getSponsorLoginButton().click();
+
+        Assertions.assertThrows(Exception.class, () -> Utils.redirectWait(driver, loginPageUrl));
+
+        assertThat(loginPage.getLoginError().getText(), CoreMatchers.equalTo("Неправильный логин или пароль"));
     }
 }
 
