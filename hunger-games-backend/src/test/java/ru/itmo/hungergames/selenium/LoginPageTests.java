@@ -1,15 +1,16 @@
 package ru.itmo.hungergames.selenium;
 
 import org.hamcrest.CoreMatchers;
+
 import static org.hamcrest.MatcherAssert.assertThat;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
+
+import static org.mockito.Mockito.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
@@ -24,8 +25,6 @@ import ru.itmo.hungergames.service.SecurityService;
 import java.util.HashSet;
 import java.util.UUID;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(properties = "server.port=42322", webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @SeleniumTest
 public class LoginPageTests {
     @MockBean
@@ -68,8 +67,7 @@ public class LoginPageTests {
         String password = "password";
         String name = "name";
 
-        Mockito
-                .doReturn(new JwtResponse(UUID.randomUUID(), "", username, new HashSet<>(), name))
+        doReturn(new JwtResponse(UUID.randomUUID(), "", username, new HashSet<>(), name))
                 .when(securityService)
                 .authenticateUser(new User(username, password));
 

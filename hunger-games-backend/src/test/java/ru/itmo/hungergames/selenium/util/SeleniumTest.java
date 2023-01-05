@@ -1,8 +1,9 @@
 package ru.itmo.hungergames.selenium.util;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestExecutionListeners;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -20,7 +21,9 @@ import static org.springframework.test.context.TestExecutionListeners.MergeMode.
 @TestExecutionListeners(
         listeners = SeleniumTestExecutionListener.class,
         mergeMode = MERGE_WITH_DEFAULTS)
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(properties = "server.port=42322", webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public @interface SeleniumTest {
     String baseUrl() default "http://localhost:42322";
-
 }
