@@ -1,4 +1,4 @@
-package ru.itmo.hungergames.selenium;
+package ru.itmo.hungergames.selenium.unit;
 
 import org.hamcrest.CoreMatchers;
 
@@ -26,7 +26,7 @@ import ru.itmo.hungergames.service.SecurityService;
 import java.util.HashSet;
 import java.util.UUID;
 
-@SeleniumTest
+@SeleniumTest(relativeUrl="/")
 public class LoginPageTests {
     @MockBean
     SecurityService securityService;
@@ -49,7 +49,7 @@ public class LoginPageTests {
 
         Utils.redirectWait(driver, loginPageUrl);
 
-        assertThat(driver.getCurrentUrl(), CoreMatchers.endsWith("/register"));
+        assertThat(driver.getCurrentUrl(), CoreMatchers.endsWith("#/register"));
     }
 
     @Test
@@ -58,7 +58,7 @@ public class LoginPageTests {
 
         Utils.redirectWait(driver, loginPageUrl);
 
-        assertThat(driver.getCurrentUrl(), CoreMatchers.endsWith("/capitol/auth"));
+        assertThat(driver.getCurrentUrl(), CoreMatchers.endsWith("#/capitol/auth"));
     }
 
     @Test
@@ -78,7 +78,7 @@ public class LoginPageTests {
 
         Utils.redirectWait(driver, loginPageUrl);
 
-        assertThat(driver.getCurrentUrl(), CoreMatchers.endsWith("/sponsor"));
+        assertThat(driver.getCurrentUrl(), CoreMatchers.endsWith("#/sponsor"));
     }
 
     @Test

@@ -25,5 +25,5 @@ import static org.springframework.test.context.TestExecutionListeners.MergeMode.
 @RunWith(SpringRunner.class)
 @SpringBootTest(properties = "server.port=42322", webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public @interface SeleniumTest {
-    String baseUrl() default "http://localhost:42322";
+    String relativeUrl();
 }
