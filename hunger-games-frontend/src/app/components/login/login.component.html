@@ -5,7 +5,7 @@
             (click)="this.router.navigateByUrl('/capitol/auth')">
     </div>
     <mat-divider id="divider" vertical></mat-divider>
-    <form id="sponsor" (ngSubmit)="login()" novalidate>
+    <form [formGroup]="loginForm" (ngSubmit)="login()" (change)="this.loginError = null">
         <mat-card>
             <mat-card-header>
                 <mat-card-title>Войти как спонсор</mat-card-title>
@@ -13,19 +13,22 @@
             <mat-card-content>
                 <div>
                     <mat-form-field>
-                        <input matInput type="text" id="login" placeholder="Логин" [(ngModel)]="username" name="login"
+                        <input matInput type="text" id="login" placeholder="Логин" formControlName="username"
                             required />
+                        <mat-error *ngIf="loginForm.controls['username'].hasError('required')">Логин обязателен</mat-error>
                     </mat-form-field>
                 </div>
                 <div>
                     <mat-form-field>
                         <input matInput type="password" class="form-control" id="password" placeholder="Пароль..."
-                            [(ngModel)]="password" name="password" required />
+                            formControlName="password" required />
+                        <mat-error *ngIf="loginForm.controls['password'].hasError('required')">Пароль обязателен</mat-error>
                     </mat-form-field>
                 </div>
+                <mat-error *ngIf="this.loginError">{{this.loginError}}</mat-error>
             </mat-card-content>
             <mat-card-actions>
-                <button type="submit" mat-raised-button>Войти</button>
+                <button type="submit" mat-raised-button [disabled]="!loginForm.valid">Войти</button>
                 <button (click)="this.router.navigateByUrl('/register')" mat-raised-button>Зарегистрироваться</button>
             </mat-card-actions>
         </mat-card>
