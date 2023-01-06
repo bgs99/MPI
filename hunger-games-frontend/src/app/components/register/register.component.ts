@@ -35,7 +35,7 @@ export class RegisterComponent {
             await this.router.navigateByUrl('/login');
         }
         catch (e: any) {
-            if (e instanceof HttpErrorResponse && e.status === 403) {
+            if (e instanceof HttpErrorResponse && e.status === 409) {
                 this.registerError = 'Пользователь с таким логином уже существует';
                 return;
             }
