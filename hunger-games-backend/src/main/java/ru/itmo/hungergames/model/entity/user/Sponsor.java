@@ -15,6 +15,7 @@ import ru.itmo.hungergames.model.entity.order.NewsSubscriptionOrder;
 @Entity(name = "Sponsor")
 @Table(name = "sponsors")
 @SuperBuilder
+@EqualsAndHashCode(callSuper = true)
 @JsonIgnoreProperties(
         value = {"password", "userRoles", "authorities",
                 "accountNonExpired", "accountNonLocked",
