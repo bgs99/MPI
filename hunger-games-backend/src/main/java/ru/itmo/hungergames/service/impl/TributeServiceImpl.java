@@ -119,7 +119,7 @@ public class TributeServiceImpl implements TributeService {
     public List<String> getApprovedAndPaidAdvertisingTexts() {
         return advertisementOrderRepository
                 .findAllByApprovedAndPaid(true, true).stream()
-                .map(advertisementOrder -> advertisementOrder.getAdvertisingText())
+                .map(AdvertisementOrder::getAdvertisingText)
                 .collect(Collectors.toList());
     }
 
@@ -131,12 +131,12 @@ public class TributeServiceImpl implements TributeService {
                 .orElseThrow(() -> new ResourceNotFoundException("There's no event with such ID"));
 
         tributeUtil.validateEventBeforeModify(eventModifyRequest);
-        return new EventResponse(eventRepository.save(
-                Event.builder()
-                        .id(event.getId())
-                        .eventPlace(eventModifyRequest.getEventPlace())
-                        .eventType(eventModifyRequest.getEventType())
-                        .dateTime(eventModifyRequest.getDateTime()).build()));
+
+        event.setEventPlace(eventModifyRequest.getEventPlace());
+        event.setEventType(eventModifyRequest.getEventType());
+        event.setDateTime(eventModifyRequest.getDateTime());
+
+        return new EventResponse(eventRepository.save(event));
     }
 
     @Override
