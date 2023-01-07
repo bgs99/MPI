@@ -26,7 +26,7 @@ import ru.itmo.hungergames.service.SecurityService;
 import java.util.HashSet;
 import java.util.UUID;
 
-@SeleniumTest(relativeUrl="/")
+@SeleniumTest
 public class LoginPageTests {
     @MockBean
     SecurityService securityService;
@@ -39,6 +39,7 @@ public class LoginPageTests {
 
     @BeforeEach
     public void setUp() {
+        driver.get("localhost:42322/#/");
         loginPage = PageFactory.initElements(driver, LoginPage.class);
         loginPageUrl = driver.getCurrentUrl();
     }

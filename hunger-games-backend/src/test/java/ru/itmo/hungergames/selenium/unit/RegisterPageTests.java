@@ -20,7 +20,7 @@ import ru.itmo.hungergames.service.SecurityService;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.doNothing;
 
-@SeleniumTest(relativeUrl = "/register")
+@SeleniumTest
 public class RegisterPageTests {
     @MockBean
     SecurityService securityService;
@@ -34,6 +34,7 @@ public class RegisterPageTests {
 
     @BeforeEach
     public void setUp() {
+        driver.get("localhost:42322/#/register");
         registerPage = PageFactory.initElements(driver, RegisterPage.class);
         registerPageUrl = driver.getCurrentUrl();
     }
