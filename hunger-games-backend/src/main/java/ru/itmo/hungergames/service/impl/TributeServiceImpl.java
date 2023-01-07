@@ -124,6 +124,7 @@ public class TributeServiceImpl implements TributeService {
     }
 
     @Override
+    @Transactional
     public EventResponse modifyEvent(EventModifyRequest eventModifyRequest) {
         Event event = eventRepository
                 .findById(eventModifyRequest.getId())
