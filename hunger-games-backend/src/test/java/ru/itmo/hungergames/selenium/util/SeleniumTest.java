@@ -27,5 +27,4 @@ import static org.springframework.test.context.TestExecutionListeners.MergeMode.
 @DirtiesContext // Force Spring to close ports between tests
 @SpringBootTest(properties = "server.port=42322", webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public @interface SeleniumTest {
-    String relativeUrl();
 }
