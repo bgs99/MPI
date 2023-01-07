@@ -14,7 +14,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @Entity
 @AllArgsConstructor
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
+@EqualsAndHashCode
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Orders {
     @Id
