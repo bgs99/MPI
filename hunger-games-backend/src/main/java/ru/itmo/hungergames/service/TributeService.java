@@ -21,7 +21,7 @@ public interface TributeService {
 
     List<EventResponse> getEvents();
 
-    List<String> getApprovedAndPaidAdvertisingTexts();
+    List<String> getApprovedAndPaidAdvertisingTexts(UUID tributeId);
 
     EventResponse modifyEvent(EventModifyRequest eventModifyRequest);
 

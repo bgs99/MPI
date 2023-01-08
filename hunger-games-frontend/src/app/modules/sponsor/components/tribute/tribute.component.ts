@@ -30,7 +30,7 @@ export class TributeComponent implements OnInit {
         this.self = await this.tributesService.getTribute(id)!;
         const chats = await this.chatService.getChats();
         this.chat = chats.find(chat => chat.tributeName == this.self?.name);
-        this.ads = (await this.tributesService.getAds()).reverse();
+        this.ads = (await this.tributesService.getAds(id)).reverse();
     }
 
 }
