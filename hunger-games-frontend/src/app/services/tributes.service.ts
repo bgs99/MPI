@@ -32,9 +32,9 @@ export class TributesService {
         ));
     }
 
-    async getAds(): Promise<string[]> {
+    async getAds(id: TributeId): Promise<string[]> {
         return await lastValueFrom(this.http.get<string[]>(
-            TributesService.BASE_URL + "/advertisement"
+            TributesService.BASE_URL + `/${id}/advertisement`
         ));
     }
 

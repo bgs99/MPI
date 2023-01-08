@@ -36,10 +36,11 @@ public class LoginPageTests extends SeleniumTestBase {
     public void setUp() {
         this.get("/");
         loginPage = PageFactory.initElements(driver, LoginPage.class);
-        loginPageUrl = driver.getCurrentUrl();
 
         loginPage.getSponsorLoginInput().clear();
         loginPage.getSponsorPasswordInput().clear();
+
+        loginPageUrl = driver.getCurrentUrl();
     }
 
     @Test

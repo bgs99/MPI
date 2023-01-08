@@ -39,9 +39,9 @@ public class TributeController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/advertisement")
-    public List<String> getAllAdvertisingTexts() {
-        return tributeService.getApprovedAndPaidAdvertisingTexts();
+    @GetMapping("/{tributeId}/advertisement")
+    public List<String> getAllAdvertisingTexts(@PathVariable UUID tributeId) {
+        return tributeService.getApprovedAndPaidAdvertisingTexts(tributeId);
     }
 
     @PreAuthorize("isAuthenticated()")

@@ -116,9 +116,13 @@ public class TributeServiceImpl implements TributeService {
     }
 
     @Override
-    public List<String> getApprovedAndPaidAdvertisingTexts() {
+    public List<String> getApprovedAndPaidAdvertisingTexts(UUID tributeId) {
+        var tribute = tributeRepository
+                .findById(tributeId)
+                .orElseThrow(() -> new ResourceNotFoundException("There's no tribute with such ID"));
+
         return advertisementOrderRepository
-                .findAllByApprovedAndPaid(true, true).stream()
+                .findAllByApprovedTrueAndPaidTrueAndTribute(tribute).stream()
                 .map(AdvertisementOrder::getAdvertisingText)
                 .collect(Collectors.toList());
     }
