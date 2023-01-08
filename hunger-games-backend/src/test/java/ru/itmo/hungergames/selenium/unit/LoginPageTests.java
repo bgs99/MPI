@@ -10,9 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
 import org.springframework.security.core.AuthenticationException;
@@ -20,26 +18,23 @@ import ru.itmo.hungergames.model.entity.user.User;
 import ru.itmo.hungergames.model.response.JwtResponse;
 import ru.itmo.hungergames.selenium.pages.LoginPage;
 import ru.itmo.hungergames.selenium.util.SeleniumTest;
-import ru.itmo.hungergames.selenium.util.Utils;
+import ru.itmo.hungergames.selenium.util.SeleniumTestBase;
 import ru.itmo.hungergames.service.SecurityService;
 
 import java.util.HashSet;
 import java.util.UUID;
 
 @SeleniumTest
-public class LoginPageTests {
+public class LoginPageTests extends SeleniumTestBase {
     @MockBean
     SecurityService securityService;
-
-    @Autowired
-    private WebDriver driver;
 
     private LoginPage loginPage;
     private String loginPageUrl;
 
     @BeforeEach
     public void setUp() {
-        driver.get("localhost:42322/#/");
+        this.get("/");
         loginPage = PageFactory.initElements(driver, LoginPage.class);
         loginPageUrl = driver.getCurrentUrl();
     }
@@ -48,7 +43,7 @@ public class LoginPageTests {
     public void RedirectToRegister() {
         loginPage.getSponsorRegisterButton().click();
 
-        Utils.redirectWait(driver, loginPageUrl);
+        this.redirectWait(loginPageUrl);
 
         assertThat(driver.getCurrentUrl(), CoreMatchers.endsWith("#/register"));
     }
@@ -57,7 +52,7 @@ public class LoginPageTests {
     public void RedirectToCapitolAuth() {
         loginPage.getCapitolAuthLink().click();
 
-        Utils.redirectWait(driver, loginPageUrl);
+        this.redirectWait(loginPageUrl);
 
         assertThat(driver.getCurrentUrl(), CoreMatchers.endsWith("#/capitol/auth"));
     }
@@ -77,7 +72,7 @@ public class LoginPageTests {
 
         loginPage.getSponsorLoginButton().click();
 
-        Utils.redirectWait(driver, loginPageUrl);
+        this.redirectWait(loginPageUrl);
 
         assertThat(driver.getCurrentUrl(), CoreMatchers.endsWith("#/sponsor"));
     }
@@ -102,7 +97,7 @@ public class LoginPageTests {
 
         loginPage.getSponsorLoginButton().click();
 
-        Assertions.assertThrows(Exception.class, () -> Utils.redirectWait(driver, loginPageUrl));
+        Assertions.assertThrows(Exception.class, () -> this.redirectWait(loginPageUrl));
 
         assertThat(loginPage.getLoginError().getText(), CoreMatchers.equalTo("Неправильный логин или пароль"));
     }

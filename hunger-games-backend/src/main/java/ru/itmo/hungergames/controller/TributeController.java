@@ -44,6 +44,7 @@ public class TributeController {
         return tributeService.getApprovedAndPaidAdvertisingTexts();
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/{tributeId}")
     public TributeResponse getTributeById(@PathVariable UUID tributeId) {
         return tributeService.getTributeById(tributeId);

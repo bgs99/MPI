@@ -29,12 +29,11 @@ public class SeleniumTestExecutionListener extends AbstractTestExecutionListener
             return;
         }
         ApplicationContext context = testContext.getApplicationContext();
-        if (context instanceof ConfigurableApplicationContext) {
+        if (context instanceof ConfigurableApplicationContext configurableApplicationContext) {
             var options = new FirefoxOptions().setHeadless(true); // TODO: separate profile (debug?) for non-headless mode
             webDriver = new FirefoxDriver(options);
             webDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
 
-            ConfigurableApplicationContext configurableApplicationContext = (ConfigurableApplicationContext) context;
             ConfigurableListableBeanFactory bf = configurableApplicationContext.getBeanFactory();
             bf.registerResolvableDependency(WebDriver.class, webDriver);
         }

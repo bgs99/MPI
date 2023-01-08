@@ -19,9 +19,10 @@ export class TributesService {
         ));
     }
 
-    async getTribute(id: TributeId): Promise<Tribute | undefined> {
-        const tributes = await this.getTributes();
-        return tributes.find(tribute => tribute.id === id);
+    async getTribute(id: TributeId): Promise<Tribute> {
+        return await lastValueFrom(this.http.get<Tribute>(
+            TributesService.BASE_URL + `/${id}`
+        ));
     }
 
     async orderAd(text: string): Promise<PaymentData> {
