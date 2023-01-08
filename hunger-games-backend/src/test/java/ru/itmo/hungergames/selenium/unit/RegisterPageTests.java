@@ -1,12 +1,10 @@
 package ru.itmo.hungergames.selenium.unit;
 
-import com.paulhammant.ngwebdriver.NgWebDriver;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.AuthenticationException;
@@ -34,8 +32,10 @@ public class RegisterPageTests extends SeleniumTestBase {
         this.get("/register");
         registerPage = PageFactory.initElements(driver, RegisterPage.class);
 
-        NgWebDriver ngDriver = new NgWebDriver((FirefoxDriver)driver);
-        ngDriver.waitForAngularRequestsToFinish();
+        registerPage.getSponsorNameInput().clear();
+        registerPage.getSponsorLoginInput().clear();
+        registerPage.getSponsorPasswordInput().clear();
+        registerPage.getSponsorPassword2Input().clear();
 
         registerPageUrl = driver.getCurrentUrl();
     }
