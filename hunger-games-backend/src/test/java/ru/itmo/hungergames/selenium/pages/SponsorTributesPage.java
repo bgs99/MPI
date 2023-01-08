@@ -7,7 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
-import java.util.Map;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class SponsorTributesPage {
@@ -26,13 +26,17 @@ public class SponsorTributesPage {
         public WebElement getSelectButton() {
             return row.findElement(By.tagName("button"));
         }
+
+        public int getDistrict() {
+            return Integer.parseInt(row.findElements(By.tagName("td")).get(1).getText());
+        }
         public String getName() {
             return row.findElements(By.tagName("td")).get(0).getText();
         }
     }
 
-    public Map<String, TributeRow> getTributeRows() {
-        return this.driver.findElements(By.tagName("tr")).stream().skip(1).map(TributeRow::new).collect(Collectors.toMap(TributeRow::getName, tributeRow -> tributeRow));
+    public List<TributeRow> getTributeRows() {
+        return this.driver.findElements(By.tagName("tr")).stream().skip(1).map(TributeRow::new).collect(Collectors.toList());
     }
 
     public void waitUntilTributesLoaded() {

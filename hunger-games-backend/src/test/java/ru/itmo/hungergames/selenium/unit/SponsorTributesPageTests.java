@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import ru.itmo.hungergames.model.entity.user.Mentor;
 import ru.itmo.hungergames.model.entity.user.Sponsor;
 import ru.itmo.hungergames.model.entity.user.Tribute;
 import ru.itmo.hungergames.model.entity.user.UserRole;
@@ -44,7 +45,24 @@ public class SponsorTributesPageTests extends SeleniumTestBase {
 
     @Test
     public void tributesList() {
-        var tributes = List.of(Tribute.builder().name("tribute1").build(), Tribute.builder().name("tribute2").build());
+        var mentor1 = Mentor.builder()
+                .district(1)
+                .build();
+        var mentor2 = Mentor.builder()
+                .district(2)
+                .build();
+
+        var tribute1 = Tribute.builder()
+                .name("tribute1")
+                .mentor(mentor1)
+                .build();
+
+        var tribute2 = Tribute.builder()
+                .name("tribute2")
+                .mentor(mentor2)
+                .build();
+
+        var tributes = List.of(tribute1, tribute2);
         when(tributeService.getAllTributes()).thenReturn(tributes.stream().map(TributeResponse::new).collect(Collectors.toList()));
 
         this.get("/sponsor/tributes");
@@ -53,23 +71,33 @@ public class SponsorTributesPageTests extends SeleniumTestBase {
 
         var tributeRows = this.page.getTributeRows();
 
-        var names = tributeRows.keySet();
-        var expectedNames = tributes.stream().map(Tribute::getName).collect(Collectors.toSet());
+        var names = tributeRows.stream().map(SponsorTributesPage.TributeRow::getName).collect(Collectors.toList());
+        var expectedNames = tributes.stream().map(Tribute::getName).collect(Collectors.toList());
 
         Assertions.assertEquals(expectedNames, names);
+
+        var districts = tributeRows.stream().map(SponsorTributesPage.TributeRow::getDistrict).collect(Collectors.toList());
+        var expectedDistricts = tributes.stream().map(Tribute::getMentor).map(Mentor::getDistrict).collect(Collectors.toList());
+
+        Assertions.assertEquals(expectedDistricts, districts);
     }
 
     @Test
     public void redirectToTribute() {
-        var tribute = Tribute.builder().name("tribute1").id(new UUID(42, 42)).build();
-        when(tributeService.getAllTributes()).thenReturn(List.of(new TributeResponse(tribute)));
+        var mentor = Mentor.builder().district(2).build();
+        var tribute = Tribute.builder()
+                .name("tribute1")
+                .id(new UUID(42, 42))
+                .mentor(mentor)
+                .build();
+        doReturn(List.of(new TributeResponse(tribute))).when(tributeService).getAllTributes();
 
         this.get("/sponsor/tributes");
 
 
         page.waitUntilTributesLoaded();
 
-        var tributeRow = this.page.getTributeRows().get(tribute.getName());
+        var tributeRow = this.page.getTributeRows().get(0);
 
         var sourceUrl = driver.getCurrentUrl();
 

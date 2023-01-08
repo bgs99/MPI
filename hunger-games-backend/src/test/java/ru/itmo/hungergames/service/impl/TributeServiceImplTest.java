@@ -12,6 +12,7 @@ import ru.itmo.hungergames.exception.NotCorrectDateException;
 import ru.itmo.hungergames.model.entity.Event;
 import ru.itmo.hungergames.model.entity.EventType;
 import ru.itmo.hungergames.model.entity.order.AdvertisementOrder;
+import ru.itmo.hungergames.model.entity.user.Mentor;
 import ru.itmo.hungergames.model.entity.user.Tribute;
 import ru.itmo.hungergames.model.request.AdvertisingTextRequest;
 import ru.itmo.hungergames.model.request.EventModifyRequest;
@@ -51,19 +52,23 @@ class TributeServiceImplTest {
 
     @Test
     void getTributeById() {
-        Tribute tribute = new Tribute();
-        UUID id = UUID.randomUUID();
-        tribute.setName("name");
-        tribute.setId(id);
+        var mentor = Mentor.builder()
+                .district(1)
+                .build();
+        var tribute = Tribute.builder()
+                .id(new UUID(42, 42))
+                .mentor(mentor)
+                .name("name")
+                .build();
         Mockito.doReturn(Optional.of(tribute))
                 .when(tributeRepository)
-                .findById(id);
+                .findById(tribute.getId());
 
-        TributeResponse tributeById = tributeService.getTributeById(id);
+        TributeResponse tributeById = tributeService.getTributeById(tribute.getId());
 
         assertEquals("name", tributeById.getName());
-        assertEquals(id, tributeById.getId());
-        Mockito.verify(tributeRepository, Mockito.times(1)).findById(id);
+        assertEquals(tribute.getId(), tributeById.getId());
+        Mockito.verify(tributeRepository, Mockito.times(1)).findById(tribute.getId());
     }
 
     @Test
@@ -76,8 +81,11 @@ class TributeServiceImplTest {
 
     @Test
     void getAllTributes() {
-        Tribute tribute = new Tribute();
-        tribute.setId(new UUID(42, 42));
+        var mentor = Mentor.builder().district(1).build();
+        Tribute tribute = Tribute.builder()
+                .id(new UUID(42, 42))
+                .mentor(mentor)
+                .build();
 
         Mockito.when(tributeRepository.findAll()).thenReturn(List.of(tribute));
 

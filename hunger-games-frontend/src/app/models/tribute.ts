@@ -10,7 +10,7 @@ export class Tribute extends Person {
         name: string,
         public override id: TributeId,
         avatarUri: string | null,
-        public mentor: Mentor,
+        public district: number,
     ) {
         super(username, name, id, avatarUri)
     }
