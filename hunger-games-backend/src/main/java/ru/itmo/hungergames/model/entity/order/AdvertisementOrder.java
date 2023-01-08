@@ -5,6 +5,7 @@ import jakarta.persistence.Index;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,7 +17,8 @@ import ru.itmo.hungergames.model.entity.user.Tribute;
 @NoArgsConstructor
 @Entity(name="AdvertisementOrder")
 @Table(name = "advertisement_orders", indexes = @Index(columnList = "tribute_user_id"))
-@SuperBuilder
+@SuperBuilder(toBuilder = true)
+@EqualsAndHashCode(callSuper = true)
 public class AdvertisementOrder extends Orders {
     @NotNull
     private String advertisingText;

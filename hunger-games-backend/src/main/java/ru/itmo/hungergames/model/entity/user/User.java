@@ -2,7 +2,6 @@ package ru.itmo.hungergames.model.entity.user;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -56,7 +55,7 @@ public class User implements UserDetails {
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
-    private final Set<UserRole> userRoles = new HashSet<>();
+    private Set<UserRole> userRoles = new HashSet<>();
 
     @Override
     public String getUsername() {

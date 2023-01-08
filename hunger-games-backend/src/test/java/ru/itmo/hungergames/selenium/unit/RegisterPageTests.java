@@ -5,28 +5,23 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.AuthenticationException;
 import ru.itmo.hungergames.exception.UserExistsException;
 import ru.itmo.hungergames.model.entity.user.Sponsor;
 import ru.itmo.hungergames.selenium.pages.RegisterPage;
 import ru.itmo.hungergames.selenium.util.SeleniumTest;
-import ru.itmo.hungergames.selenium.util.Utils;
+import ru.itmo.hungergames.selenium.util.SeleniumTestBase;
 import ru.itmo.hungergames.service.SecurityService;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.doNothing;
 
-@SeleniumTest(relativeUrl = "/register")
-public class RegisterPageTests {
+@SeleniumTest
+public class RegisterPageTests extends SeleniumTestBase {
     @MockBean
     SecurityService securityService;
-
-    @Autowired
-    private WebDriver driver;
 
     private RegisterPage registerPage;
 
@@ -34,7 +29,14 @@ public class RegisterPageTests {
 
     @BeforeEach
     public void setUp() {
+        this.get("/register");
         registerPage = PageFactory.initElements(driver, RegisterPage.class);
+
+        registerPage.getSponsorNameInput().clear();
+        registerPage.getSponsorLoginInput().clear();
+        registerPage.getSponsorPasswordInput().clear();
+        registerPage.getSponsorPassword2Input().clear();
+
         registerPageUrl = driver.getCurrentUrl();
     }
 
@@ -55,7 +57,7 @@ public class RegisterPageTests {
 
         registerPage.getSponsorRegisterButton().click();
 
-        Utils.redirectWait(driver, registerPageUrl);
+        this.redirectWait(registerPageUrl);
 
         assertThat(driver.getCurrentUrl(), CoreMatchers.endsWith("#/login"));
     }
@@ -77,7 +79,7 @@ public class RegisterPageTests {
 
         registerPage.getSponsorRegisterButton().click();
 
-        Assertions.assertThrows(Exception.class, () -> Utils.redirectWait(driver, registerPageUrl));
+        Assertions.assertThrows(Exception.class, () -> this.redirectWait(registerPageUrl));
 
         assertThat(registerPage.getRegisterError().getText(), CoreMatchers.equalTo("Пользователь с таким логином уже существует"));
     }
@@ -105,7 +107,7 @@ public class RegisterPageTests {
 
         registerPage.getSponsorRegisterButton().click();
 
-        Assertions.assertThrows(Exception.class, () -> Utils.redirectWait(driver, registerPageUrl));
+        Assertions.assertThrows(Exception.class, () -> this.redirectWait(registerPageUrl));
 
         assertThat(registerPage.getRegisterError().getText(), CoreMatchers.equalTo("Неожиданная ошибка. Попробуйте повторить позже"));
     }

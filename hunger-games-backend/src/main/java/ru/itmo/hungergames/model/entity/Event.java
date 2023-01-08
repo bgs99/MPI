@@ -6,16 +6,16 @@ import org.hibernate.annotations.GenericGenerator;
 import ru.itmo.hungergames.model.entity.user.Tribute;
 
 import java.time.Instant;
-import java.time.Instant;
 import java.util.UUID;
 
 @Entity
 @Table(name = "events")
 @Getter
 @Setter
-@Builder
+@Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class Event {
     @Id
     @Column(name = "event_id")
