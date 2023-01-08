@@ -3,55 +3,55 @@ package ru.itmo.hungergames.selenium.unit;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import ru.itmo.hungergames.model.entity.user.User;
 import ru.itmo.hungergames.model.entity.user.UserRole;
 import ru.itmo.hungergames.selenium.pages.TributeMenuPage;
 import ru.itmo.hungergames.selenium.util.SeleniumTest;
-import ru.itmo.hungergames.selenium.util.TestAuthData;
-import ru.itmo.hungergames.selenium.util.Utils;
+import ru.itmo.hungergames.selenium.util.SeleniumTestBase;
+
+import java.util.UUID;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
-@SeleniumTest(relativeUrl = "/tribute")
-public class TributeMenuTests {
-    @Autowired
-    private WebDriver driver;
-
-    private TributeMenuPage page;
+@SeleniumTest
+public class TributeMenuTests extends SeleniumTestBase {
+    private TributeMenuPage tributeMenuPage;
     private String tributeMenuUrl;
 
     @BeforeEach
     public void setUp() {
-        page = PageFactory.initElements(driver, TributeMenuPage.class);
+        var tribute = User.builder()
+                .id(new UUID(42, 42))
+                .username("tribute")
+                .name("tribute")
+                .build();
+        this.authenticate(tribute, UserRole.TRIBUTE);
+        this.get("/tribute");
+        tributeMenuPage = PageFactory.initElements(driver, TributeMenuPage.class);
         tributeMenuUrl = driver.getCurrentUrl();
     }
-
     private void testRedirect(WebElement button, String destination) {
         button.click();
 
-        Utils.redirectWait(driver, tributeMenuUrl);
+        this.redirectWait(tributeMenuUrl);
 
         assertThat(driver.getCurrentUrl(), CoreMatchers.endsWith(destination));
     }
 
     @Test
-    @TestAuthData(role = UserRole.TRIBUTE)
     public void redirectToChats() {
-        testRedirect(page.getChatsButton(), "#/tribute/chats");
+        testRedirect(tributeMenuPage.getChatsButton(), "#/tribute/chats");
     }
 
     @Test
-    @TestAuthData(role = UserRole.TRIBUTE)
     public void redirectToEvents() {
-        testRedirect(page.getEventsButton(), "#/tribute/events");
+        testRedirect(tributeMenuPage.getEventsButton(), "#/tribute/events");
     }
 
     @Test
-    @TestAuthData(role = UserRole.TRIBUTE)
     public void redirectToPosting() {
-        testRedirect(page.getAddPostButton(), "#/tribute/posting");
+        testRedirect(tributeMenuPage.getAddPostButton(), "#/tribute/posting");
     }
 }
