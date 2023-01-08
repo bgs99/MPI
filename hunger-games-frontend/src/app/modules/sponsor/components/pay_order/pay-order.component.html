@@ -35,22 +35,23 @@
     </mat-step>
     <mat-step label="Подтверждение">
         <ng-container *ngIf="this.paymentSucceded === undefined">
-            <h2>Ожидаем подверждения оплаты.</h2>
+            <h2 id="status">Ожидаем подтверждения оплаты</h2>
 
-            <button mat-raised-button (click)="pay(this.order!)"> Попробовать еще раз</button>
+            <button mat-raised-button (click)="pay(this.order!)">Попробовать еще раз</button>
+            <button mat-raised-button [routerLink]="['/sponsor/']">Вернуться</button>
         </ng-container>
         <ng-container *ngIf="this.paymentSucceded === false">
-            <h2>Ошибка оплаты</h2>
+            <h2 id="status">Ошибка оплаты</h2>
 
             <div>
-                <button mat-raised-button (click)="pay(this.order!)">Повторить</button>
+                <button mat-raised-button (click)="pay(this.order!)">Попробовать еще раз</button>
                 <button mat-raised-button (click)="this.stepper.previous()">Выбрать другие ресурсы</button>
-                <button mat-raised-button (click)="this.stepper.previous(); this.stepper.previous()">Выбрать другого трибута</button>
-                <button mat-raised-button [routerLink]="['/sponsor/']">Отменить</button>
+                <button mat-raised-button [routerLink]="['/sponsor/tributes']">Выбрать другого трибута</button>
+                <button mat-raised-button [routerLink]="['/sponsor/']">Вернуться</button>
             </div>
         </ng-container>
         <ng-container *ngIf="this.paymentSucceded === true">
-            <h2>Оплата подтверждена</h2>
+            <h2 id="status">Оплата подтверждена</h2>
 
             <button mat-raised-button [routerLink]="['/sponsor/']">Вернуться</button>
         </ng-container>
