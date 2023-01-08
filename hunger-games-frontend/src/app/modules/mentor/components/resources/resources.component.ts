@@ -32,7 +32,9 @@ export class ResourcesComponent implements OnInit {
             const state = router.getCurrentNavigation()?.extras.state;
             if (state !== undefined) {
                 this.tribute = state['tribute'] as Tribute | null
-                this.chatId = state['chatId'] as ChatId | null;
+                if (state['chatId'] !== undefined) {
+                    this.chatId = state['chatId'] as ChatId;
+                }
             }
         });
     }
@@ -54,7 +56,7 @@ export class ResourcesComponent implements OnInit {
         try {
             const order = await this.mentorService.requestResources(this.tribute.id, this.resources.data);
             if (this.chatId === null) {
-                this.router.navigateByUrl("/mentor/tributes");
+                await this.router.navigate(['mentor', 'tributes']);
             } else {
                 this.chatService.addPendingMessage(this.chatId, `/${order.orderId}`);
                 this.router.navigate(['mentor', 'chat', this.chatId]);
