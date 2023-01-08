@@ -47,6 +47,7 @@ dependencies {
     testImplementation 'org.projectlombok:lombok:1.18.24'
     testImplementation 'org.seleniumhq.selenium:selenium-java:4.1.2'
     testImplementation 'org.seleniumhq.selenium:selenium-firefox-driver:4.1.2'
+    testImplementation 'com.paulhammant:ngwebdriver:1.2'
     testAnnotationProcessor 'org.projectlombok:lombok'
 }
 

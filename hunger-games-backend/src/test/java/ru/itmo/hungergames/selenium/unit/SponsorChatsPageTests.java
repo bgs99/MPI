@@ -4,12 +4,9 @@ import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import ru.itmo.hungergames.model.entity.chat.Chat;
 import ru.itmo.hungergames.model.entity.chat.Message;
 import ru.itmo.hungergames.model.entity.user.Mentor;
@@ -17,13 +14,11 @@ import ru.itmo.hungergames.model.entity.user.Sponsor;
 import ru.itmo.hungergames.model.entity.user.Tribute;
 import ru.itmo.hungergames.model.entity.user.UserRole;
 import ru.itmo.hungergames.model.response.ChatResponse;
-import ru.itmo.hungergames.security.JwtFilter;
 import ru.itmo.hungergames.selenium.pages.ChatsPage;
 import ru.itmo.hungergames.selenium.pages.SponsorChatsPage;
 import ru.itmo.hungergames.selenium.util.SeleniumTest;
-import ru.itmo.hungergames.selenium.util.Utils;
+import ru.itmo.hungergames.selenium.util.SeleniumTestBase;
 import ru.itmo.hungergames.service.ChatService;
-import ru.itmo.hungergames.util.SecurityUtil;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -36,20 +31,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.doReturn;
 
 @SeleniumTest
-public class SponsorChatsPageTests {
+public class SponsorChatsPageTests extends SeleniumTestBase {
     private SponsorChatsPage page;
-
-    @Autowired
-    private WebDriver driver;
 
     @MockBean
     private ChatService chatService;
 
-    @SpyBean
-    private JwtFilter jwtFilter;
-
-    @SpyBean
-    private SecurityUtil securityUtil;
 
     private final Sponsor self = Sponsor.builder()
             .id(new UUID(42, 42))
@@ -63,7 +50,7 @@ public class SponsorChatsPageTests {
     public void setUp() {
         this.page = new SponsorChatsPage(this.driver);
 
-        Utils.authenticate(driver, this.self, UserRole.SPONSOR, this.jwtFilter, this.securityUtil);
+        this.authenticate(this.self, UserRole.SPONSOR);
     }
 
     @Test
@@ -110,7 +97,7 @@ public class SponsorChatsPageTests {
                 .getChatsByUserId();
 
 
-        driver.get("localhost:42322/#/sponsor/chats");
+        this.get("/sponsor/chats");
 
         page.waitUntilChatsLoaded();
 
@@ -147,7 +134,7 @@ public class SponsorChatsPageTests {
                 .getChatsByUserId();
 
 
-        driver.get("localhost:42322/#/sponsor/chats");
+        this.get("/sponsor/chats");
 
         page.waitUntilChatsLoaded();
 
@@ -157,7 +144,7 @@ public class SponsorChatsPageTests {
 
         chatRow.getSelectButton().click();
 
-        Utils.redirectWait(driver, sourceUrl);
+        this.redirectWait(sourceUrl);
 
         assertThat(driver.getCurrentUrl(), CoreMatchers.endsWith("#/sponsor/chat/" + chat.getId().toString()));
     }
@@ -169,7 +156,7 @@ public class SponsorChatsPageTests {
                 .when(chatService)
                 .getChatsByUserId();
 
-        driver.get("localhost:42322/#/sponsor/chats");
+        this.get("/sponsor/chats");
 
         PageFactory.initElements(driver, this.page);
 
@@ -177,7 +164,7 @@ public class SponsorChatsPageTests {
 
         page.newChatButton.click();
 
-        Utils.redirectWait(driver, sourceUrl);
+        this.redirectWait(sourceUrl);
 
         assertThat(driver.getCurrentUrl(), CoreMatchers.endsWith("#/sponsor/tributes"));
     }

@@ -3,25 +3,20 @@ package ru.itmo.hungergames.selenium.unit;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import ru.itmo.hungergames.model.entity.user.User;
 import ru.itmo.hungergames.model.entity.user.UserRole;
 import ru.itmo.hungergames.selenium.pages.SponsorMenuPage;
 import ru.itmo.hungergames.selenium.util.SeleniumTest;
-import ru.itmo.hungergames.selenium.util.Utils;
+import ru.itmo.hungergames.selenium.util.SeleniumTestBase;
 
 import java.util.UUID;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
 @SeleniumTest
-public class SponsorMenuTests {
-    @Autowired
-    private WebDriver driver;
-
+public class SponsorMenuTests extends SeleniumTestBase {
     private SponsorMenuPage page;
     private String sponsorMenuUrl;
 
@@ -32,8 +27,8 @@ public class SponsorMenuTests {
                 .username("sponsor")
                 .name("sponsor")
                 .build();
-        Utils.authenticate(driver, sponsor, UserRole.SPONSOR, null, null);
-        driver.get("localhost:42322/#/sponsor");
+        this.authenticate(sponsor, UserRole.SPONSOR);
+        this.get("/sponsor");
         page = PageFactory.initElements(driver, SponsorMenuPage.class);
         sponsorMenuUrl = driver.getCurrentUrl();
     }
@@ -41,7 +36,7 @@ public class SponsorMenuTests {
     private void testRedirect(WebElement button, String destination) {
         button.click();
 
-        Utils.redirectWait(driver, sponsorMenuUrl);
+        this.redirectWait(sponsorMenuUrl);
 
         assertThat(driver.getCurrentUrl(), CoreMatchers.endsWith(destination));
     }
