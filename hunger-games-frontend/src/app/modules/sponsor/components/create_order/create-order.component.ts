@@ -20,7 +20,7 @@ export class CreateOrderComponent implements OnInit {
     tribute: Tribute | undefined;
 
     paymentEnabled: boolean = true;
-    paymentSucceded: boolean | undefined = undefined;
+    paymentSucceded: boolean | null = null;
     chatId: ChatId | null = null;
 
     total: number = 0;
@@ -46,14 +46,14 @@ export class CreateOrderComponent implements OnInit {
         }
         try {
             this.paymentEnabled = false;
+            this.paymentSucceded = null;
+            this.stepper.next();
             const paymentData = await this.sponsorsService.orderResources(this.tribute.id, resources);
             this.paymentSucceded = await pay(paymentData.orderId);
             this.paymentEnabled = true;
             if (this.paymentSucceded && this.chatId !== null) {
                 this.chatService.addPendingMessage(this.chatId, `/${paymentData.orderId}`);
                 await this.router.navigate(['sponsor', 'chat', this.chatId]);
-            } else {
-                this.stepper.next();
             }
         }
         catch (err: any) {
