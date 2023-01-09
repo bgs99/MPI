@@ -5,36 +5,40 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import ru.itmo.hungergames.model.entity.order.OrderDetail;
 import ru.itmo.hungergames.model.entity.order.Resource;
-import ru.itmo.hungergames.model.entity.order.ResourceOrder;
 import ru.itmo.hungergames.model.entity.user.Mentor;
 import ru.itmo.hungergames.model.entity.user.Tribute;
 import ru.itmo.hungergames.model.entity.user.User;
 import ru.itmo.hungergames.model.entity.user.UserRole;
+import ru.itmo.hungergames.model.request.OrderDetailRequest;
 import ru.itmo.hungergames.model.request.PaymentRequest;
-import ru.itmo.hungergames.model.response.ResourceApprovedAndNotPaidResponse;
+import ru.itmo.hungergames.model.request.ResourceOrderRequest;
+import ru.itmo.hungergames.model.response.ResourceOrderResponse;
 import ru.itmo.hungergames.model.response.TributeResponse;
-import ru.itmo.hungergames.selenium.pages.SponsorPayOrderPage;
+import ru.itmo.hungergames.selenium.pages.ResourcesPage;
+import ru.itmo.hungergames.selenium.pages.SponsorCreateOrderPage;
 import ru.itmo.hungergames.selenium.util.SeleniumTest;
 import ru.itmo.hungergames.selenium.util.SeleniumTestBase;
-import ru.itmo.hungergames.service.*;
+import ru.itmo.hungergames.service.PaymentManagerService;
+import ru.itmo.hungergames.service.ResourceService;
+import ru.itmo.hungergames.service.SponsorService;
+import ru.itmo.hungergames.service.TributeService;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.endsWith;
 import static org.mockito.Mockito.*;
 
 @SeleniumTest
-public class SponsorPayOrderPageTests extends SeleniumTestBase {
+public class SponsorCreateOrderPageTests extends SeleniumTestBase {
 
     @MockBean
     private SponsorService sponsorService;
@@ -48,7 +52,7 @@ public class SponsorPayOrderPageTests extends SeleniumTestBase {
     @MockBean
     private PaymentManagerService paymentManagerService;
 
-    private SponsorPayOrderPage page;
+    private SponsorCreateOrderPage page;
 
     private final Mentor mentor = Mentor.builder()
             .district(1)
@@ -61,19 +65,30 @@ public class SponsorPayOrderPageTests extends SeleniumTestBase {
             .build();
 
     private final Resource resource1 = Resource.builder()
+            .id(new UUID(42, 1))
             .name("resource-1")
             .price(new BigDecimal(42))
             .build();
     private final Resource resource2 = Resource.builder()
+            .id(new UUID(42, 2))
             .name("resource-2")
             .price(new BigDecimal(43))
             .build();
     private final Resource resource3 = Resource.builder()
+            .id(new UUID(42, 3))
             .name("resource-3")
             .price(new BigDecimal(44))
             .build();
 
+    private final List<Resource> resources = List.of(this.resource1, this.resource2, this.resource3);
+
     private String sourceWindowHandle;
+
+    private List<ResourcesPage.ResourceRow> resourceRows;
+
+    private final UUID orderId = new UUID(42, 42);
+
+    private final List<Integer> orderSize = List.of(0, 42, 43);
 
     @BeforeEach
     public void setUp() {
@@ -83,11 +98,33 @@ public class SponsorPayOrderPageTests extends SeleniumTestBase {
                 .name("sponsor")
                 .build();
         this.authenticate(sponsor, UserRole.SPONSOR);
+        this.page = new SponsorCreateOrderPage(this.driver);
 
         this.sourceWindowHandle = this.driver.getWindowHandle();
 
         doReturn(new TributeResponse(this.tribute)).when(this.tributeService).getTributeById(this.tribute.getId());
         doReturn(List.of(resource1, resource2, resource3)).when(this.resourceService).getAllResources();
+
+        this.get("/sponsor/tribute/" + this.tribute.getId() + "/createorder");
+        PageFactory.initElements(driver, this.page);
+
+        NgWebDriver ngDriver = new NgWebDriver((FirefoxDriver)driver);
+        ngDriver.waitForAngularRequestsToFinish();
+
+        this.resourceRows = this.page.getResourceRows();
+
+        this.resourceRows.stream().map(ResourcesPage.ResourceRow::getAmountInput).forEach(WebElement::clear);
+
+        var expectedOrderRequest = ResourceOrderRequest.builder()
+                .tributeId(this.tribute.getId())
+                .orderDetails(List.of(
+                        new OrderDetailRequest(this.resource2.getId(), this.orderSize.get(1)),
+                        new OrderDetailRequest(this.resource3.getId(), this.orderSize.get(2))
+                ))
+                .build();
+
+        doReturn(ResourceOrderResponse.builder().orderId(this.orderId).build())
+                .when(this.sponsorService).sendResourcesForApproval(expectedOrderRequest);
     }
 
     @AfterEach
@@ -96,107 +133,75 @@ public class SponsorPayOrderPageTests extends SeleniumTestBase {
     }
 
     @Test
-    public void listOrders() {
-        var orderDetail1 = OrderDetail.builder()
-                .resource(this.resource1)
-                .size(42)
-                .build();
-        var orderDetail2 = OrderDetail.builder()
-                .resource(this.resource2)
-                .size(43)
-                .build();
-        var orderDetail3 = OrderDetail.builder()
-                .resource(this.resource3)
-                .size(44)
-                .build();
+    public void showRecipient() {
+        var expectedRecipient = this.tribute.getName();
+        var actualRecipient = this.page.getRecipient().getText().substring("Получатель: ".length());
 
-        var order1 = ResourceOrder.builder()
-                .orderDetails(List.of(orderDetail1, orderDetail2))
-                .tribute(this.tribute)
-                .build();
-        var order2 = ResourceOrder.builder()
-                .orderDetails(List.of(orderDetail3))
-                .tribute(this.tribute)
-                .build();
-
-        doReturn(Stream.of(order1, order2).map(ResourceApprovedAndNotPaidResponse::new).collect(Collectors.toList()))
-                .when(this.sponsorService)
-                .getOrdersNotPaidAndApproved();
-
-        this.get("/sponsor/tribute/" + this.tribute.getId() + "/payorder");
-        this.page = PageFactory.initElements(driver, SponsorPayOrderPage.class);
-
-        NgWebDriver ngDriver = new NgWebDriver((FirefoxDriver)driver);
-        ngDriver.waitForAngularRequestsToFinish();
-
-        var expectedDetails1 = List.of(orderDetail1.getSize() + "X " + this.resource1.getName(), orderDetail2.getSize() + "X " + this.resource2.getName());
-        var expectedDetails2 = List.of(orderDetail3.getSize() + "X " + this.resource3.getName());
-
-        var orderRows = this.page.getOrderRows();
-        Assertions.assertEquals(2, orderRows.size());
-
-        var orderRow1 = this.page.getOrderRows().get(0);
-        var orderRow2 = this.page.getOrderRows().get(1);
-
-        Assertions.assertEquals(expectedDetails1, orderRow1.getDetails());
-        Assertions.assertEquals(expectedDetails2, orderRow2.getDetails());
-
-        var expectedSum1 = orderDetail1.getTotal().add(orderDetail2.getTotal());
-        var expectedSum2 = orderDetail3.getTotal();
-
-        Assertions.assertEquals(expectedSum1, new BigDecimal(orderRow1.getSum()));
-        Assertions.assertEquals(expectedSum2, new BigDecimal(orderRow2.getSum()));
-
-        Assertions.assertTrue(orderRow1.getPayButton().isDisplayed());
-        Assertions.assertTrue(orderRow2.getPayButton().isDisplayed());
+        Assertions.assertEquals(expectedRecipient, actualRecipient);
     }
 
-    public UUID prepareOrder() {
-        var orderDetail = OrderDetail.builder()
-                .resource(this.resource1)
-                .size(42)
-                .build();
+    @Test
+    public void listResources() {
+        var expectedResourceNames = this.resources.stream().map(Resource::getName).collect(Collectors.toList());
+        var actualResourceNames = this.resourceRows.stream().map(ResourcesPage.ResourceRow::getName).collect(Collectors.toList());
 
-        var order = ResourceOrder.builder()
-                .id(new UUID(42, 42))
-                .orderDetails(List.of(orderDetail))
-                .tribute(this.tribute)
-                .build();
+        Assertions.assertEquals(expectedResourceNames, actualResourceNames);
 
-        doReturn(Stream.of(order).map(ResourceApprovedAndNotPaidResponse::new).collect(Collectors.toList()))
-                .when(this.sponsorService)
-                .getOrdersNotPaidAndApproved();
 
-        this.get("/sponsor/tribute/" + this.tribute.getId() + "/payorder");
-        this.page = PageFactory.initElements(driver, SponsorPayOrderPage.class);
+        var expectedResourcePrices = this.resources.stream().map(Resource::getPrice).collect(Collectors.toList());
+        var actualResourcePrices = this.resourceRows.stream().map(ResourcesPage.ResourceRow::getUnitPrice).map(BigDecimal::new).collect(Collectors.toList());
 
-        NgWebDriver ngDriver = new NgWebDriver((FirefoxDriver)driver);
-        ngDriver.waitForAngularRequestsToFinish();
+        Assertions.assertEquals(expectedResourcePrices, actualResourcePrices);
+    }
 
-        return order.getId();
+    private void enterOrder() {
+        for (int i = 0; i < 3; ++i) {
+            this.resourceRows.get(i).getAmountInput().sendKeys(this.orderSize.get(i).toString());
+        }
+    }
+
+    @Test
+    public void correctTotals() {
+        this.enterOrder();
+
+        Assertions.assertFalse(resourceRows.get(0).hasSum());
+
+        final var expectedTotal2 = this.resource2.getPrice().multiply(new BigDecimal(this.orderSize.get(1)));
+
+        Assertions.assertEquals(
+                expectedTotal2,
+                new BigDecimal(resourceRows.get(1).getSum()));
+
+        final var expectedTotal3 = this.resource3.getPrice().multiply(new BigDecimal(this.orderSize.get(2)));
+
+        Assertions.assertEquals(
+                expectedTotal3,
+                new BigDecimal(resourceRows.get(2).getSum()));
+
+        final var expectedTotal = expectedTotal2.add(expectedTotal3);
+
+        Assertions.assertEquals(
+                expectedTotal,
+                new BigDecimal(this.page.getTotal())
+        );
     }
 
     @Test
     public void payOrderRedirect() {
-        final var orderId = prepareOrder();
+        this.enterOrder();
 
-        var orderRow = this.page.getOrderRows().get(0);
-
-        orderRow.getPayButton().click();
+        this.page.getPayButton().click();
 
         this.switchToNewWindow(this.sourceWindowHandle);
 
         assertThat(this.driver.getCurrentUrl(), endsWith("#/capitol/payment?id=" + orderId));
     }
 
-
     @Test
     public void payOrderApprove() {
-        final var orderId = prepareOrder();
+        enterOrder();
 
-        var orderRow = this.page.getOrderRows().get(0);
-
-        orderRow.getPayButton().click();
+        this.page.getPayButton().click();
 
         this.approvePayment(this.sourceWindowHandle);
 
@@ -215,11 +220,9 @@ public class SponsorPayOrderPageTests extends SeleniumTestBase {
 
     @Test
     public void payOrderDeny() {
-        final var orderId = prepareOrder();
+        enterOrder();
 
-        var orderRow = this.page.getOrderRows().get(0);
-
-        orderRow.getPayButton().click();
+        this.page.getPayButton().click();
 
         this.denyPayment(this.sourceWindowHandle);
 
@@ -230,11 +233,9 @@ public class SponsorPayOrderPageTests extends SeleniumTestBase {
 
     @Test
     public void payOrderDenyGoBack() {
-        prepareOrder();
+        enterOrder();
 
-        var orderRow = this.page.getOrderRows().get(0);
-
-        orderRow.getPayButton().click();
+        this.page.getPayButton().click();
 
         this.denyPayment(this.sourceWindowHandle);
 
@@ -245,11 +246,9 @@ public class SponsorPayOrderPageTests extends SeleniumTestBase {
 
     @Test
     public void payOrderDenyRetry() {
-        final var orderId = prepareOrder();
+        enterOrder();
 
-        var orderRow = this.page.getOrderRows().get(0);
-
-        orderRow.getPayButton().click();
+        this.page.getPayButton().click();
 
         this.denyPayment(this.sourceWindowHandle);
 
@@ -262,27 +261,23 @@ public class SponsorPayOrderPageTests extends SeleniumTestBase {
 
     @Test
     public void payOrderDenyReselectResources() {
-        prepareOrder();
+        enterOrder();
 
-        var orderRow = this.page.getOrderRows().get(0);
-
-        orderRow.getPayButton().click();
+        this.page.getPayButton().click();
 
         this.denyPayment(this.sourceWindowHandle);
 
         this.page.getReselectResourcesButton().click();
 
-        Assertions.assertTrue(this.page.getOrderRows().get(0).getPayButton().isDisplayed());
+        Assertions.assertTrue(this.page.getPayButton().isDisplayed());
     }
 
 
     @Test
     public void payOrderDenyReselectTribute() {
-        prepareOrder();
+        enterOrder();
 
-        var orderRow = this.page.getOrderRows().get(0);
-
-        orderRow.getPayButton().click();
+        this.page.getPayButton().click();
 
         this.denyPayment(this.sourceWindowHandle);
 
@@ -297,11 +292,9 @@ public class SponsorPayOrderPageTests extends SeleniumTestBase {
 
     @Test
     public void payOrderIgnore() {
-        final var orderId = prepareOrder();
+        enterOrder();
 
-        var orderRow = this.page.getOrderRows().get(0);
-
-        orderRow.getPayButton().click();
+        this.page.getPayButton().click();
 
         this.driver.switchTo().window(this.sourceWindowHandle);
 
@@ -312,11 +305,9 @@ public class SponsorPayOrderPageTests extends SeleniumTestBase {
 
     @Test
     public void payOrderIgnoreGoBack() {
-        prepareOrder();
+        enterOrder();
 
-        var orderRow = this.page.getOrderRows().get(0);
-
-        orderRow.getPayButton().click();
+        this.page.getPayButton().click();
 
         this.driver.switchTo().window(this.sourceWindowHandle);
 
@@ -327,11 +318,9 @@ public class SponsorPayOrderPageTests extends SeleniumTestBase {
 
     @Test
     public void payOrderIgnoreRetry() {
-        final var orderId = prepareOrder();
+        enterOrder();
 
-        var orderRow = this.page.getOrderRows().get(0);
-
-        orderRow.getPayButton().click();
+        this.page.getPayButton().click();
 
         this.driver.switchTo().window(this.sourceWindowHandle);
 

@@ -1,10 +1,7 @@
 package ru.itmo.hungergames.model.request;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -13,6 +10,8 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
+@EqualsAndHashCode
 public class ResourceOrderRequest {
     @NotBlank(message = "Tribute Id should not be blank")
     private UUID tributeId;
