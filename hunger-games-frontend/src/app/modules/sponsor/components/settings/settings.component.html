@@ -1,10 +1,28 @@
-Текущая электронная почта
-<input type="email" disabled="true" [ngModel]="oldEmail">
-Новая электронная почта
-<input type="email" [(ngModel)]="email">
+<app-header></app-header>
+<form id="settings">
+    <mat-form-field>
+        <mat-label>Текущая электронная почта</mat-label>
+        <input matInput name="oldEmail" type="email" disabled="true" [ngModel]="oldEmail">
+    </mat-form-field>
 
-<ng-container *ngIf="this.subscriptionPrice !== null">
-    <h2>Цена подписки: </h2>
-    <div>{{this.subscriptionPrice}}$</div>
-    <button (click)="this.subscribe()">Подписаться</button>
-</ng-container>
+    <br/>
+    
+    <mat-form-field>
+        <mat-label>Новая электронная почта</mat-label>
+        <input matInput name="newEmail" type="email" [(ngModel)]="email">
+        <mat-error *ngIf="this.emailError !== null">{{this.emailError}}</mat-error>
+    </mat-form-field>
+
+    <br/>
+    
+    <button mat-raised-button (click)="this.changeEmail()">Обновить</button>
+
+    <br/>
+
+    <ng-container *ngIf="this.subscriptionPrice !== null && this.oldEmail !== null">
+        <h2>Цена подписки: </h2>
+        <div id="subscriptionPrice">{{this.subscriptionPrice}}$</div>
+        <br/>
+        <button mat-raised-button (click)="this.subscribe()">Подписаться</button>
+    </ng-container>
+</form>
