@@ -18,7 +18,7 @@
                     </ng-template>
                     <ng-template #commandMessage>
                         <p *ngFor="let detail of message.order!.orderDetailResponses">
-                            {{detail.size}} {{detail.name}}
+                            {{detail.size}}X {{detail.name}}
                         </p>
                         <ng-container *ngIf="message.order!.paid">
                             <p *ngIf="message.order?.approved === null">
@@ -40,7 +40,7 @@
                 </mat-card-content>
                 <ng-container *ngIf="message.order !== undefined">
                     <mat-card-actions *ngIf="this.role === UserRole.Sponsor && !message.order.paid">
-                        <div>{{message.order!.sum}}$</div>
+                        <div class="message-order-sum">{{message.order!.sum}}$</div>
                         <button mat-raised-button (click)="this.payOrder(message.order!)">Оплатить</button>
                     </mat-card-actions>
                     <mat-card-actions *ngIf="this.role === UserRole.Mentor && message.order!.approved === null">
@@ -54,7 +54,7 @@
     </ul>
 </div>
 <form (ngSubmit)="send()">
-    <input matInput placeholder="Enter message" type="text" name="msg" [(ngModel)]="this.pendingMessage" />
+    <input matInput placeholder="Введите сообщение" type="text" name="msg" [(ngModel)]="this.pendingMessage" />
     <button type="submit">Отправить</button>
 </form>
 <button *ngIf="this.role === UserRole.Mentor" (click)="this.requestResources()">Запросить ресурсы</button>

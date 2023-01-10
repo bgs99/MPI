@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Getter
@@ -27,4 +28,8 @@ public class OrderDetail {
     @OneToOne
     @NotNull
     private Resource resource;
+
+    public BigDecimal getTotal() {
+        return this.resource.getPrice().multiply(new BigDecimal(this.size));
+    }
 }

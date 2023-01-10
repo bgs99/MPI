@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Order, OrderResource } from 'src/app/models/order';
 import { PaymentResult } from 'src/app/models/payment';
 import { Tribute, TributeId } from 'src/app/models/tribute';
+import { pay } from 'src/app/services/mock/payment.service';
 import { ResourcesService } from 'src/app/services/resources.service';
 import { SponsorsService } from 'src/app/services/sponsors.service';
 import { TributesService } from 'src/app/services/tributes.service';
@@ -21,7 +22,6 @@ export class PayOrderComponent implements OnInit {
 
     readonly ordersColumns: string[] = ['resources', 'total', 'action'];
 
-    ordersMap: Map<string, Order[]> = new Map();
     priceMap: Map<string, number> = new Map();
 
     tribute: Tribute | undefined;
@@ -45,22 +45,13 @@ export class PayOrderComponent implements OnInit {
         if (this.tribute === null) {
             return;
         }
+        this.paymentEnabled = false;
+        this.order = order;
+        this.stepper.next();
         try {
-            this.paymentEnabled = false;
-            this.order = order;
-            window.addEventListener('message', (event: MessageEvent) => {
-                if (event.origin !== window.origin) { // Capitol origin
-                    return;
-                }
-                const data: PaymentResult = event.data;
-                if (data.orderId != order.orderId) {
-                    return;
-                }
-                this.paymentSucceded = data.success;
-                this.paymentEnabled = true;
-            });
-            window.open(`/capitol/payment?id=${order.orderId}`);
-            this.stepper.next();
+
+            this.paymentSucceded = await pay(order.orderId);
+            this.paymentEnabled = true;
         }
         catch (err: any) {
             console.error(err);
@@ -70,13 +61,16 @@ export class PayOrderComponent implements OnInit {
 
     async ngOnInit(): Promise<void> {
         try {
-            this.ordersMap = await this.sponsorsService.resourcesToPayFor();
+            const tributeId = this.route.snapshot.paramMap.get('tribute')! as TributeId;
+            this.tribute = (await this.tributesService.getTribute(tributeId))!;
+
+            const ordersMap = await this.sponsorsService.resourcesToPayFor();
+
+            this.orders.data = ordersMap.get(this.tribute.name)!;
             const resources = await this.resourcesService.getResources();
             resources.forEach(resource => {
                 this.priceMap.set(resource.name, resource.price);
             });
-            const tributeId = this.route.snapshot.paramMap.get('tribute')! as TributeId;
-            this.tribute = (await this.tributesService.getTribute(tributeId))!;
         } catch (err: any) {
             console.error(err);
         }
