@@ -160,4 +160,12 @@ public class SponsorServiceImpl implements SponsorService {
                 .map(NewsResponse::new)
                 .toList();
     }
+
+    @Override
+    public boolean isSubscribed() {
+        Sponsor sponsor = sponsorRepository
+                .findById(securityUtil.getAuthenticatedUserId())
+                .orElseThrow(() -> new ResourceNotFoundException("There's no sponsor with the ID"));
+        return sponsor.getNewsSubscriptionOrder() != null && sponsor.getNewsSubscriptionOrder().isPaid();
+    }
 }

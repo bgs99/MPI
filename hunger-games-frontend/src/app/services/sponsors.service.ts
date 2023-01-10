@@ -44,15 +44,9 @@ export class SponsorsService {
     }
 
     async isSubscribed(): Promise<boolean> {
-        return false; // TODO:
-    }
-
-    async setEmail(email: string): Promise<void> {
-        // TODO:
-    }
-
-    async getEmail(): Promise<string> {
-        return ''; // TODO:
+        return await lastValueFrom(this.http.get<boolean>(
+            `${SponsorsService.BASE_URL}/subscription`
+        ));
     }
 
     async getNews(): Promise<News[]> {
