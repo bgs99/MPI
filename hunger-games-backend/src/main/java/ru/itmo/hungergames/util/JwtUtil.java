@@ -2,9 +2,14 @@ package ru.itmo.hungergames.util;
 
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import ru.itmo.hungergames.model.entity.user.User;
+import ru.itmo.hungergames.security.UserDetailsServiceImpl;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -16,6 +21,13 @@ public class JwtUtil {
     private String secret;
     @Value("${hunger-games.jwt.expirationMs}")
     private String expirationMs;
+
+    private final UserDetailsService userDetailsService;
+
+    @Autowired
+    public JwtUtil(UserDetailsServiceImpl userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     public String generateJwtToken(User user) {
         Calendar calendar = Calendar.getInstance();
@@ -52,5 +64,10 @@ public class JwtUtil {
         }
 
         return false;
+    }
+
+    public UsernamePasswordAuthenticationToken createAuthenticationFromJwtToken(String token) {
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserNameFromJwtToken(token));
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 }

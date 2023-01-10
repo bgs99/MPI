@@ -7,9 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -22,12 +20,10 @@ import java.util.Optional;
 @Slf4j
 @Component
 public class JwtFilter extends OncePerRequestFilter {
-    private final UserDetailsServiceImpl userDetailsService;
     private final JwtUtil jwtUtil;
 
     @Autowired
-    public JwtFilter(UserDetailsServiceImpl userDetailsService, JwtUtil jwtUtil) {
-        this.userDetailsService = userDetailsService;
+    public JwtFilter(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
     }
 
@@ -40,13 +36,6 @@ public class JwtFilter extends OncePerRequestFilter {
         return Optional.empty();
     }
 
-    private UsernamePasswordAuthenticationToken createAuthenticationFromJwtToken(@NonNull HttpServletRequest request, String jwt) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(jwtUtil.getUserNameFromJwtToken(jwt));
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        return authentication;
-    }
-
     @Override
     public void doFilterInternal(
             @NonNull HttpServletRequest request,
@@ -55,7 +44,10 @@ public class JwtFilter extends OncePerRequestFilter {
         try {
             Optional<String> jwt = parseJwt(request);
             if (jwt.isPresent() && jwtUtil.validateJwtToken(jwt.get())) {
-                SecurityContextHolder.getContext().setAuthentication(createAuthenticationFromJwtToken(request, jwt.get()));
+                var authentication = jwtUtil.createAuthenticationFromJwtToken(jwt.get());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception e) {
             log.error("Cannot authenticate user: {}", e.getLocalizedMessage());
