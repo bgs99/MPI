@@ -24,4 +24,16 @@ public class LoginPage {
 
     @FindBy(xpath = "//mat-error")
     private WebElement loginError;
+
+    public void clear() {
+        this.sponsorLoginInput.clear();
+        this.sponsorPasswordInput.clear();
+    }
+
+    public void login(String username, String password) {
+        this.clear();
+        this.sponsorLoginInput.sendKeys(username);
+        this.sponsorPasswordInput.sendKeys(password);
+        this.sponsorLoginButton.click();
+    }
 }
