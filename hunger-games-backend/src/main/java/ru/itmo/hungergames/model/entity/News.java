@@ -8,7 +8,6 @@ import org.hibernate.annotations.GenericGenerator;
 import ru.itmo.hungergames.model.entity.user.Moderator;
 
 import java.time.Instant;
-import java.time.Instant;
 import java.util.UUID;
 
 @Entity

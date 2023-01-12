@@ -23,4 +23,20 @@ public class RegisterPage {
 
     @FindBy(xpath = "//mat-error")
     private WebElement registerError;
+
+    public void clear() {
+        this.sponsorNameInput.clear();
+        this.sponsorLoginInput.clear();
+        this.sponsorPasswordInput.clear();
+        this.sponsorPassword2Input.clear();
+    }
+
+    public void register(String name, String username, String password) {
+        this.clear();
+        this.sponsorNameInput.sendKeys(name);
+        this.sponsorLoginInput.sendKeys(username);
+        this.sponsorPasswordInput.sendKeys(password);
+        this.sponsorPassword2Input.sendKeys(password);
+        this.sponsorRegisterButton.click();
+    }
 }

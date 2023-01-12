@@ -43,7 +43,7 @@ public abstract class SeleniumTestBase {
     private JwtUtil jwtUtil;
 
     protected void waitForAngularRequests() {
-        NgWebDriver ngDriver = new NgWebDriver((FirefoxDriver)driver);
+        NgWebDriver ngDriver = new NgWebDriver((FirefoxDriver) driver);
         ngDriver.waitForAngularRequestsToFinish();
     }
 
@@ -57,8 +57,7 @@ public abstract class SeleniumTestBase {
             paymentPage.deny();
         }
         new WebDriverWait(this.driver, Duration.ofSeconds(1)).until(
-                ExpectedConditions.numberOfWindowsToBe(1)
-        );
+                ExpectedConditions.numberOfWindowsToBe(1));
         this.driver.switchTo().window(sourceWindowHandle);
     }
 
@@ -67,8 +66,7 @@ public abstract class SeleniumTestBase {
         var paymentPage = PageFactory.initElements(driver, MockPaymentPage.class);
         paymentPage.deny();
         new WebDriverWait(this.driver, Duration.ofSeconds(1)).until(
-                ExpectedConditions.numberOfWindowsToBe(1)
-        );
+                ExpectedConditions.numberOfWindowsToBe(1));
         this.driver.switchTo().window(sourceWindowHandle);
     }
 
@@ -77,15 +75,13 @@ public abstract class SeleniumTestBase {
         var paymentPage = PageFactory.initElements(driver, MockPaymentPage.class);
         paymentPage.approve();
         new WebDriverWait(this.driver, Duration.ofSeconds(1)).until(
-                ExpectedConditions.numberOfWindowsToBe(1)
-        );
+                ExpectedConditions.numberOfWindowsToBe(1));
         this.driver.switchTo().window(sourceWindowHandle);
     }
 
     protected void switchToNewWindow(Set<String> oldWindows) {
         new WebDriverWait(this.driver, Duration.ofSeconds(1)).until(
-                ExpectedConditions.numberOfWindowsToBe(oldWindows.size() + 1)
-        );
+                ExpectedConditions.numberOfWindowsToBe(oldWindows.size() + 1));
         var handles = this.driver.getWindowHandles();
         handles.removeAll(oldWindows);
 
@@ -95,8 +91,7 @@ public abstract class SeleniumTestBase {
 
     protected void switchToNewWindow(String sourceWindowHandle) {
         new WebDriverWait(this.driver, Duration.ofSeconds(1)).until(
-                ExpectedConditions.numberOfWindowsToBe(2)
-        );
+                ExpectedConditions.numberOfWindowsToBe(2));
         var handles = this.driver.getWindowHandles();
         handles.remove(sourceWindowHandle);
 
@@ -104,9 +99,23 @@ public abstract class SeleniumTestBase {
         this.driver.switchTo().window(newWindow);
     }
 
+    protected void assertUrlMatches(String destination) {
+        assertThat(driver.getCurrentUrl(), CoreMatchers.endsWith("#" + destination));
+    }
+
     protected void assertRedirects(Executable executable, String destination) {
+        this.redirectWait(executable);
+
+        this.assertUrlMatches(destination);
+    }
+
+    protected void assertNoRedirect(Executable executable) {
+        Assertions.assertThrows(Exception.class, () -> this.redirectWait(executable));
+    }
+
+    protected void redirectWait(Executable executable) {
         final var sourceUrl = this.driver.getCurrentUrl();
-        
+
         try {
             executable.execute();
         } catch (Throwable e) {
@@ -114,20 +123,6 @@ public abstract class SeleniumTestBase {
         }
 
         this.redirectWait(sourceUrl);
-
-        assertThat(driver.getCurrentUrl(), CoreMatchers.endsWith("#" + destination));
-    }
-
-    protected void assertNoRedirect(Executable executable) {
-        final var sourceUrl = this.driver.getCurrentUrl();
-
-        try {
-            executable.execute();
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
-        
-        Assertions.assertThrows(Exception.class, () -> this.redirectWait(sourceUrl));
     }
 
     protected void redirectWait(String originalUrl) {
@@ -138,6 +133,16 @@ public abstract class SeleniumTestBase {
         new WebDriverWait(this.driver, timeout).until(
                 ExpectedConditions.not(
                         ExpectedConditions.urlToBe(originalUrl)));
+    }
+
+    protected <T> T getInit(String relativeUrl, Class<T> pageClass) {
+        this.get(relativeUrl);
+        return this.initPage(pageClass);
+    }
+
+    protected <T> T initPage(Class<T> pageClass) {
+        this.waitForAngularRequests();
+        return PageFactory.initElements(this.driver, pageClass);
     }
 
     protected void get(String relativeUrl) {

@@ -47,11 +47,7 @@ public class SponsorNewsPageTests extends SeleniumTestBase {
 
         doReturn(this.news.stream().map(NewsResponse::new).collect(Collectors.toList())).when(this.sponsorService).getNews();
 
-        this.get("/sponsor/news");
-        this.page = new SponsorNewsPage(this.driver);
-        PageFactory.initElements(this.driver, this.page);
-
-        this.waitForAngularRequests();
+        this.page = this.getInit("/sponsor/news", SponsorNewsPage.class);
     }
 
     @Test
