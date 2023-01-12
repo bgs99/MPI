@@ -27,7 +27,6 @@ public class ModeratorLoginPageTests extends SeleniumTestBase {
     SecurityService securityService;
 
     private ModeratorLoginPage page;
-    private String sourceUrl;
 
     @BeforeEach
     public void setUp() {
@@ -36,8 +35,6 @@ public class ModeratorLoginPageTests extends SeleniumTestBase {
 
         page.getLoginInput().clear();
         page.getPasswordInput().clear();
-
-        sourceUrl = driver.getCurrentUrl();
     }
 
 
@@ -54,9 +51,7 @@ public class ModeratorLoginPageTests extends SeleniumTestBase {
         page.getLoginInput().sendKeys(username);
         page.getPasswordInput().sendKeys(password);
 
-        page.getLoginButton().click();
-
-        this.assertRedirect(sourceUrl, "/moderator");
+        this.assertRedirects(() -> page.getLoginButton().click(), "/moderator");
     }
 
     @Test
@@ -77,9 +72,7 @@ public class ModeratorLoginPageTests extends SeleniumTestBase {
         page.getLoginInput().sendKeys(username);
         page.getPasswordInput().sendKeys(password);
 
-        page.getLoginButton().click();
-
-        this.assertNoRedirect(sourceUrl);
+        this.assertNoRedirect(() -> page.getLoginButton().click());
 
         assertThat(page.getLoginError().getText(), CoreMatchers.equalTo("Неправильный логин или пароль"));
     }

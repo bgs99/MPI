@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paulhammant.ngwebdriver.NgWebDriver;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.function.Executable;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.html5.WebStorage;
@@ -103,13 +104,29 @@ public abstract class SeleniumTestBase {
         this.driver.switchTo().window(newWindow);
     }
 
-    protected void assertRedirect(String sourceUrl, String destination) {
+    protected void assertRedirects(Executable executable, String destination) {
+        final var sourceUrl = this.driver.getCurrentUrl();
+        
+        try {
+            executable.execute();
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+
         this.redirectWait(sourceUrl);
 
         assertThat(driver.getCurrentUrl(), CoreMatchers.endsWith("#" + destination));
     }
 
-    protected void assertNoRedirect(String sourceUrl) {
+    protected void assertNoRedirect(Executable executable) {
+        final var sourceUrl = this.driver.getCurrentUrl();
+
+        try {
+            executable.execute();
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+        
         Assertions.assertThrows(Exception.class, () -> this.redirectWait(sourceUrl));
     }
 
@@ -129,6 +146,11 @@ public abstract class SeleniumTestBase {
 
     protected String composeUrl(String relativeUrl) {
         return String.format("localhost:%d/#%s", this.port, relativeUrl);
+    }
+
+    protected void authenticate(User user) {
+        final var role = user.getUserRoles().stream().findAny().orElseThrow();
+        this.authenticate(user, role);
     }
 
     protected void authenticate(User user, UserRole role) {
