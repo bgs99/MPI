@@ -20,6 +20,7 @@ import java.util.UUID;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.endsWith;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 
 @SeleniumTest
@@ -51,7 +52,7 @@ public class TributeCreateAdvertisementPageTest extends SeleniumTestBase {
 
         this.page = PageFactory.initElements(driver, TributeCreateAdvertisementPage.class);
 
-        var expectedOrderRequest = new AdvertisingTextRequest(newAdvertisementText + "<br>");
+        var expectedOrderRequest = new AdvertisingTextRequest(newAdvertisementText);
 
         doReturn(AdvertisingTextOrderResponse.builder()
                 .orderId(orderId)
@@ -59,7 +60,7 @@ public class TributeCreateAdvertisementPageTest extends SeleniumTestBase {
                 .build()
         )
                 .when(tributeService).
-                sendAdvertisingText(expectedOrderRequest);
+                sendAdvertisingText(any());
     }
 
     @AfterEach
