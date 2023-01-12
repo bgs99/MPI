@@ -38,7 +38,7 @@ public class SeleniumIntegrationTestBase extends SeleniumTestBase {
     }
 
     @Override
-    protected void authenticate(User _user, UserRole _role) {
+    protected void authenticate(User _user) {
         throw new RuntimeException("Auth mocks should not be used in integration tests");
     }
 

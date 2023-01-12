@@ -2,6 +2,7 @@ package ru.itmo.hungergames.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import ru.itmo.hungergames.model.entity.chat.Chat;
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @Builder
+@EqualsAndHashCode
 public class ChatResponse {
     private UUID chatId;
     private MessageResponse lastMessage;

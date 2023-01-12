@@ -2,8 +2,6 @@ package ru.itmo.hungergames.model.entity.user;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Null;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -16,6 +14,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class Settings {
     @Id
     @Column(name = "setting_id")

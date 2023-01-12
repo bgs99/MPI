@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.URL;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 @Setter
 @SuperBuilder
 @Inheritance(strategy = InheritanceType.JOINED)
+@ToString
 public class User implements UserDetails {
     @Id
     @Column(name = "user_id")
