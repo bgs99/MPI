@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import ru.itmo.hungergames.model.entity.EventType;
 import ru.itmo.hungergames.util.annotation.JsonDateTime;
@@ -13,6 +14,7 @@ import java.time.Instant;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class EventRequest {
     @JsonDateTime
     @NotNull
