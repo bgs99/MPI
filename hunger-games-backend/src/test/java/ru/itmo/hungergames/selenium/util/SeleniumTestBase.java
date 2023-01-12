@@ -2,6 +2,8 @@ package ru.itmo.hungergames.selenium.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paulhammant.ngwebdriver.NgWebDriver;
+import org.hamcrest.CoreMatchers;
+import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.html5.WebStorage;
@@ -23,6 +25,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Set;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.*;
 
 public abstract class SeleniumTestBase {
@@ -98,6 +101,16 @@ public abstract class SeleniumTestBase {
 
         var newWindow = handles.stream().findFirst().orElseThrow();
         this.driver.switchTo().window(newWindow);
+    }
+
+    protected void assertRedirect(String sourceUrl, String destination) {
+        this.redirectWait(sourceUrl);
+
+        assertThat(driver.getCurrentUrl(), CoreMatchers.endsWith("#" + destination));
+    }
+
+    protected void assertNoRedirect(String sourceUrl) {
+        Assertions.assertThrows(Exception.class, () -> this.redirectWait(sourceUrl));
     }
 
     protected void redirectWait(String originalUrl) {
