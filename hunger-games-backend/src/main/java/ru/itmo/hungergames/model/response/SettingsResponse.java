@@ -8,6 +8,7 @@ import ru.itmo.hungergames.model.entity.user.Settings;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@EqualsAndHashCode
 public class SettingsResponse {
     private String email;
     public SettingsResponse(Settings settings) {
