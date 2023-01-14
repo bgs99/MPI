@@ -1,6 +1,6 @@
 insert into settings(setting_id, email) VALUES ('3770eb1d-76c7-418c-b2fa-9948f381aac7', 'emailtest@capitol.com');
 
-INSERT INTO users (user_id, name, username, password, setting_id) VALUES ('523adea8-9f98-41a3-bae0-1e4875aceaae', 'sponsor-test', 'sponsor-name', 'hash', '3770eb1d-76c7-418c-b2fa-9948f381aac7');
+INSERT INTO users (user_id, name, username, password, setting_id) VALUES ('523adea8-9f98-41a3-bae0-1e4875aceaae', 'sponsor-test', 'sponsor-name', '$2a$10$3X8Ncrru4KO6Kdyib8oP4.1cgrSM4oNR3Y8kzbCnb9teQGvoGLIUa', '3770eb1d-76c7-418c-b2fa-9948f381aac7');
 INSERT INTO user_roles(user_id, role) VALUES ('523adea8-9f98-41a3-bae0-1e4875aceaae', 'SPONSOR');
 INSERT INTO sponsors (user_id) values  ('523adea8-9f98-41a3-bae0-1e4875aceaae');
 

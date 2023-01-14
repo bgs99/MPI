@@ -45,6 +45,11 @@ public class SponsorController {
         return sponsorService.getOrdersNotPaidAndApproved();
     }
 
+    @GetMapping("/subscription")
+    public boolean isSubscribed() {
+        return sponsorService.isSubscribed();
+    }
+
     @PostMapping("/subscription/news")
     public NewsSubscriptionOrderResponse subscribeToNews(@RequestBody NewsSubscriptionOrderRequest newsSubscriptionOrderRequest) {
         return sponsorService.subscribeToNews(newsSubscriptionOrderRequest);

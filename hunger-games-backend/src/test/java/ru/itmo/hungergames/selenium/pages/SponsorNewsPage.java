@@ -1,19 +1,13 @@
 package ru.itmo.hungergames.selenium.pages;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class SponsorNewsPage {
-    private final WebDriver webDriver;
-
-    public SponsorNewsPage(WebDriver webDriver) {
-        this.webDriver = webDriver;
-    }
-
     public static class NewsEntry{
         private final WebElement element;
 
@@ -30,7 +24,10 @@ public class SponsorNewsPage {
         }
     }
 
+    @FindBy(tagName = "mat-card")
+    private List<WebElement> rawEntries;
+
     public List<NewsEntry> getEntries() {
-        return this.webDriver.findElements(By.tagName("mat-card")).stream().map(NewsEntry::new).collect(Collectors.toList());
+        return this.rawEntries.stream().map(NewsEntry::new).collect(Collectors.toList());
     }
 }

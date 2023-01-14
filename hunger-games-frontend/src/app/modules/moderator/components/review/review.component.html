@@ -3,7 +3,7 @@
 <ng-container *ngIf="this.ad !== null">
     <h2>Пост для рассмотрения</h2>
 
-    <div [innerHTML]="this.ad.text"></div>
+    <div id="ad" [innerHTML]="this.ad.text"></div>
 
     <button mat-raised-button (click)="this.review(true)">Одобрить</button>
     <button mat-raised-button (click)="this.review(false)">Отклонить</button>

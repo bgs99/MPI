@@ -16,4 +16,6 @@ public interface SponsorService {
     NewsSubscriptionOrderResponse subscribeToNews(NewsSubscriptionOrderRequest newsSubscriptionOrderRequest);
     BigDecimal getPriceOfNewsSubscription();
     List<NewsResponse> getNews();
+
+    boolean isSubscribed();
 }
