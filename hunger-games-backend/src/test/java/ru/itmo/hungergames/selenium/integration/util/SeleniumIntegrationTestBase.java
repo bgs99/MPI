@@ -1,13 +1,12 @@
 package ru.itmo.hungergames.selenium.integration.util;
 
-import java.time.Duration;
-import java.time.Instant;
-
 import ru.itmo.hungergames.model.entity.EventType;
 import ru.itmo.hungergames.model.entity.user.User;
 import ru.itmo.hungergames.model.entity.user.UserRole;
 import ru.itmo.hungergames.selenium.pages.*;
 import ru.itmo.hungergames.selenium.util.SeleniumTestBase;
+
+import java.time.Instant;
 
 public class SeleniumIntegrationTestBase extends SeleniumTestBase {
     protected void getStartPage() {
@@ -93,4 +92,24 @@ public class SeleniumIntegrationTestBase extends SeleniumTestBase {
         this.waitForAngularRequests();
         page.addEvent(type, place, time);
     }
+
+    protected void moderatorApprovePost() {
+        final var moderatorReviewPage = this.initPage(ModeratorReviewPage.class);
+        moderatorReviewPage.approve();
+    }
+
+    protected String moderatorApprovePostAndGet() {
+        final var moderatorReviewPage = this.initPage(ModeratorReviewPage.class);
+        String adHTML = moderatorReviewPage.getAdHTML();
+        moderatorReviewPage.approve();
+        return adHTML.replace("<br>", "");
+    }
+
+    protected String moderatorDenyPostAndGet() {
+        final var moderatorReviewPage = this.initPage(ModeratorReviewPage.class);
+        String adHTML = moderatorReviewPage.getAdHTML();
+        moderatorReviewPage.deny();
+        return adHTML.replace("<br>", "");
+    }
+
 }
