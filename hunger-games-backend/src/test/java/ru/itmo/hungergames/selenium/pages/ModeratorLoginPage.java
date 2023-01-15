@@ -17,4 +17,16 @@ public class ModeratorLoginPage {
 
     @FindBy(xpath = "//mat-error")
     private WebElement loginError;
+
+    public void clear() {
+        this.loginInput.clear();
+        this.passwordInput.clear();
+    }
+
+    public void login(String username, String password) {
+        this.clear();
+        this.loginInput.sendKeys(username);
+        this.passwordInput.sendKeys(password);
+        this.loginButton.click();
+    }
 }
