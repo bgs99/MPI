@@ -11,6 +11,7 @@ import ru.itmo.hungergames.model.entity.user.Tribute;
 import ru.itmo.hungergames.model.entity.user.UserRole;
 import ru.itmo.hungergames.model.request.EventRequest;
 import ru.itmo.hungergames.model.response.EventResponse;
+import ru.itmo.hungergames.selenium.pages.EventCard;
 import ru.itmo.hungergames.selenium.pages.TributeEventsPage;
 import ru.itmo.hungergames.selenium.util.SeleniumTest;
 import ru.itmo.hungergames.selenium.util.SeleniumTestBase;
@@ -91,7 +92,7 @@ public class TributeEventsPageTests extends SeleniumTestBase {
         clearInvocations(tributeService);
         doReturn(events.stream().map(EventResponse::new).collect(Collectors.toList()))
                 .when(tributeService)
-                .getEvents();
+                .getOwnEvents();
     }
 
     private Instant instantFromString(String stringDate, String pattern) {
@@ -109,16 +110,16 @@ public class TributeEventsPageTests extends SeleniumTestBase {
 
         var eventCards = page.getEventCards();
 
-        var places = eventCards.stream().map(TributeEventsPage.EventCard::getPlace).collect(Collectors.toList());
+        var places = eventCards.stream().map(EventCard::getPlace).collect(Collectors.toList());
         var expectedPlaced = List.of("place1", "place2", "place3");
 
         Assertions.assertEquals(expectedPlaced, places);
 
-        var dates = eventCards.stream().map(TributeEventsPage.EventCard::getEventDate).collect(Collectors.toList());
+        var dates = eventCards.stream().map(EventCard::getEventDate).collect(Collectors.toList());
 
         Assertions.assertEquals(expectedDates, dates);
 
-        var eventTypes = eventCards.stream().map(TributeEventsPage.EventCard::getEventType).collect(Collectors.toList());
+        var eventTypes = eventCards.stream().map(EventCard::getEventType).collect(Collectors.toList());
         var expectedEventTypes = List.of("Интервью", "Встреча", "Интервью");
 
         Assertions.assertEquals(expectedEventTypes, eventTypes);
@@ -180,7 +181,7 @@ public class TributeEventsPageTests extends SeleniumTestBase {
 
         doReturn(List.of(eventResponse))
                 .when(tributeService)
-                .getEvents();
+                .getOwnEvents();
 
         doReturn(eventResponse)
                 .when(tributeService).addEvent(any());
@@ -214,12 +215,12 @@ public class TributeEventsPageTests extends SeleniumTestBase {
 
         var eventCards = page.getEventCards();
 
-        var places = eventCards.stream().map(TributeEventsPage.EventCard::getPlace).collect(Collectors.toList());
+        var places = eventCards.stream().map(EventCard::getPlace).collect(Collectors.toList());
         var expectedPlaced = List.of("place1", "place2", "place3");
 
-        var dates = eventCards.stream().map(TributeEventsPage.EventCard::getEventDate).collect(Collectors.toList());
+        var dates = eventCards.stream().map(EventCard::getEventDate).collect(Collectors.toList());
 
-        var eventTypes = eventCards.stream().map(TributeEventsPage.EventCard::getEventType).collect(Collectors.toList());
+        var eventTypes = eventCards.stream().map(EventCard::getEventType).collect(Collectors.toList());
         var expectedEventTypes = List.of("Интервью", "Встреча", "Интервью");
 
         eventCards.get(0).getEditButton().click();
@@ -269,7 +270,7 @@ public class TributeEventsPageTests extends SeleniumTestBase {
 
         clearInvocations(tributeService);
         events.remove(0);
-        doReturn(events).when(tributeService).getEvents();
+        doReturn(events).when(tributeService).getOwnEvents();
 
         page.getEventCards().get(0).getDeleteButton().click();
 

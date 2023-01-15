@@ -71,8 +71,14 @@ public class TributeController {
     }
 
     @GetMapping("/events")
-    public List<EventResponse> getEvents() {
-        return tributeService.getEvents();
+    public List<EventResponse> getOwnEvents() {
+        return tributeService.getOwnEvents();
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/{tributeId}/events")
+    public List<EventResponse> getEvents(@PathVariable UUID tributeId) {
+        return tributeService.getEvents(tributeId);
     }
 
     @GetMapping("/time") // for debugging

@@ -19,7 +19,9 @@ public interface TributeService {
 
     List<String> getEventTypes();
 
-    List<EventResponse> getEvents();
+    List<EventResponse> getOwnEvents();
+
+    List<EventResponse> getEvents(UUID tributeId);
 
     List<String> getApprovedAndPaidAdvertisingTexts(UUID tributeId);
 

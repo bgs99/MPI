@@ -34,7 +34,7 @@ public class CapitolAuthPage {
     }
 
     public WebElement getSelectOptionByValue(String option) {
-        return driver.findElement(By.xpath(String.format("//mat-option//*[contains(text(),'%s')]", option)));
+        return driver.findElement(By.xpath(String.format("//mat-option//*[text() = '%s']", option)));
     }
 
     public CapitolAuthPage(WebDriver driver) {
@@ -48,10 +48,13 @@ public class CapitolAuthPage {
             case TRIBUTE -> this.getSelectOptionByValue("Трибут").click();
             case MENTOR -> this.getSelectOptionByValue("Ментор").click();
             case SPONSOR -> throw new RuntimeException("Sponsors cannot use capitol services");
+            case MODERATOR -> throw new RuntimeException("Moderators cannot use capitol services");
         }
 
         this.getNameInput().click();
+
         this.getSelectOptionByValue(name).click();
+
         this.getLoginButton().click();
     }
 

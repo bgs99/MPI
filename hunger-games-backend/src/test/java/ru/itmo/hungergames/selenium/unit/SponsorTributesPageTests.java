@@ -24,15 +24,12 @@ import static org.mockito.Mockito.*;
 
 @SeleniumTest
 public class SponsorTributesPageTests extends SeleniumTestBase {
-    private SponsorTributesPage page;
 
     @MockBean
     private TributeService tributeService;
 
     @BeforeEach
     public void setUp() {
-        this.page = new SponsorTributesPage(this.driver);
-
         Sponsor sponsor = Sponsor.builder()
                 .id(new UUID(42, 42))
                 .name("sponsor")
@@ -65,11 +62,9 @@ public class SponsorTributesPageTests extends SeleniumTestBase {
         var tributes = List.of(tribute1, tribute2);
         when(tributeService.getAllTributes()).thenReturn(tributes.stream().map(TributeResponse::new).collect(Collectors.toList()));
 
-        this.get("/sponsor/tributes");
+        final var page = this.getInit("/sponsor/tributes", SponsorTributesPage.class);
 
-        page.waitUntilTributesLoaded();
-
-        var tributeRows = this.page.getTributeRows();
+        var tributeRows = page.getTributeRows();
 
         var names = tributeRows.stream().map(SponsorTributesPage.TributeRow::getName).collect(Collectors.toList());
         var expectedNames = tributes.stream().map(Tribute::getName).collect(Collectors.toList());
@@ -92,12 +87,9 @@ public class SponsorTributesPageTests extends SeleniumTestBase {
                 .build();
         doReturn(List.of(new TributeResponse(tribute))).when(tributeService).getAllTributes();
 
-        this.get("/sponsor/tributes");
+        final var page = this.getInit("/sponsor/tributes", SponsorTributesPage.class);
 
-
-        page.waitUntilTributesLoaded();
-
-        var tributeRow = this.page.getTributeRows().get(0);
+        var tributeRow = page.getTributeRows().get(0);
 
         var sourceUrl = driver.getCurrentUrl();
 

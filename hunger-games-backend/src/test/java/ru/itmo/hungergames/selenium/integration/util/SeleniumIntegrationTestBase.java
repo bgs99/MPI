@@ -1,5 +1,9 @@
 package ru.itmo.hungergames.selenium.integration.util;
 
+import java.time.Duration;
+import java.time.Instant;
+
+import ru.itmo.hungergames.model.entity.EventType;
 import ru.itmo.hungergames.model.entity.user.User;
 import ru.itmo.hungergames.model.entity.user.UserRole;
 import ru.itmo.hungergames.selenium.pages.*;
@@ -35,6 +39,12 @@ public class SeleniumIntegrationTestBase extends SeleniumTestBase {
         this.redirectWait(() -> sponsorMenuPage.goTo(action));
     }
 
+    protected void sponsorSelectTribute(String tributeName) {
+        final var page = this.initPage(SponsorTributesPage.class);
+
+        this.redirectWait(() -> page.getRowByTributeName(tributeName).getSelectButton().click());
+    }
+
     @Override
     protected void authenticate(User _user) {
         throw new RuntimeException("Auth mocks should not be used in integration tests");
@@ -52,7 +62,7 @@ public class SeleniumIntegrationTestBase extends SeleniumTestBase {
 
         final var capitolAuthPage = this.initPage(CapitolAuthPage.class);
 
-        this.redirectWait(() -> capitolAuthPage.login("name", userRole));
+        this.redirectWait(() -> capitolAuthPage.login(name, userRole));
     }
 
     protected void tributeMenuGoTo(TributeMenuPage.Action action) {
@@ -66,4 +76,9 @@ public class SeleniumIntegrationTestBase extends SeleniumTestBase {
         this.redirectWait(() -> tributeCreateAdvertisementPage.getPayButton().click());
     }
 
+    protected void addEvent(EventType type, String place, Instant time) {
+        final var page = new TributeEventsPage(this.driver);
+        this.waitForAngularRequests();
+        page.addEvent(type, place, time);
+    }
 }

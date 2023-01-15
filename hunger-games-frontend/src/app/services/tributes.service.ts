@@ -38,9 +38,16 @@ export class TributesService {
         ));
     }
 
-    async getEvents(): Promise<Event[]> {
+    async getOwnEvents(): Promise<Event[]> {
         const events = await lastValueFrom(this.http.get<EventSerDe[]>(
             TributesService.BASE_URL + "/events"
+        ));
+        return events.map(event => Event.fromSerDe(event));
+    }
+
+    async getEvents(tributeId: TributeId): Promise<Event[]> {
+        const events = await lastValueFrom(this.http.get<EventSerDe[]>(
+            `${TributesService.BASE_URL}/${tributeId}/events`
         ));
         return events.map(event => Event.fromSerDe(event));
     }

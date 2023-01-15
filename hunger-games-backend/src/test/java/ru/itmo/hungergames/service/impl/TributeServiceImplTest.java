@@ -211,7 +211,7 @@ class TributeServiceImplTest {
                 .when(securityUtil)
                 .getAuthenticatedUserId();
 
-        List<EventResponse> events = tributeService.getEvents();
+        List<EventResponse> events = tributeService.getOwnEvents();
         List<UUID> eventUUIDs = events.stream().map(EventResponse::getId).toList();
 
         assertEquals(eventUUIDs, List.of(futureEvent.getId()));
