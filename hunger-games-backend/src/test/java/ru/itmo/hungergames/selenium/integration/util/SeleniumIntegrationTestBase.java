@@ -2,6 +2,7 @@ package ru.itmo.hungergames.selenium.integration.util;
 
 import ru.itmo.hungergames.model.entity.user.User;
 import ru.itmo.hungergames.model.entity.user.UserRole;
+import ru.itmo.hungergames.selenium.pages.CapitolAuthPage;
 import ru.itmo.hungergames.selenium.pages.LoginPage;
 import ru.itmo.hungergames.selenium.pages.RegisterPage;
 import ru.itmo.hungergames.selenium.pages.SponsorMenuPage;
@@ -45,5 +46,15 @@ public class SeleniumIntegrationTestBase extends SeleniumTestBase {
     @Override
     protected void get(String _destination) {
         throw new RuntimeException("Navigation by URLs should not be used in integration tests");
+    }
+
+    protected void loginCapitolUser(String name, UserRole userRole) {
+        final var loginPage = this.initPage(LoginPage.class);
+
+        this.redirectWait(() -> loginPage.getCapitolAuthLink().click());
+
+        final var capitolAuthPage = this.initPage(CapitolAuthPage.class);
+
+        this.redirectWait(() -> capitolAuthPage.login("name", userRole));
     }
 }
