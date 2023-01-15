@@ -30,7 +30,7 @@ public class SeleniumTestExecutionListener extends AbstractTestExecutionListener
         }
         ApplicationContext context = testContext.getApplicationContext();
         if (context instanceof ConfigurableApplicationContext configurableApplicationContext) {
-            var options = new FirefoxOptions().setHeadless(false); // TODO: separate profile (debug?) for non-headless mode
+            var options = new FirefoxOptions().setHeadless(true); // TODO: separate profile (debug?) for non-headless mode
             webDriver = new FirefoxDriver(options);
             webDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
 
