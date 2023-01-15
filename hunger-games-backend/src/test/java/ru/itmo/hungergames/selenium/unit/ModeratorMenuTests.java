@@ -3,7 +3,6 @@ package ru.itmo.hungergames.selenium.unit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.support.PageFactory;
-
 import ru.itmo.hungergames.model.entity.user.Moderator;
 import ru.itmo.hungergames.model.entity.user.UserRole;
 import ru.itmo.hungergames.selenium.pages.ModeratorMenuPage;
@@ -33,7 +32,7 @@ public class ModeratorMenuTests extends SeleniumTestBase {
 
     @Test
     public void RedirectToNews() {
-        this.assertRedirects(() -> page.getChatsButton().click(), "/moderator/post");
+        this.assertRedirects(() -> page.getAddNewsButton().click(), "/moderator/post");
     }
 
     @Test

@@ -63,7 +63,19 @@ public class SeleniumIntegrationTestBase extends SeleniumTestBase {
     protected void postAdvertisement(String advertisementText) {
         final var tributeCreateAdvertisementPage = this.initPage(TributeCreateAdvertisementPage.class);
         tributeCreateAdvertisementPage.getTextArea().sendKeys(advertisementText);
-        this.redirectWait(() -> tributeCreateAdvertisementPage.getPayButton().click());
+        tributeCreateAdvertisementPage.getPayButton().click();
+    }
+
+    protected void moderatorMenuGoTo(ModeratorMenuPage.Action action) {
+        final var moderatorMenuPage = this.initPage(ModeratorMenuPage.class);
+
+        this.redirectWait(() -> moderatorMenuPage.goTo(action));
+    }
+
+    protected void loginModerator(String username, String password) {
+        final var loginPage = this.initPage(ModeratorLoginPage.class);
+
+        this.redirectWait(() -> loginPage.login(username, password));
     }
 
 }
