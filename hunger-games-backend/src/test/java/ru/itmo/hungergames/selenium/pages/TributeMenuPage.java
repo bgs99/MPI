@@ -12,4 +12,18 @@ public class TributeMenuPage {
     private WebElement eventsButton;
     @FindBy(xpath = "//button//*[contains(text(),'Добавить пост')]")
     private WebElement addPostButton;
+
+    public enum Action {
+        Chats,
+        Post,
+        Events,
+    }
+
+    public void goTo(Action action) {
+        switch (action) {
+            case Chats -> this.chatsButton.click();
+            case Post -> this.addPostButton.click();
+            case Events -> this.eventsButton.click();
+        }
+    }
 }
