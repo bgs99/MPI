@@ -6,9 +6,12 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import ru.itmo.hungergames.model.entity.EventType;
+
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class TributeEventsPage {
@@ -51,46 +54,9 @@ public class TributeEventsPage {
         return this.driver.findElements(By.xpath("//input[@type='radio']"));
     }
 
-    public static class EventCard {
-        private final WebElement card;
-
-        public EventCard(WebElement card) {
-            this.card = card;
-        }
-
-        public String getEventType() {
-            return card.findElement(By.tagName("mat-card-title")).getText();
-        }
-
-        public Instant getEventDate() {
-            String stringDate = card.findElement(By.tagName("mat-card-subtitle")).getText();
-            String pattern = "dd.MM.uuuu, HH:mm:ss";
-            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
-            LocalDateTime localDateTime = LocalDateTime.parse(stringDate, dateTimeFormatter);
-            ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
-            return zonedDateTime.toInstant();
-        }
-
-        public String getEventDateString() {
-            return card.findElement(By.tagName("mat-card-subtitle")).getText();
-        }
-
-        public String getPlace() {
-            return card.findElement(By.tagName("mat-card-content"))
-                    .findElement(By.tagName("div")).getText().substring(7);//starts with "Адрес: "
-        }
-
-        public WebElement getEditButton() {
-            return card.findElement(By.xpath("//button//*[contains(text(),'Изменить')]"));
-        }
-
-        public WebElement getDeleteButton() {
-            return card.findElement(By.xpath("//button//*[contains(text(),'Удалить')]"));
-        }
-    }
-
     public List<EventCard> getEventCards() {
-        return this.driver.findElements(By.tagName("mat-card")).stream().map(EventCard::new).collect(Collectors.toList());
+        return this.driver.findElements(By.tagName("mat-card")).stream().map(EventCard::new)
+                .collect(Collectors.toList());
     }
 
     public void waitUntilEventsLoaded(int number) {
@@ -101,6 +67,26 @@ public class TributeEventsPage {
     public void waitUntilEventsLoaded() {
         new WebDriverWait(driver, Duration.ofSeconds(3))
                 .until(ExpectedConditions.numberOfElementsToBeMoreThan(By.tagName("mat-card"), 0));
+    }
+
+    private static DateTimeFormatter timeFormatter = DateTimeFormatter
+            .ofPattern("MM/dd/yyyy, HH:mm:ss")
+            .withLocale(Locale.getDefault())
+            .withZone(ZoneId.systemDefault());
+
+    public void addEvent(EventType type, String place, Instant time) {
+        this.getAddEventButton().click();
+        switch (type) {
+            case INTERVIEW:
+                this.getRadioButtons().get(0).click();
+                break;
+            case MEETING:
+                this.getRadioButtons().get(1).click();
+                break;
+        }
+        this.enterPlace(place);
+        this.enterDate(TributeEventsPage.timeFormatter.format(time));
+        this.getApproveButton().click();
     }
 
     public void waitUtilElementsClickable(WebElement webElement) {

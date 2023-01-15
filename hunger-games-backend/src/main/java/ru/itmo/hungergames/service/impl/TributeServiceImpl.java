@@ -104,9 +104,14 @@ public class TributeServiceImpl implements TributeService {
     }
 
     @Override
-    public List<EventResponse> getEvents() {
+    public List<EventResponse> getOwnEvents() {
+        return this.getEvents(securityUtil.getAuthenticatedUserId());
+    }
+
+    @Override
+    public List<EventResponse> getEvents(UUID tributeId) {
         Tribute tribute = tributeRepository
-                .findById(securityUtil.getAuthenticatedUserId())
+                .findById(tributeId)
                 .orElseThrow(() -> new ResourceNotFoundException("There's no tribute with such ID"));
 
         return eventRepository

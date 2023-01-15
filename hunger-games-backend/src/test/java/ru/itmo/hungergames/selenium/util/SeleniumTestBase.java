@@ -105,6 +105,10 @@ public abstract class SeleniumTestBase {
     }
 
     protected void redirectWait(Executable executable) {
+        this.redirectWait(executable, Duration.ofSeconds(1));
+    }
+
+    protected void redirectWait(Executable executable, Duration timeout) {
         final var sourceUrl = this.driver.getCurrentUrl();
 
         try {
@@ -113,7 +117,7 @@ public abstract class SeleniumTestBase {
             throw new RuntimeException(e);
         }
 
-        this.redirectWait(sourceUrl);
+        this.redirectWait(sourceUrl, timeout);
     }
 
     protected void redirectWait(String originalUrl) {

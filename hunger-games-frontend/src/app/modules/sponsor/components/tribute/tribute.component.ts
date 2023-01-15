@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Chat } from 'src/app/models/chat';
+import { Event } from 'src/app/models/event';
 import { Tribute, TributeId } from 'src/app/models/tribute';
 import { ChatService } from 'src/app/services/chat.service';
 import { TributesService } from 'src/app/services/tributes.service';
@@ -13,6 +14,7 @@ export class TributeComponent implements OnInit {
     self: Tribute | undefined
     chat: Chat | undefined
     ads: string[] = []
+    events: Event[] = []
 
     constructor(
         private route: ActivatedRoute,
@@ -30,6 +32,7 @@ export class TributeComponent implements OnInit {
         this.self = await this.tributesService.getTribute(id)!;
         const chats = await this.chatService.getChats();
         this.chat = chats.find(chat => chat.tributeName == this.self?.name);
+        this.events = await this.tributesService.getEvents(id);
         this.ads = (await this.tributesService.getAds(id)).reverse();
     }
 
