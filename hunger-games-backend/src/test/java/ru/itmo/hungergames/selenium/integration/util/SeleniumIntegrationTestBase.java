@@ -2,10 +2,7 @@ package ru.itmo.hungergames.selenium.integration.util;
 
 import ru.itmo.hungergames.model.entity.user.User;
 import ru.itmo.hungergames.model.entity.user.UserRole;
-import ru.itmo.hungergames.selenium.pages.CapitolAuthPage;
-import ru.itmo.hungergames.selenium.pages.LoginPage;
-import ru.itmo.hungergames.selenium.pages.RegisterPage;
-import ru.itmo.hungergames.selenium.pages.SponsorMenuPage;
+import ru.itmo.hungergames.selenium.pages.*;
 import ru.itmo.hungergames.selenium.util.SeleniumTestBase;
 
 public class SeleniumIntegrationTestBase extends SeleniumTestBase {
@@ -57,4 +54,16 @@ public class SeleniumIntegrationTestBase extends SeleniumTestBase {
 
         this.redirectWait(() -> capitolAuthPage.login("name", userRole));
     }
+
+    protected void tributeMenuGoTo(TributeMenuPage.Action action) {
+        final var tributeMenuPage = this.initPage(TributeMenuPage.class);
+        this.redirectWait(() -> tributeMenuPage.goTo(action));
+    }
+
+    protected void postAdvertisement(String advertisementText) {
+        final var tributeCreateAdvertisementPage = this.initPage(TributeCreateAdvertisementPage.class);
+        tributeCreateAdvertisementPage.getTextArea().sendKeys(advertisementText);
+        this.redirectWait(() -> tributeCreateAdvertisementPage.getPayButton().click());
+    }
+
 }
