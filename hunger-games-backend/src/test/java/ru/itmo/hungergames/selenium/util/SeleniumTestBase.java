@@ -12,22 +12,16 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import ru.itmo.hungergames.model.entity.user.User;
 import ru.itmo.hungergames.model.entity.user.UserRole;
 import ru.itmo.hungergames.selenium.pages.MockPaymentPage;
-import ru.itmo.hungergames.util.JwtUtil;
-import ru.itmo.hungergames.util.SecurityUtil;
+import ru.itmo.hungergames.utils.MockAuth;
 
 import java.time.Duration;
-import java.util.List;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.*;
 
 public abstract class SeleniumTestBase {
     @Autowired
@@ -36,11 +30,8 @@ public abstract class SeleniumTestBase {
     @LocalServerPort
     private int port;
 
-    @SpyBean
-    private SecurityUtil securityUtil;
-
-    @SpyBean
-    private JwtUtil jwtUtil;
+    @Autowired
+    private MockAuth mockAuth;
 
     protected void waitForAngularRequests() {
         NgWebDriver ngDriver = new NgWebDriver((FirefoxDriver) driver);
@@ -155,10 +146,7 @@ public abstract class SeleniumTestBase {
 
     protected void authenticate(User user) {
         final var role = user.getUserRoles().stream().findAny().orElseThrow();
-        this.authenticate(user, role);
-    }
 
-    protected void authenticate(User user, UserRole role) {
         driver.get(this.composeUrl("/")); // To get to the localStorage for the site
 
         final var node = new ObjectMapper().createObjectNode();
@@ -167,16 +155,12 @@ public abstract class SeleniumTestBase {
         node.put("token", "test");
         node.put("name", user.getName());
         ((WebStorage) driver).getLocalStorage().setItem("auth", node.toString());
+        
+        this.mockAuth.authenticate(user);
+    }
 
-        final var authority = new SimpleGrantedAuthority(role.toString());
-
-        doReturn(true).when(this.jwtUtil).validateJwtToken("test");
-        doReturn(new UsernamePasswordAuthenticationToken(user, null, List.of(authority)))
-                .when(this.jwtUtil)
-                .createAuthenticationFromJwtToken("test");
-
-        doReturn(role).when(this.securityUtil).getAuthenticatedUserRole();
-        doReturn(user.getId()).when(this.securityUtil).getAuthenticatedUserId();
-        doReturn(user).when(this.securityUtil).getAuthenticatedUser();
+    protected void authenticate(User user, UserRole role) {
+        user.setUserRoles(Set.of(role));
+        this.authenticate(user);
     }
 }

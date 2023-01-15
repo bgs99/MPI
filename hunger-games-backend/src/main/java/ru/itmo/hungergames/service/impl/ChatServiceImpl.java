@@ -67,17 +67,13 @@ public class ChatServiceImpl implements ChatService {
                 .tribute(tribute)
                 .sponsor(sponsor)
                 .build());
-        return ChatResponse.builder()
-                .chatId(chat.getId())
-                .build();
+        return new ChatResponse(chat);
     }
 
     @Override
     @Transactional
     public MessageResponse sendMessage(UUID chatId, MessageRequest messageRequest) {
-        User user = userRepository
-                .findById(securityUtil.getAuthenticatedUserId())
-                .orElseThrow(() -> new ResourceNotFoundException("There's no user with the ID"));
+        User user = securityUtil.getAuthenticatedUser();
         Chat chat = chatRepository
                 .findById(chatId)
                 .orElseThrow(() -> new ResourceNotFoundException("There's no chat with the ID"));

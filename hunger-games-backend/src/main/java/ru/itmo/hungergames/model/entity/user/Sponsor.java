@@ -20,6 +20,7 @@ import ru.itmo.hungergames.model.entity.order.NewsSubscriptionOrder;
         value = {"password", "userRoles", "authorities",
                 "accountNonExpired", "accountNonLocked",
                 "credentialsNonExpired", "enabled"})
+@ToString(callSuper = true)
 public class Sponsor extends User {
     @OneToOne
     private NewsSubscriptionOrder newsSubscriptionOrder;
