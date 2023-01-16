@@ -44,6 +44,25 @@ public class SeleniumIntegrationTestBase extends SeleniumTestBase {
         this.redirectWait(() -> page.getRowByTributeName(tributeName).getSelectButton().click());
     }
 
+    protected void sponsorSetEmail(String email) {
+        final var page = this.initPage(SponsorSettingsPage.class);
+
+        page.updateEmail(email);
+
+        this.waitForAngularRequests();
+    }
+
+    protected void sponsorSubscribe() {
+        final var page = this.initPage(SponsorSettingsPage.class);
+
+        final var sourceWindow = this.driver.getWindowHandle();
+        page.subscribe();
+
+        this.approvePayment(sourceWindow);
+
+        this.waitForAngularRequests();
+    }
+
     @Override
     protected void authenticate(User _user) {
         throw new RuntimeException("Auth mocks should not be used in integration tests");
@@ -91,6 +110,13 @@ public class SeleniumIntegrationTestBase extends SeleniumTestBase {
         final var page = new TributeEventsPage(this.driver);
         this.waitForAngularRequests();
         page.addEvent(type, place, time);
+    }
+
+    protected void moderatorPostNews(String title, String content) {
+        final var moderatorNewsPage = this.initPage(ModeratorPostPage.class);
+        moderatorNewsPage.publish(title, content);
+
+        this.waitForAngularRequests();
     }
 
     protected void moderatorApprovePost() {
