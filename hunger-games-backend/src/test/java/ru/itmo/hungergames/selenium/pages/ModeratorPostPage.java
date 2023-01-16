@@ -17,4 +17,13 @@ public class ModeratorPostPage {
     @Getter
     @FindBy(xpath = "//button//*[contains(text(),'Опубликовать')]")
     private WebElement publishButton;
+
+    public void publish(String title, String content) {
+        this.titleInput.clear();
+        this.titleInput.sendKeys(title);
+
+        this.postEditorElement.sendKeys(content);
+
+        this.publishButton.click();
+    }
 }

@@ -50,4 +50,10 @@ public class SponsorSettingsPage {
     public void subscribe() {
         this.subscribeButton.click();
     }
+
+    public void updateEmail(String newEmail) {
+        this.newEmailInput.clear();
+        this.newEmailInput.sendKeys(newEmail);
+        this.changeEmailButton.click();
+    }
 }
