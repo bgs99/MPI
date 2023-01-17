@@ -18,6 +18,7 @@ import { ResourcesComponent } from './components/resources/resources.component';
 import { TributesComponent } from './components/tributes/tributes.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { ChatsComponent } from './components/chats/chats.component';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { ChatsComponent } from './components/chats/chats.component';
 
         SharedModule,
 
+        MatButtonModule,
         MatInputModule,
         MatTableModule,
         MatListModule,
