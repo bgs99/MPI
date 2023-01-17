@@ -14,6 +14,7 @@ import ru.itmo.hungergames.model.entity.user.Mentor;
 import ru.itmo.hungergames.model.entity.user.Sponsor;
 import ru.itmo.hungergames.model.entity.user.Tribute;
 import ru.itmo.hungergames.model.entity.user.UserRole;
+import ru.itmo.hungergames.model.request.ApproveResourcesRequest;
 import ru.itmo.hungergames.model.response.ResourceApprovalResponse;
 import ru.itmo.hungergames.model.response.TributeResponse;
 import ru.itmo.hungergames.selenium.pages.MentorConsiderSponsorOffersPage;
@@ -21,7 +22,6 @@ import ru.itmo.hungergames.selenium.util.SeleniumTest;
 import ru.itmo.hungergames.selenium.util.SeleniumTestBase;
 import ru.itmo.hungergames.service.MentorService;
 import ru.itmo.hungergames.service.ResourceService;
-import ru.itmo.hungergames.service.SponsorService;
 import ru.itmo.hungergames.service.TributeService;
 
 import java.math.BigDecimal;
@@ -31,12 +31,10 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.*;
 
 @SeleniumTest
 public class MentorConsiderSponsorOffersTest extends SeleniumTestBase {
-    @MockBean
-    private SponsorService sponsorService;
     @MockBean
     private TributeService tributeService;
     @MockBean
@@ -44,14 +42,14 @@ public class MentorConsiderSponsorOffersTest extends SeleniumTestBase {
     @MockBean
     private MentorService mentorService;
 
-    private Mentor mentor = Mentor.builder()
+    private final Mentor mentor = Mentor.builder()
             .id(new UUID(42, 42))
             .username("mentor")
             .name("mentor")
             .userRoles(Set.of(UserRole.MENTOR))
             .build();
 
-    private Tribute tribute = Tribute.builder()
+    private final Tribute tribute = Tribute.builder()
             .id(new UUID(42, 42))
             .name("test")
             .mentor(mentor)
@@ -134,5 +132,28 @@ public class MentorConsiderSponsorOffersTest extends SeleniumTestBase {
         var expectedResourceOrdersResources = this.resourceOrders.stream().map(r -> r.getOrderDetails().toString()).toList();
         var actualResourceOrdersResources = this.orderRows.stream().map(MentorConsiderSponsorOffersPage.OrderRow::getResources).toList();
         Assertions.assertEquals(expectedResourceOrdersResources, actualResourceOrdersResources);
+    }
+
+    @Test
+    public void approveRequestTest() {
+        final var expectedRequest = new ApproveResourcesRequest(this.resourceOrder1.getId(), true);
+        doNothing().when(this.mentorService).approveResourcesToSend(expectedRequest);
+
+        this.orderRows.get(0).getApproveButton().click();
+
+        this.waitForAngularRequests();
+        verify(this.mentorService).approveResourcesToSend(expectedRequest);
+    }
+
+
+    @Test
+    public void denyRequestTest() {
+        final var expectedRequest = new ApproveResourcesRequest(this.resourceOrder1.getId(), false);
+        doNothing().when(this.mentorService).approveResourcesToSend(expectedRequest);
+
+        this.orderRows.get(0).getDenyButton().click();
+
+        this.waitForAngularRequests();
+        verify(this.mentorService).approveResourcesToSend(expectedRequest);
     }
 }

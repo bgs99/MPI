@@ -35,17 +35,17 @@ public class MentorConsiderSponsorOffersPage {
             return processResourcesText(this.row.findElements(By.tagName("td")).get(2).getText());
         }
 
+        public WebElement getApproveButton() {
+            return this.row.findElement(By.xpath(".//button//*[contains(text(),'Одобрить')]"));
+        }
+
+        public WebElement getDenyButton() {
+            return this.row.findElement(By.xpath(".//button//*[contains(text(),'Отклонить')]"));
+        }
+
         private String processResourcesText(String resourcesText) {
             return "[" + resourcesText.replace("\n", ", ") + "]";
         }
-
-//        public WebElement getApproveButton() {
-//            return this.row.findElement(By.xpath("//button//*[contains(text(),'Одобрить')]"));
-//        } REDO
-//
-//        public WebElement getDenyButton() {
-//            return this.row.findElement(By.xpath("//button//*[contains(text(),'Отклонить')]"));
-//        } REDO
     }
 
     public List<OrderRow> getOrderRows() {
