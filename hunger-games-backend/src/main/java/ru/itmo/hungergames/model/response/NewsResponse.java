@@ -1,9 +1,6 @@
 package ru.itmo.hungergames.model.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.itmo.hungergames.model.entity.News;
 import ru.itmo.hungergames.util.annotation.JsonDateTime;
 
@@ -13,6 +10,7 @@ import java.time.Instant;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@EqualsAndHashCode
 public class NewsResponse {
     private String name;
     private String content;
