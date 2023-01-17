@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.PageFactory;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.itmo.hungergames.model.entity.chat.Chat;
 import ru.itmo.hungergames.model.entity.chat.Message;
@@ -48,8 +47,6 @@ public class SponsorChatsPageTests extends SeleniumTestBase {
 
     @BeforeEach
     public void setUp() {
-        this.page = new SponsorChatsPage(this.driver);
-
         this.authenticate(this.self, UserRole.SPONSOR);
     }
 
@@ -97,9 +94,7 @@ public class SponsorChatsPageTests extends SeleniumTestBase {
                 .getChatsByUserId();
 
 
-        this.get("/sponsor/chats");
-
-        page.waitUntilChatsLoaded();
+        this.page = this.getInit("/sponsor/chats", SponsorChatsPage.class);
 
         var chatRows = this.page.getChatRows();
 
@@ -133,10 +128,7 @@ public class SponsorChatsPageTests extends SeleniumTestBase {
                 .when(chatService)
                 .getChatsByUserId();
 
-
-        this.get("/sponsor/chats");
-
-        page.waitUntilChatsLoaded();
+        this.page = this.getInit("/sponsor/chats", SponsorChatsPage.class);
 
         var chatRow = this.page.getChatRows().get(0);
 
@@ -156,16 +148,8 @@ public class SponsorChatsPageTests extends SeleniumTestBase {
                 .when(chatService)
                 .getChatsByUserId();
 
-        this.get("/sponsor/chats");
+        this.page = this.getInit("/sponsor/chats", SponsorChatsPage.class);
 
-        PageFactory.initElements(driver, this.page);
-
-        var sourceUrl = driver.getCurrentUrl();
-
-        page.newChatButton.click();
-
-        this.redirectWait(sourceUrl);
-
-        assertThat(driver.getCurrentUrl(), CoreMatchers.endsWith("#/sponsor/tributes"));
+        this.assertRedirects(() -> page.newChatButton.click(), "/sponsor/tributes");
     }
 }

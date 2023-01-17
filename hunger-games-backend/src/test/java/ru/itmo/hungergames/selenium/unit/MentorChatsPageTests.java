@@ -36,12 +36,12 @@ public class MentorChatsPageTests extends SeleniumTestBase {
     @MockBean
     private ChatService chatService;
 
-    private Mentor mentor = Mentor.builder()
+    private final Mentor mentor = Mentor.builder()
             .id(new UUID(0, 42))
             .userRoles(Set.of(UserRole.MENTOR))
             .name("mentor1").build();
 
-    private Tribute tribute = Tribute.builder()
+    private final Tribute tribute = Tribute.builder()
             .id(new UUID(42, 0))
             .name("tribute1")
             .mentor(mentor).build();
@@ -55,7 +55,6 @@ public class MentorChatsPageTests extends SeleniumTestBase {
     @BeforeEach
     public void setUp() {
         this.authenticate(this.mentor);
-        this.page = new MentorChatsPage(driver);
     }
 
     @Test
@@ -83,9 +82,7 @@ public class MentorChatsPageTests extends SeleniumTestBase {
                 .when(chatService)
                 .getChatsByUserId();
 
-        this.get("/mentor/chats");
-
-        page.waitUntilChatsLoaded();
+        this.page = this.getInit("/mentor/chats", MentorChatsPage.class);
 
         var chatRows = this.page.getChatRows();
 
@@ -120,9 +117,7 @@ public class MentorChatsPageTests extends SeleniumTestBase {
                 .getChatsByUserId();
 
 
-        this.get("/mentor/chats");
-
-        page.waitUntilChatsLoaded();
+        this.page = this.getInit("/mentor/chats", MentorChatsPage.class);
 
         var chatRow = this.page.getChatRows().get(0);
 

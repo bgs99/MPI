@@ -1,22 +1,16 @@
 package ru.itmo.hungergames.selenium.pages;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.FindBy;
 
-import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ChatsPage {
-    private final WebDriver driver;
-
-    public ChatsPage(WebDriver driver) {
-        this.driver = driver;
-    }
-
     public static class ChatRow {
         private final WebElement row;
 
@@ -29,14 +23,29 @@ public class ChatsPage {
         public String getLastMessage() {
             return row.findElements(By.tagName("p")).get(0).getText();
         }
+        public Set<String> getParticipants() {
+            return Arrays.stream(this.getSelectButton().getText().split(", ")).collect(Collectors.toSet());
+        }
+    }
+
+    @FindBy(tagName = "mat-list-item")
+    private List<WebElement> messageElements;
+
+    private Stream<ChatRow> getChatRowsStream() {
+        return this.messageElements.stream().map(ChatRow::new);
     }
 
     public List<ChatRow> getChatRows() {
-        return this.driver.findElements(By.tagName("mat-list-item")).stream().map(ChatRow::new).collect(Collectors.toList());
+        return this.getChatRowsStream().collect(Collectors.toList());
     }
 
-    public void waitUntilChatsLoaded() {
-        new WebDriverWait(driver, Duration.ofSeconds(3))
-                .until(ExpectedConditions.numberOfElementsToBeMoreThan(By.tagName("mat-list-item"), 0));
+    public ChatRow getChatRowByParticipants(Set<String> participants) {
+        return this.getChatRowsStream()
+                .filter(row -> participants.containsAll(row.getParticipants()))
+                .findFirst().orElseThrow();
+    }
+
+    public void selectChatByParticipants(Set<String> participants) {
+        this.getChatRowByParticipants(participants).getSelectButton().click();
     }
 }

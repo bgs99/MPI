@@ -53,8 +53,6 @@ public class TributeChatsPageTests extends SeleniumTestBase {
 
     @BeforeEach
     public void setUp() {
-        this.page = new TributeChatsPage(this.driver);
-
         this.authenticate(this.self, UserRole.TRIBUTE);
     }
 
@@ -99,10 +97,7 @@ public class TributeChatsPageTests extends SeleniumTestBase {
                 .when(chatService)
                 .getChatsByUserId();
 
-
-        this.get("/tribute/chats");
-
-        page.waitUntilChatsLoaded();
+        this.page = this.getInit("/tribute/chats", TributeChatsPage.class);
 
         var chatRows = this.page.getChatRows();
 
@@ -136,9 +131,7 @@ public class TributeChatsPageTests extends SeleniumTestBase {
                 .getChatsByUserId();
 
 
-        this.get("/tribute/chats");
-
-        page.waitUntilChatsLoaded();
+        this.page = this.getInit("/tribute/chats", TributeChatsPage.class);
 
         var chatRow = this.page.getChatRows().get(0);
 
