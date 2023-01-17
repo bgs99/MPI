@@ -32,4 +32,9 @@ public class OrderDetail {
     public BigDecimal getTotal() {
         return this.resource.getPrice().multiply(new BigDecimal(this.size));
     }
+
+    @Override
+    public String toString() {
+        return String.format("%dX %s", size, resource.getName());
+    }
 }
