@@ -2,16 +2,15 @@ package ru.itmo.hungergames.selenium.pages;
 
 import lombok.Getter;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import ru.itmo.hungergames.selenium.util.OrderRepresentation;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class SponsorPayOrderPage {
-    private final WebDriver driver;
-
     @Getter
     @FindBy(id = "status")
     private WebElement paymentStatus;
@@ -32,10 +31,6 @@ public class SponsorPayOrderPage {
     @FindBy(xpath = "//button//*[contains(text(), 'Выбрать другого трибута')]")
     private WebElement reselectTributeButton;
 
-    public SponsorPayOrderPage(WebDriver driver) {
-        this.driver = driver;
-    }
-
     public static class OrderRow {
         private final WebElement row;
 
@@ -49,13 +44,35 @@ public class SponsorPayOrderPage {
         public List<String> getDetails() {
             return row.findElements(By.tagName("mat-list-item")).stream().map(WebElement::getText).collect(Collectors.toList());
         }
+
+        private String getDetailsText() {
+            return row.findElements(By.tagName("mat-list-item")).stream().map(WebElement::getText).collect(Collectors.joining("\n"));
+        }
+
         public int getSum() {
             final var sumStr = row.findElements(By.tagName("td")).get(1).getText();
             return Integer.parseInt(sumStr.substring(0, sumStr.length() - 1));
         }
     }
 
+    @FindBy(tagName = "tr")
+    private List<WebElement> orderElements;
+
+    private Stream<OrderRow> getOrderRowsStream() {
+        return this.orderElements.stream().skip(1).map(OrderRow::new);
+    }
+
     public List<OrderRow> getOrderRows() {
-        return this.driver.findElements(By.tagName("tr")).stream().skip(1).map(OrderRow::new).collect(Collectors.toList());
+        return this.getOrderRowsStream().collect(Collectors.toList());
+    }
+
+    public OrderRow getOrderRow(OrderRepresentation order) {
+        return this.getOrderRowsStream()
+                .filter(row -> row.getDetailsText().equals(order.toString()))
+                .findFirst().orElseThrow();
+    }
+
+    public void payOrder(OrderRepresentation order) {
+        this.getOrderRow(order).getPayButton().click();
     }
 }
