@@ -3,20 +3,31 @@ package ru.itmo.hungergames.selenium.unit;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.itmo.hungergames.model.entity.chat.Chat;
 import ru.itmo.hungergames.model.entity.chat.Message;
 import ru.itmo.hungergames.model.entity.order.OrderDetail;
 import ru.itmo.hungergames.model.entity.order.Resource;
 import ru.itmo.hungergames.model.entity.order.ResourceOrder;
-import ru.itmo.hungergames.model.entity.user.*;
+import ru.itmo.hungergames.model.entity.user.Mentor;
+import ru.itmo.hungergames.model.entity.user.Sponsor;
+import ru.itmo.hungergames.model.entity.user.Tribute;
+import ru.itmo.hungergames.model.entity.user.UserRole;
+import ru.itmo.hungergames.model.request.ApproveResourcesRequest;
+import ru.itmo.hungergames.model.request.OrderDetailRequest;
+import ru.itmo.hungergames.model.request.ResourceOrderRequest;
 import ru.itmo.hungergames.model.response.*;
 import ru.itmo.hungergames.selenium.pages.ChatPage;
+import ru.itmo.hungergames.selenium.pages.MentorSuggestOrdersPage;
 import ru.itmo.hungergames.selenium.util.SeleniumTest;
 import ru.itmo.hungergames.selenium.util.SeleniumTestBase;
 import ru.itmo.hungergames.service.*;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -27,9 +38,8 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @SeleniumTest
-public class TributeChatPageTests extends SeleniumTestBase {
+public class MentorChatPageTests extends SeleniumTestBase {
     private ChatPage page;
-
     private final Sponsor sponsor = Sponsor.builder()
             .id(new UUID(42, 42))
             .username("sponsor")
@@ -40,6 +50,7 @@ public class TributeChatPageTests extends SeleniumTestBase {
     private final Mentor mentor = Mentor.builder()
             .id(new UUID(42, 43))
             .name("mentor")
+            .userRoles(Set.of(UserRole.MENTOR))
             .build();
 
     private final Tribute tribute = Tribute.builder()
@@ -143,16 +154,14 @@ public class TributeChatPageTests extends SeleniumTestBase {
     @MockBean
     private ResourceService resourceService;
 
+    @MockBean
+    private SponsorService sponsorService;
+
     private List<ChatPage.Message> actualMessages;
 
     @BeforeEach
     public void setUp() {
-        var tribute = User.builder()
-                .id(new UUID(42, 42))
-                .username("tribute")
-                .name("tribute")
-                .build();
-        this.authenticate(tribute, UserRole.TRIBUTE);
+        this.authenticate(this.mentor);
 
         doReturn(List.of(new ChatResponse(this.chat))).when(this.chatService).getChatsByUserId();
         doReturn(this.messages.stream().map(MessageResponse::new).collect(Collectors.toList())).when(this.chatService).getMessagesByChatId(this.chat.getId());
@@ -162,15 +171,15 @@ public class TributeChatPageTests extends SeleniumTestBase {
         doReturn(new OrderResponse(this.orderApprovedAndPaid)).when(this.orderService).getOrderById(this.orderApprovedAndPaid.getId());
         doReturn(new TributeResponse(this.tribute)).when(this.tributeService).getTributeById(this.tribute.getId());
         doReturn(new MentorResponse(this.mentor)).when(this.mentorService).getMentorById(this.mentor.getId());
+        doReturn(new SponsorResponse(this.sponsor)).when(this.sponsorService).getSponsorById(this.sponsor.getId());
         doReturn(List.of(this.resource)).when(this.resourceService).getAllResources();
 
-        this.page = this.getInit("/tribute/chat/" + this.chat.getId(), ChatPage.class);
+        this.page = this.getInit("/mentor/chat/" + this.chat.getId(), ChatPage.class);
 
         this.page.getMessageInput().clear();
 
         this.actualMessages = this.page.getMessages();
     }
-
 
     @Test
     public void showTextMessage() {
@@ -207,12 +216,32 @@ public class TributeChatPageTests extends SeleniumTestBase {
     }
 
     @Test
+    public void approveOrderMessage() {
+        final var expectedRequest = new ApproveResourcesRequest(this.orderPendingApproval.getId(), true);
+        doNothing().when(this.mentorService).approveResourcesToSend(expectedRequest);
+
+        this.actualMessages.get(1).approve();
+
+        verify(this.mentorService, times(1)).approveResourcesToSend(expectedRequest);
+    }
+
+    @Test
+    public void denyOrderMessage() {
+        final var expectedRequest = new ApproveResourcesRequest(this.orderPendingApproval.getId(), false);
+        doNothing().when(this.mentorService).approveResourcesToSend(expectedRequest);
+
+        this.actualMessages.get(1).deny();
+
+        verify(this.mentorService, times(1)).approveResourcesToSend(expectedRequest);
+    }
+
+    @Test
     public void sendMessage() {
         final var message = "test message";
 
         var messageEntity = Message.builder()
                 .message(message)
-                .user(this.tribute)
+                .user(this.mentor)
                 .build();
 
         doReturn(new MessageResponse(messageEntity))
@@ -230,4 +259,49 @@ public class TributeChatPageTests extends SeleniumTestBase {
         Assertions.assertEquals(message, this.page.getMessages().get(5).getText());
     }
 
+    @Test
+    public void requestResources() {
+
+        this.assertRedirects(
+                () -> this.page.getRequestResourcesButton().click(),
+                "/mentor/chat/" + this.chat.getId() + "/" + this.tribute.getId() + "/resources");
+
+        final var createOrderPage = this.initPage(MentorSuggestOrdersPage.class);
+
+        createOrderPage.clear();
+
+        final var resourceAmountInput = createOrderPage.getResourceRows().get(0).getAmountInput();
+        resourceAmountInput.clear();
+        resourceAmountInput.sendKeys("1");
+
+        final var expectedOrderRequest = ResourceOrderRequest.builder()
+                .tributeId(this.tribute.getId())
+                .orderDetails(List.of(
+                        new OrderDetailRequest(this.resource.getId(), 1)
+                ))
+                .build();
+
+        final var orderId = new UUID(1, 2);
+
+        doReturn(ResourceOrderResponse.builder().orderId(orderId).build())
+                .when(this.mentorService).sendResourcesToSponsor(expectedOrderRequest);
+
+        final var message = "/" + orderId;
+
+        var messageEntity = Message.builder()
+                .message(message)
+                .user(this.sponsor)
+                .build();
+
+        doReturn(new MessageResponse(messageEntity))
+                .when(this.chatService)
+                .sendMessage(eq(this.chat.getId()), argThat(messageRequest -> messageRequest.getMessage().equals(message)));
+
+        createOrderPage.orderSelected();
+
+        new WebDriverWait(this.driver, Duration.ofSeconds(3)).until(ExpectedConditions.numberOfElementsToBe(By.tagName("li"), 6));
+
+        verify(this.chatService, times(1))
+                .sendMessage(eq(this.chat.getId()), argThat(messageRequest -> messageRequest.getMessage().equals(message)));
+    }
 }
