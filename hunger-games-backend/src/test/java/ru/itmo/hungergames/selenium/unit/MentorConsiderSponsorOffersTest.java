@@ -1,11 +1,8 @@
 package ru.itmo.hungergames.selenium.unit;
 
-import com.paulhammant.ngwebdriver.NgWebDriver;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.PageFactory;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.itmo.hungergames.model.entity.order.OrderDetail;
 import ru.itmo.hungergames.model.entity.order.Resource;
@@ -102,7 +99,6 @@ public class MentorConsiderSponsorOffersTest extends SeleniumTestBase {
     @BeforeEach
     public void setUp() {
         this.authenticate(this.mentor);
-        this.page = new MentorConsiderSponsorOffersPage(driver);
 
         doReturn(new TributeResponse(this.tribute)).when(this.tributeService).getTributeById(this.tribute.getId());
         doReturn(List.of(resource1, resource2, resource3)).when(this.resourceService).getAllResources();
@@ -110,11 +106,7 @@ public class MentorConsiderSponsorOffersTest extends SeleniumTestBase {
                 .map(ResourceApprovalResponse::new)
                 .collect(Collectors.toList())).when(this.mentorService).getOrdersForApproval();
 
-        this.get("/mentor/approval");
-        PageFactory.initElements(driver, this.page);
-
-        NgWebDriver ngDriver = new NgWebDriver((FirefoxDriver)driver);
-        ngDriver.waitForAngularRequestsToFinish();
+        this.page = this.getInit("/mentor/approval", MentorConsiderSponsorOffersPage.class);
 
         this.orderRows = this.page.getOrderRows();
     }

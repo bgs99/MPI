@@ -98,7 +98,7 @@ public class SponsorCreateOrderPageTests extends SeleniumTestBase {
                 .name("sponsor")
                 .build();
         this.authenticate(sponsor, UserRole.SPONSOR);
-        this.page = new SponsorCreateOrderPage(this.driver);
+        this.page = this.initPage(SponsorCreateOrderPage.class);
 
         this.sourceWindowHandle = this.driver.getWindowHandle();
 
