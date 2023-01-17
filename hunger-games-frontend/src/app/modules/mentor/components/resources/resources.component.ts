@@ -1,14 +1,14 @@
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ChatId } from 'src/app/models/chat';
 import { Resource } from 'src/app/models/resource';
-import { Tribute } from 'src/app/models/tribute';
+import { Tribute, TributeId } from 'src/app/models/tribute';
 import { ChatService } from 'src/app/services/chat.service';
 import { MentorsService } from 'src/app/services/mentors.service';
 import { ResourcesService } from 'src/app/services/resources.service';
+import { TributesService } from 'src/app/services/tributes.service';
 
 @Component({
     selector: 'app-mentor-resources',
@@ -23,21 +23,13 @@ export class ResourcesComponent implements OnInit {
     chatId: ChatId | null = null;
 
     constructor(
+        private route: ActivatedRoute,
         private router: Router,
         private mentorService: MentorsService,
         private resourcesService: ResourcesService,
         private chatService: ChatService,
-    ) {
-        router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(e => {
-            const state = router.getCurrentNavigation()?.extras.state;
-            if (state !== undefined) {
-                this.tribute = state['tribute'] as Tribute | null
-                if (state['chatId'] !== undefined) {
-                    this.chatId = state['chatId'] as ChatId;
-                }
-            }
-        });
-    }
+        private tributesService: TributesService,
+    ) { }
 
     stepperChanged(event: StepperSelectionEvent): void {
         if (event.selectedIndex == 0) {
@@ -68,7 +60,11 @@ export class ResourcesComponent implements OnInit {
     }
 
     async ngOnInit(): Promise<void> {
+        const tributeId = this.route.snapshot.paramMap.get('tributeId')! as TributeId;
+        this.chatId = this.route.snapshot.paramMap.get('chatId') as ChatId | null;
+
         try {
+            this.tribute = (await this.tributesService.getTribute(tributeId))!;
             const resources = await this.resourcesService.getResources();
 
             resources.forEach(resource => {

@@ -12,7 +12,8 @@ const routes: Routes = [
     { path: '', component: MenuComponent },
     { path: 'approval', component: ApprovalComponent },
     { path: 'tributes', component: TributesComponent },
-    { path: 'resources', component: ResourcesComponent },
+    { path: 'tribute/:tributeId/resources', component: ResourcesComponent },
+    { path: 'chat/:chatId/:tributeId/resources', component: ResourcesComponent },
     { path: 'chats', component: ChatsComponent },
     { path: 'chat/:id', component: ChatComponent },
 ];
