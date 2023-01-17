@@ -1,0 +1,30 @@
+Success rate:
+
+label
+Approve payment      0.978557
+Get All Resources    1.000000
+Get All Tributes     1.000000
+Send Resources       0.587600
+Name: success, dtype: float64
+
+
+Time, ms:
+
+                           mean   median    max
+label                                          
+Approve payment     2219.998639   2093.0   4780
+Get All Resources     42.644900     40.0    154
+Get All Tributes      44.274500     42.0    142
+Send Resources     26939.318300  30313.5  55679
+
+
+Throughput, req/sec:
+
+label
+Approve payment       0.450451
+Get All Resources    23.449463
+Get All Tributes     22.586365
+Send Resources        0.037120
+dtype: float64
+
+
