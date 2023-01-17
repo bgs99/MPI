@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { concatMap } from 'rxjs';
 import { Chat, ChatMessage } from 'src/app/models/chat';
 import { Order, OrderId } from 'src/app/models/order';
-import { PaymentResult } from 'src/app/models/payment';
 import { UserRole } from 'src/app/models/person';
 import { AuthService } from 'src/app/services/auth.service';
 import { ChatService, ChatServiceInstance, ConnectedChatServiceInstance } from 'src/app/services/chat.service';
@@ -98,12 +97,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
 
     async requestResources() {
-        this.router.navigate(['mentor', 'resources'], {
-            state: {
-                tribute: await this.tributesService.getTribute(this.chat.tributeId),
-                chatId: this.chat.chatId,
-            }
-        });
+        this.router.navigate(['mentor', 'chat', this.chat.chatId, this.chat.tributeId, 'resources']);
     }
 
     async sendResources() {
