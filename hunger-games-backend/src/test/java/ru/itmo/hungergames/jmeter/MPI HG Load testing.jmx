@@ -597,7 +597,7 @@
         <hashTree/>
       </hashTree>
       <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
-        <stringProp name="BeanShellAssertion.query">resultsFile = ${__property(user.dir)}${__BeanShell(File.separator,)}result_${__time(yyyyMMdd-HHmmss)}.csv</stringProp>
+        <stringProp name="BeanShellAssertion.query">${__setProperty(resultsFile, ${__property(user.dir)}${__BeanShell(File.separator,)}result_${__time(yyyyMMdd-HHmmss)}.csv)};</stringProp>
         <stringProp name="BeanShellAssertion.filename"></stringProp>
         <stringProp name="BeanShellAssertion.parameters"></stringProp>
         <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
@@ -637,7 +637,7 @@
             <connectTime>true</connectTime>
           </value>
         </objProp>
-        <stringProp name="filename">${resultsFile}</stringProp>
+        <stringProp name="filename">${__property(resultsFile)}</stringProp>
       </ResultCollector>
       <hashTree/>
     </hashTree>
