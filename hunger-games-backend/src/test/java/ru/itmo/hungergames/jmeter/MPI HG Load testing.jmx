@@ -596,13 +596,6 @@
         </ResultCollector>
         <hashTree/>
       </hashTree>
-      <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
-        <stringProp name="BeanShellAssertion.query">${__setProperty(resultsFile, ${result_${__time(yyyyMMdd-HHmmss)}.csv)};</stringProp>
-        <stringProp name="BeanShellAssertion.filename"></stringProp>
-        <stringProp name="BeanShellAssertion.parameters"></stringProp>
-        <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
-      </BeanShellAssertion>
-      <hashTree/>
       <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="true">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
         <objProp>
@@ -619,7 +612,7 @@
             <dataType>true</dataType>
             <encoding>false</encoding>
             <assertions>true</assertions>
-            <subresults>true</subresults>
+            <subresults>false</subresults>
             <responseData>false</responseData>
             <samplerData>false</samplerData>
             <xml>false</xml>
@@ -637,7 +630,7 @@
             <connectTime>true</connectTime>
           </value>
         </objProp>
-        <stringProp name="filename">${__property(resultsFile)}</stringProp>
+        <stringProp name="filename"></stringProp>
       </ResultCollector>
       <hashTree/>
     </hashTree>
