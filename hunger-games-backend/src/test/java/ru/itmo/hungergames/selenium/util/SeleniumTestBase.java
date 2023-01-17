@@ -61,6 +61,24 @@ public abstract class SeleniumTestBase {
         this.driver.switchTo().window(sourceWindowHandle);
     }
 
+    protected void approvePayment(Executable executable) {
+        final var sourceWindow = this.driver.getWindowHandle();
+        final var sourceWindows = this.driver.getWindowHandles();
+
+        try {
+            executable.execute();
+        } catch (Throwable e) {
+            throw new RuntimeException(e);
+        }
+
+        this.switchToNewWindow(sourceWindows);
+        var paymentPage = PageFactory.initElements(driver, MockPaymentPage.class);
+        paymentPage.approve();
+        new WebDriverWait(this.driver, Duration.ofSeconds(1)).until(
+                ExpectedConditions.numberOfWindowsToBe(sourceWindows.size()));
+        this.driver.switchTo().window(sourceWindow);
+    }
+
     protected void approvePayment(String sourceWindowHandle) {
         this.switchToNewWindow(sourceWindowHandle);
         var paymentPage = PageFactory.initElements(driver, MockPaymentPage.class);

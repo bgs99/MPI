@@ -1,9 +1,9 @@
 package ru.itmo.hungergames.selenium.pages;
 
 import lombok.Getter;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import ru.itmo.hungergames.selenium.util.OrderRepresentation;
 
 public class SponsorCreateOrderPage extends ResourcesPage {
     @Getter
@@ -42,7 +42,9 @@ public class SponsorCreateOrderPage extends ResourcesPage {
     @FindBy(xpath = "//button//*[contains(text(), 'Выбрать другого трибута')]")
     private WebElement reselectTributeButton;
 
-    public SponsorCreateOrderPage(WebDriver driver) {
-        super(driver);
+    @Override
+    public void createOrder(OrderRepresentation order) {
+        super.createOrder(order);
+        this.getPayButton().click();
     }
 }

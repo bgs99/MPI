@@ -2,19 +2,15 @@ package ru.itmo.hungergames.selenium.pages;
 
 import lombok.Getter;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import ru.itmo.hungergames.selenium.util.OrderRepresentation;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter
 public class MentorConsiderSponsorOffersPage {
-    private final WebDriver driver;
-
-    public MentorConsiderSponsorOffersPage(WebDriver driver) {
-        this.driver = driver;
-    }
 
     public static class OrderRow {
         private final WebElement row;
@@ -31,8 +27,12 @@ public class MentorConsiderSponsorOffersPage {
             return this.row.findElements(By.tagName("td")).get(1).getText();
         }
 
+        private String getResourcesText() {
+            return this.row.findElements(By.tagName("td")).get(2).getText();
+        }
+
         public String getResources() {
-            return processResourcesText(this.row.findElements(By.tagName("td")).get(2).getText());
+            return processResourcesText(this.getResourcesText());
         }
 
         public WebElement getApproveButton() {
@@ -48,7 +48,22 @@ public class MentorConsiderSponsorOffersPage {
         }
     }
 
+    @FindBy(tagName = "tr")
+    private List<WebElement> orderElements;
+
     public List<OrderRow> getOrderRows() {
-        return this.driver.findElements(By.tagName("tr")).stream().skip(1).map(OrderRow::new).collect(Collectors.toList());
+        return this.orderElements.stream().skip(1).map(OrderRow::new).collect(Collectors.toList());
+    }
+
+    public OrderRow getOrder(OrderRepresentation order) {
+        return this.orderElements.stream()
+                .skip(1)
+                .map(OrderRow::new)
+                .filter(row -> row.getResourcesText().equals(order.toString()))
+                .findFirst().orElseThrow();
+    }
+
+    public void approveOrder(OrderRepresentation order) {
+        this.getOrder(order).getApproveButton().click();
     }
 }

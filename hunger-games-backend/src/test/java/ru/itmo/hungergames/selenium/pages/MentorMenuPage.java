@@ -12,4 +12,18 @@ public class MentorMenuPage {
     private WebElement requestResources;
     @FindBy(xpath = "//button//*[contains(text(),'Чаты')]")
     private WebElement chats;
+
+    public enum Action {
+        REQUEST,
+        REVIEW,
+        CHATS,
+    }
+
+    public void goTo(Action action) {
+        switch (action) {
+            case REQUEST -> this.requestResources.click();
+            case REVIEW -> this.considerSponsorOffers.click();
+            case CHATS -> this.chats.click();
+        }
+    }
 }

@@ -4,6 +4,7 @@ import ru.itmo.hungergames.model.entity.EventType;
 import ru.itmo.hungergames.model.entity.user.User;
 import ru.itmo.hungergames.model.entity.user.UserRole;
 import ru.itmo.hungergames.selenium.pages.*;
+import ru.itmo.hungergames.selenium.util.OrderRepresentation;
 import ru.itmo.hungergames.selenium.util.SeleniumTestBase;
 
 import java.time.Instant;
@@ -42,6 +43,18 @@ public class SeleniumIntegrationTestBase extends SeleniumTestBase {
         final var page = this.initPage(SponsorTributesPage.class);
 
         this.redirectWait(() -> page.getRowByTributeName(tributeName).getSelectButton().click());
+    }
+
+    protected void sponsorTributeCreateOrder() {
+        final var page = this.initPage(SponsorTributePage.class);
+
+        this.redirectWait(() -> page.getGiveResourcesButton().click());
+    }
+
+    protected void sponsorCreateOrder(OrderRepresentation order) {
+        final var page = this.initPage(SponsorCreateOrderPage.class);
+        this.approvePayment(() -> page.createOrder(order));
+        this.waitForAngularRequests();
     }
 
     protected void sponsorSetEmail(String email) {
@@ -138,4 +151,15 @@ public class SeleniumIntegrationTestBase extends SeleniumTestBase {
         return adHTML.replace("<br>", "");
     }
 
+    protected void mentorMenuGoTo(MentorMenuPage.Action action)  {
+        final var page = this.initPage(MentorMenuPage.class);
+        this.redirectWait(() -> page.goTo(action));
+    }
+
+    protected void mentorApproveOrder(OrderRepresentation order) {
+        final var page = this.initPage(MentorConsiderSponsorOffersPage.class);
+        page.approveOrder(order);
+
+        this.waitForAngularRequests();
+    }
 }
