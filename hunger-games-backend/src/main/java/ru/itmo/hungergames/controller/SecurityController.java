@@ -18,13 +18,10 @@ import ru.itmo.hungergames.service.SecurityService;
 @Slf4j
 public class SecurityController {
     private final SecurityService securityService;
-    private final ModeratorService moderatorService;
 
     @Autowired
-    public SecurityController(SecurityService securityService,
-                              ModeratorService moderatorService) {
+    public SecurityController(SecurityService securityService) {
         this.securityService = securityService;
-        this.moderatorService = moderatorService;
     }
 
     @PostMapping("/signin")
@@ -44,14 +41,5 @@ public class SecurityController {
         ));
         log.info("user {} is created", signUpRequest.getUsername());
         return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/moderator/signin")
-    public ResponseEntity<?> generateTokenForModerator(@Valid @RequestBody SignInRequest signInRequest) {
-        return ResponseEntity.ok(moderatorService
-                .authenticateModerator(new User(
-                        signInRequest.getUsername(),
-                        null
-                )));
     }
 }

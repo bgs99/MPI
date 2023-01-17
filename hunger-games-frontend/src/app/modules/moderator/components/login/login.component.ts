@@ -24,7 +24,7 @@ export class LoginComponent {
     async login(): Promise<void> {
         const loginFormValue = this.loginForm.value;
         try {
-            await this.authService.login(loginFormValue.username!, loginFormValue.password!);
+            await this.authService.loginModerator(loginFormValue.username!, loginFormValue.password!);
             this.router.navigateByUrl('/moderator');
         } catch (e) {
             if (e instanceof HttpErrorResponse && e.status === 403) {
