@@ -24,8 +24,10 @@ public class ChatResponse {
 
     public ChatResponse(Chat chat) {
         this.chatId = chat.getId();
-        this.lastMessage = chat.getMessages().size() == 0 ?
-                null : new MessageResponse(chat.getMessages().get(chat.getMessages().size() - 1));
+        final var chatMessages = chat.getMessages();
+        if (chatMessages != null && !chatMessages.isEmpty()) {
+            this.lastMessage = new MessageResponse(chat.getMessages().get(chat.getMessages().size() - 1));
+        }
         this.mentorName = chat.getTribute().getMentor().getName();
         this.tributeName = chat.getTribute().getName();
         this.sponsorName = chat.getSponsor().getName();

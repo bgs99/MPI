@@ -8,6 +8,7 @@ import ru.itmo.hungergames.selenium.util.OrderRepresentation;
 import ru.itmo.hungergames.selenium.util.SeleniumTestBase;
 
 import java.time.Instant;
+import java.util.Set;
 
 public class SeleniumIntegrationTestBase extends SeleniumTestBase {
     protected void getStartPage() {
@@ -55,6 +56,22 @@ public class SeleniumIntegrationTestBase extends SeleniumTestBase {
         final var page = this.initPage(SponsorTributePage.class);
 
         this.redirectWait(() -> page.getPayResourcesButton().click());
+    }
+
+    protected void sponsorTributeCreateChat() {
+        final var page = this.initPage(SponsorTributePage.class);
+
+        this.redirectWait(() -> page.getStartChatButton().click());
+    }
+
+    protected void sendChatMessage(String message) {
+        final var page = this.initPage(ChatPage.class);
+
+        page.getMessageInput().clear();
+        page.getMessageInput().sendKeys(message);
+        page.getMessageSendButton().click();
+
+        this.waitForAngularRequests();
     }
 
     protected void sponsorCreateOrder(OrderRepresentation order) {
@@ -187,5 +204,11 @@ public class SeleniumIntegrationTestBase extends SeleniumTestBase {
         page.createOrder(order);
 
         this.waitForAngularRequests();
+    }
+
+    protected void selectChat(Set<String> participants) {
+        final var page = this.initPage(ChatsPage.class);
+
+        this.redirectWait(() -> page.selectChatByParticipants(participants));
     }
 }
