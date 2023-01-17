@@ -7,7 +7,8 @@ import org.springframework.test.context.jdbc.Sql;
 import ru.itmo.hungergames.model.entity.user.UserRole;
 import ru.itmo.hungergames.repository.ResourceOrderRepository;
 import ru.itmo.hungergames.selenium.integration.util.SeleniumIntegrationTestBase;
-import ru.itmo.hungergames.selenium.pages.*;
+import ru.itmo.hungergames.selenium.pages.MentorMenuPage;
+import ru.itmo.hungergames.selenium.pages.SponsorMenuPage;
 import ru.itmo.hungergames.selenium.util.OrderDetailRepresentation;
 import ru.itmo.hungergames.selenium.util.OrderRepresentation;
 import ru.itmo.hungergames.selenium.util.SeleniumTest;
@@ -15,7 +16,7 @@ import ru.itmo.hungergames.selenium.util.SeleniumTest;
 import java.util.List;
 
 @SeleniumTest
-public class SponsorOrdersResourceTests extends SeleniumIntegrationTestBase {
+public class MentorOrdersResourceTests extends SeleniumIntegrationTestBase {
     @Autowired
     private ResourceOrderRepository orderRepository;
 
@@ -28,27 +29,29 @@ public class SponsorOrdersResourceTests extends SeleniumIntegrationTestBase {
     public void test() {
         this.getStartPage();
 
+        this.loginCapitolUser("1d3ad419-e98f-43f1-9ac6-08776036cded", UserRole.MENTOR);
+
+        this.mentorMenuGoTo(MentorMenuPage.Action.REQUEST);
+
+        this.mentorSelectTribute("tribute-test1");
+
+        final var order = new OrderRepresentation(List.of(
+                new OrderDetailRepresentation("Resource-test-1", 42)
+        ));
+
+        this.mentorCreateOrder(order);
+
+        this.getStartPage();
+
         this.loginSponsor("sponsor-name", "pass");
 
         this.sponsorMenuGoTo(SponsorMenuPage.Action.Tributes);
 
         this.sponsorSelectTribute("tribute-test1");
 
-        this.sponsorTributeCreateOrder();
+        this.sponsorTributePayOrder();
 
-        final var order = new OrderRepresentation(List.of(
-                new OrderDetailRepresentation("Resource-test-1", 42)
-        ));
-
-        this.sponsorCreateOrder(order);
-
-        this.getStartPage();
-
-        this.loginCapitolUser("1d3ad419-e98f-43f1-9ac6-08776036cded", UserRole.MENTOR);
-
-        this.mentorMenuGoTo(MentorMenuPage.Action.REVIEW);
-
-        this.mentorApproveOrder(order);
+        this.sponsorPayOrder(order);
 
         final var allOrders = this.orderRepository.findAll();
 

@@ -51,9 +51,21 @@ public class SeleniumIntegrationTestBase extends SeleniumTestBase {
         this.redirectWait(() -> page.getGiveResourcesButton().click());
     }
 
+    protected void sponsorTributePayOrder() {
+        final var page = this.initPage(SponsorTributePage.class);
+
+        this.redirectWait(() -> page.getPayResourcesButton().click());
+    }
+
     protected void sponsorCreateOrder(OrderRepresentation order) {
         final var page = this.initPage(SponsorCreateOrderPage.class);
         this.approvePayment(() -> page.createOrder(order));
+        this.waitForAngularRequests();
+    }
+
+    protected void sponsorPayOrder(OrderRepresentation order) {
+        final var page = this.initPage(SponsorPayOrderPage.class);
+        this.approvePayment(() -> page.payOrder(order));
         this.waitForAngularRequests();
     }
 
@@ -159,6 +171,20 @@ public class SeleniumIntegrationTestBase extends SeleniumTestBase {
     protected void mentorApproveOrder(OrderRepresentation order) {
         final var page = this.initPage(MentorConsiderSponsorOffersPage.class);
         page.approveOrder(order);
+
+        this.waitForAngularRequests();
+    }
+
+    protected void mentorSelectTribute(String tributeName) {
+        final var page = this.initPage(MentorTributesPage.class);
+
+        this.redirectWait(() -> page.selectTributeName(tributeName));
+    }
+
+    protected void mentorCreateOrder(OrderRepresentation order) {
+        final var page = this.initPage(MentorSuggestOrdersPage.class);
+
+        page.createOrder(order);
 
         this.waitForAngularRequests();
     }
