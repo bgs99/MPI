@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@EqualsAndHashCode
 public class ResourceApprovedAndNotPaidResponse {
     private UUID orderId;
     private String sponsorName;

@@ -8,6 +8,7 @@ import ru.itmo.hungergames.model.entity.order.OrderDetail;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@EqualsAndHashCode
 public class OrderDetailResponse {
     private String name;
     private int size;

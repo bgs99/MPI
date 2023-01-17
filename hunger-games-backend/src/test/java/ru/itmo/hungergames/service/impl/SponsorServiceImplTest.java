@@ -2,132 +2,171 @@ package ru.itmo.hungergames.service.impl;
 
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 import ru.itmo.hungergames.exception.NotNewsSubscribedException;
+import ru.itmo.hungergames.model.entity.News;
 import ru.itmo.hungergames.model.entity.order.NewsSubscriptionOrder;
 import ru.itmo.hungergames.model.entity.order.OrderDetail;
+import ru.itmo.hungergames.model.entity.order.Resource;
 import ru.itmo.hungergames.model.entity.order.ResourceOrder;
 import ru.itmo.hungergames.model.entity.user.Sponsor;
 import ru.itmo.hungergames.model.entity.user.Tribute;
+import ru.itmo.hungergames.model.entity.user.UserRole;
 import ru.itmo.hungergames.model.request.NewsSubscriptionOrderRequest;
 import ru.itmo.hungergames.model.request.OrderDetailRequest;
 import ru.itmo.hungergames.model.request.ResourceOrderRequest;
-import ru.itmo.hungergames.model.response.*;
+import ru.itmo.hungergames.model.response.NewsResponse;
+import ru.itmo.hungergames.model.response.ResourceApprovedAndNotPaidResponse;
+import ru.itmo.hungergames.model.response.ResourceOrderResponse;
+import ru.itmo.hungergames.model.response.SponsorResponse;
 import ru.itmo.hungergames.repository.*;
-import ru.itmo.hungergames.service.SponsorService;
+import ru.itmo.hungergames.util.ApplicationParameters;
 import ru.itmo.hungergames.util.SecurityUtil;
-import ru.itmo.hungergames.util.SponsorUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@DirtiesContext
 class SponsorServiceImplTest {
     @Autowired
-    SponsorService sponsorService;
-    @SpyBean
+    SponsorServiceImpl sponsorService;
+    @MockBean
     SponsorRepository sponsorRepository;
     @MockBean
     TributeRepository tributeRepository;
     @MockBean
     SecurityUtil securityUtil;
-    @SpyBean
+    @MockBean
     ResourceOrderRepository resourceOrderRepository;
-    @Autowired
+    @MockBean
     OrderDetailRepository orderDetailRepository;
-    @SpyBean
-    SponsorUtil sponsorUtil;
-    @SpyBean
+    @MockBean
     NewsSubscriptionOrderRepository newsSubscriptionOrderRepository;
-    @SpyBean
+    @MockBean
     NewsRepository newsRepository;
+    @MockBean
+    ResourceRepository resourceRepository;
 
     @Test
-    @Sql(value = {"/initScripts/create-multiple-sponsors.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(value = {"/initScripts/drop-multiple-sponsors.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getAllSponsors() {
-        List<UUID> initialUUIDs = new ArrayList<>();
-        initialUUIDs.add(UUID.fromString("4a9f1d37-c6fd-4391-8082-655bb98fb460"));
-        initialUUIDs.add(UUID.fromString("e37ec309-5b49-4985-97c0-e12451dc177e"));
-        initialUUIDs.add(UUID.fromString("1ebfbc1c-fde8-40fa-8572-488738c16a9b"));
+        Sponsor sponsor1 = Sponsor.builder()
+                .id(new UUID(42, 42))
+                .name("name")
+                .username("username1")
+                .userRoles(Set.of(UserRole.SPONSOR))
+                .build();
+        Sponsor sponsor2 = Sponsor.builder()
+                .id(new UUID(42, 43))
+                .name("name")
+                .username("username2")
+                .userRoles(Set.of(UserRole.SPONSOR))
+                .build();
 
-        List<SponsorResponse> sponsorResponses = sponsorService.getAllSponsors();
-        List<UUID> uuids = sponsorResponses.stream().map(SponsorResponse::getId).toList();
+        Mockito.doReturn(List.of(sponsor1, sponsor2)).when(sponsorRepository).findAll();
 
-        assertTrue(uuids.containsAll(initialUUIDs));
-        Mockito.verify(sponsorRepository, Mockito.times(1)).findAll();
+        var exceptedSponsors = List.of(new SponsorResponse(sponsor1), new SponsorResponse(sponsor2));
+
+        assertEquals(exceptedSponsors, sponsorService.getAllSponsors());
     }
 
     @Test
-    @DirtiesContext
-    @Sql(value = {"/initScripts/create-sponsor.sql", "/initScripts/create-tribute.sql", "/initScripts/create-resources.sql"},
-            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(value = {"/initScripts/drop-sponsor.sql", "/initScripts/drop-tribute.sql", "/initScripts/drop-resources.sql"},
-            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void sendResourcesForApproval() {
-        UUID tributeId = UUID.fromString("9667900f-24b2-4795-ad20-28b933d9ae32");
+        UUID tributeId = new UUID(42, 42);
         Tribute tribute = new Tribute();
         tribute.setId(tributeId);
         Mockito.when(tributeRepository.findById(tributeId))
                 .thenReturn(Optional.of(tribute));
-        UUID sponsorId = UUID.fromString("4a9f1d37-c6fd-4391-8082-655bb98fb460");
+        UUID sponsorId = new UUID(42, 43);
         Sponsor sponsor = new Sponsor();
         sponsor.setId(sponsorId);
+
         Mockito.when(sponsorRepository.findById(sponsorId))
                 .thenReturn(Optional.of(sponsor));
         Mockito.when(securityUtil.getAuthenticatedUserId())
                 .thenReturn(sponsorId);
 
+        Resource resource1 = Resource.builder()
+                .id(new UUID(42, 42))
+                .name("1")
+                .price(BigDecimal.valueOf(100))
+                .build();
+        Resource resource2 = Resource.builder()
+                .id(new UUID(42, 43))
+                .name("2")
+                .price(BigDecimal.valueOf(200))
+                .build();
+
+        Mockito.doReturn(Optional.of(resource1)).when(resourceRepository).findById(resource1.getId());
+        Mockito.doReturn(Optional.of(resource2)).when(resourceRepository).findById(resource2.getId());
+
+        OrderDetail orderDetail1 = OrderDetail.builder()
+                .resource(resource1)
+                .size(1)
+                .build();
+        OrderDetail orderDetail2 = OrderDetail.builder()
+                .resource(resource2)
+                .size(2)
+                .build();
+
+        Mockito.doReturn(orderDetail1).when(orderDetailRepository).save(orderDetail1);
+        Mockito.doReturn(orderDetail2).when(orderDetailRepository).save(orderDetail2);
+
         List<OrderDetailRequest> orderDetailRequestList = new ArrayList<>();
-        orderDetailRequestList.add(new OrderDetailRequest(UUID.fromString("33ff5ee9-c0d7-4955-b2cd-a0aa3d484b98"), 1));
-        orderDetailRequestList.add(new OrderDetailRequest(UUID.fromString("47f75e81-4f14-4af5-bce2-b6d5af372d94"), 2));
+        orderDetailRequestList.add(new OrderDetailRequest(new UUID(42, 42), 1));
+        orderDetailRequestList.add(new OrderDetailRequest(new UUID(42, 43), 2));
 
         ResourceOrderRequest resourceOrderRequest = new ResourceOrderRequest(tributeId, orderDetailRequestList);
+
+        BigDecimal expectedPrice = BigDecimal.valueOf(500);
+        UUID expectedUUID = new UUID(24, 24);
+        ResourceOrder expectedOrder = ResourceOrder.builder()
+                .orderDetails(List.of(orderDetail1, orderDetail2))
+                .tribute(tribute)
+                .price(expectedPrice)
+                .sponsor(sponsor)
+                .build();
+        ResourceOrder savedExpectedOrder = ResourceOrder.builder()
+                .id(expectedUUID)
+                .orderDetails(List.of(orderDetail1, orderDetail2))
+                .tribute(tribute)
+                .price(expectedPrice)
+                .sponsor(sponsor)
+                .build();
+        Mockito.doReturn(savedExpectedOrder).when(resourceOrderRepository).save(expectedOrder);
+
         ResourceOrderResponse resourceOrderResponse = sponsorService.sendResourcesForApproval(resourceOrderRequest);
-        ResourceOrder order = resourceOrderRepository.findById(resourceOrderResponse.getOrderId()).orElseThrow();
-        List<OrderDetail> orderDetails = order.getOrderDetails();
 
-        Mockito.verify(resourceOrderRepository, Mockito.times(1)).save(ArgumentMatchers.any(ResourceOrder.class));
-        assertEquals(sponsorId, order.getSponsor().getId());
-        assertEquals(tributeId, order.getTribute().getId());
-        assertNotNull(order.getPrice());
-        assertFalse(order.isPaid());
-        assertNull(order.getApproved());
-        assertEquals(2, orderDetails.size());
+        assertEquals(expectedPrice, resourceOrderResponse.getPrice());
+        assertEquals(expectedUUID, resourceOrderResponse.getOrderId());
 
-        orderDetailRepository.deleteAll(orderDetails);
-        order.setOrderDetails(new ArrayList<>());
-        resourceOrderRepository.delete(order);
+        Mockito.verify(securityUtil, Mockito.times(1)).getAuthenticatedUserId();
+        Mockito.verify(resourceOrderRepository, Mockito.times(1)).save(expectedOrder);
     }
 
     @Test
-    @DirtiesContext
-    @Sql(value = {"/initScripts/create-sponsor.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(value = {"/initScripts/drop-sponsor.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void sendResourcesTributeNotExists() {
-        UUID sponsorId = UUID.fromString("4a9f1d37-c6fd-4391-8082-655bb98fb460");
+        UUID sponsorId = new UUID(42, 43);
         Sponsor sponsor = new Sponsor();
         sponsor.setId(sponsorId);
+
         Mockito.when(sponsorRepository.findById(sponsorId))
                 .thenReturn(Optional.of(sponsor));
-        Mockito.when(securityUtil.getAuthenticatedUser())
-                .thenReturn(sponsor);
+        Mockito.when(securityUtil.getAuthenticatedUserId())
+                .thenReturn(sponsorId);
 
         List<OrderDetailRequest> orderDetailRequestList = new ArrayList<>();
         UUID tributeId = new UUID(1, 1);
@@ -140,32 +179,63 @@ class SponsorServiceImplTest {
     }
 
     @Test
-    @Sql(value = {"/initScripts/create-orders-not-paid-and-approved.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(value = {"/initScripts/drop-orders-not-paid-and-approved.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getOrdersNotPaidAndApproved() {
-        List<UUID> initialUUIDs = new ArrayList<>();
-        initialUUIDs.add(UUID.fromString("3d6e3de8-3311-4d89-9c92-4b5bf13f55c7"));
-        initialUUIDs.add(UUID.fromString("61091dd1-84db-44ae-a7fe-4d98316a63cc"));
+        UUID tributeId = new UUID(42, 42);
+        String tributeName = "tribute";
+        Tribute tribute = Tribute.builder()
+                .id(tributeId)
+                .name(tributeName)
+                .build();
 
+        Resource resource1 = Resource.builder()
+                .id(new UUID(42, 42))
+                .name("1")
+                .price(BigDecimal.valueOf(100))
+                .build();
+        Resource resource2 = Resource.builder()
+                .id(new UUID(42, 43))
+                .name("2")
+                .price(BigDecimal.valueOf(200))
+                .build();
 
-        List<ResourceApprovedAndNotPaidResponse> ordersNotPaidAndApproved = sponsorService.getOrdersNotPaidAndApproved();
-        List<UUID> uuids = ordersNotPaidAndApproved.stream().map(ResourceApprovedAndNotPaidResponse::getOrderId).toList();
+        OrderDetail orderDetail1 = OrderDetail.builder()
+                .resource(resource1)
+                .size(1)
+                .build();
+        OrderDetail orderDetail2 = OrderDetail.builder()
+                .resource(resource2)
+                .size(2)
+                .build();
 
-        assertTrue(uuids.containsAll(initialUUIDs));
-        Mockito.verify(resourceOrderRepository, Mockito.times(1)).findAllByPaidAndApproved(false, true);
+        ResourceOrder resourceOrder1 = ResourceOrder.builder()
+                .id(new UUID(42, 42))
+                .approved(true)
+                .orderDetails(List.of(orderDetail1))
+                .tribute(tribute)
+                .build();
+
+        ResourceOrder resourceOrder2 = ResourceOrder.builder()
+                .id(new UUID(42, 44))
+                .approved(true)
+                .orderDetails(List.of(orderDetail2))
+                .tribute(tribute)
+                .build();
+
+        Mockito.doReturn(List.of(resourceOrder1, resourceOrder2)).when(resourceOrderRepository).findAllByPaidAndApproved(false, true);
+
+        assertEquals(List.of(new ResourceApprovedAndNotPaidResponse(resourceOrder1), new ResourceApprovedAndNotPaidResponse(resourceOrder2)), sponsorService.getOrdersNotPaidAndApproved());
     }
 
     @Test
-    @Sql(value = {"/initScripts/create-sponsor.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(value = {"/initScripts/drop-sponsor.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getSponsorById() {
-        UUID id = UUID.fromString("4a9f1d37-c6fd-4391-8082-655bb98fb460");
-        SponsorResponse sponsorById = sponsorService.getSponsorById(id);
+        UUID sponsorId = new UUID(42, 43);
+        Sponsor sponsor = new Sponsor();
+        sponsor.setId(sponsorId);
 
-        assertEquals(id, sponsorById.getId());
-        assertEquals("sponsor-test", sponsorById.getName());
-        assertEquals("sponsor-name", sponsorById.getUsername());
-        Mockito.verify(sponsorRepository, Mockito.times(1)).findById(id);
+        Mockito.doReturn(Optional.of(sponsor)).when(sponsorRepository).findById(sponsorId);
+
+        assertEquals(new SponsorResponse(sponsor), sponsorService.getSponsorById(sponsorId));
+        Mockito.verify(sponsorRepository, Mockito.times(1)).findById(sponsorId);
     }
 
     @Test
@@ -179,43 +249,50 @@ class SponsorServiceImplTest {
     }
 
     @Test
-    @DirtiesContext
-    @Sql(value = {"/initScripts/create-sponsor.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(value = {"/initScripts/drop-sponsor.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void subscribeToNews() {
         String email = "example@email.com";
-        UUID sponsorId = UUID.fromString("4a9f1d37-c6fd-4391-8082-655bb98fb460");
+
+        UUID sponsorId = new UUID(42, 43);
+        Sponsor sponsor = new Sponsor();
+        sponsor.setId(sponsorId);
+
+        Mockito.when(sponsorRepository.findById(sponsorId))
+                .thenReturn(Optional.of(sponsor));
         Mockito.when(securityUtil.getAuthenticatedUserId())
                 .thenReturn(sponsorId);
 
-        NewsSubscriptionOrderRequest newsSubscriptionOrderRequest = new NewsSubscriptionOrderRequest(email);
-        NewsSubscriptionOrderResponse newsSubscriptionOrderResponse = sponsorService.subscribeToNews(newsSubscriptionOrderRequest);
+        NewsSubscriptionOrder expectedOrder = NewsSubscriptionOrder.builder()
+                .sponsor(sponsor)
+                .email(email)
+                .price(ApplicationParameters.newsSubscriptionPrice)
+                .build();
 
-        Sponsor sponsor = sponsorRepository.findById(sponsorId).orElseThrow();
-        NewsSubscriptionOrder newsSubscriptionOrder = sponsor.getNewsSubscriptionOrder();
+        UUID exceptedOrderId = new UUID(42, 0);
 
-        Mockito.verify(sponsorUtil, Mockito.times(1))
-                .checkIfAlreadySubscribed(ArgumentMatchers.any(Sponsor.class));
-        Mockito.verify(newsSubscriptionOrderRepository, Mockito.times(1))
-                .save(ArgumentMatchers.any(NewsSubscriptionOrder.class));
-        Mockito.verify(sponsorRepository, Mockito.times(1))
-                .save(ArgumentMatchers.any(Sponsor.class));
+        NewsSubscriptionOrder expectedOrderSaved = NewsSubscriptionOrder.builder()
+                .id(exceptedOrderId)
+                .sponsor(sponsor)
+                .email(email)
+                .price(ApplicationParameters.newsSubscriptionPrice)
+                .build();
 
+        Mockito.doReturn(expectedOrderSaved).when(newsSubscriptionOrderRepository).save(expectedOrder);
 
-        assertEquals(newsSubscriptionOrderResponse.getOrderId(), newsSubscriptionOrder.getId());
-        assertEquals(sponsorId, newsSubscriptionOrder.getSponsor().getId());
-        assertEquals(email, newsSubscriptionOrder.getEmail());
+        assertEquals(exceptedOrderId, sponsorService.subscribeToNews(new NewsSubscriptionOrderRequest(email)).getOrderId());
 
-        sponsor.setNewsSubscriptionOrder(null);
-        sponsorRepository.save(sponsor);
-        newsSubscriptionOrderRepository.delete(newsSubscriptionOrder);
+        sponsor.setNewsSubscriptionOrder(expectedOrderSaved);
+        Mockito.verify(sponsorRepository, Mockito.times(1)).save(sponsor);
+        Mockito.verify(securityUtil, Mockito.times(1)).getAuthenticatedUserId();
     }
 
     @Test
-    @Sql(value = {"/initScripts/create-sponsor.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(value = {"/initScripts/drop-sponsor.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getNewsWithoutSubscription() {
-        UUID sponsorId = UUID.fromString("4a9f1d37-c6fd-4391-8082-655bb98fb460");
+        UUID sponsorId = new UUID(42, 43);
+        Sponsor sponsor = new Sponsor();
+        sponsor.setId(sponsorId);
+
+        Mockito.when(sponsorRepository.findById(sponsorId))
+                .thenReturn(Optional.of(sponsor));
         Mockito.when(securityUtil.getAuthenticatedUserId())
                 .thenReturn(sponsorId);
 
@@ -225,18 +302,44 @@ class SponsorServiceImplTest {
     }
 
     @Test
-    @Sql(value = {"/initScripts/create-sponsor-with-subscription.sql", "/initScripts/create-moderators-and-news.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(value = {"/initScripts/drop-sponsor-with-subscription.sql", "/initScripts/drop-moderators-and-news.sql"}, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void getNews() {
-        UUID sponsorId = UUID.fromString("523adea8-9f98-41a3-bae0-1e4875aceaae");
-        int expectedSize = 4;
+        UUID sponsorId = new UUID(42, 43);
+        Sponsor sponsor = new Sponsor();
+        sponsor.setId(sponsorId);
+        sponsor.setNewsSubscriptionOrder(
+                NewsSubscriptionOrder.builder()
+                        .paid(true)
+                        .build()
+        );
+
+        Mockito.when(sponsorRepository.findById(sponsorId))
+                .thenReturn(Optional.of(sponsor));
         Mockito.when(securityUtil.getAuthenticatedUserId())
                 .thenReturn(sponsorId);
-        List<NewsResponse> news = sponsorService.getNews();
 
-        Mockito.verify(sponsorUtil, Mockito.times(1)).checkIfSponsorCanSeeNews(ArgumentMatchers.any(Sponsor.class));
+        News news1 = News.builder()
+                .name("name1")
+                .content("content1")
+                .dateTime(Instant.now().plus(1, ChronoUnit.DAYS))
+                .build();
+        News news2 = News.builder()
+                .name("name2")
+                .content("content2")
+                .dateTime(Instant.now().plus(2, ChronoUnit.DAYS))
+                .build();
+        News news3 = News.builder()
+                .name("name3")
+                .content("content3")
+                .dateTime(Instant.now().minus(3, ChronoUnit.DAYS))
+                .build();
+
+        List<News> expectedNews = List.of(news1, news2, news3);
+        List<NewsResponse> expectedNewsResponses = expectedNews.stream().map(NewsResponse::new).toList();
+
+        Mockito.doReturn(expectedNews).when(newsRepository).findAll();
+
+        assertEquals(expectedNewsResponses, sponsorService.getNews());
+        Mockito.verify(securityUtil, Mockito.times(1)).getAuthenticatedUserId();
         Mockito.verify(newsRepository, Mockito.times(1)).findAll();
-
-        assertTrue(news.size() >= expectedSize);
     }
 }
