@@ -183,12 +183,7 @@ public class SponsorChatPageTests extends SeleniumTestBase {
         doReturn(new MentorResponse(this.mentor)).when(this.mentorService).getMentorById(this.mentor.getId());
         doReturn(List.of(this.resource)).when(this.resourceService).getAllResources();
 
-        this.get("/sponsor/chat/" + this.chat.getId());
-
-        page = new ChatPage(this.driver);
-        PageFactory.initElements(driver, page);
-
-        this.waitForAngularRequests();
+        this.page = this.getInit("/sponsor/chat/" + this.chat.getId(), ChatPage.class);
 
         this.page.getMessageInput().clear();
 

@@ -2,7 +2,6 @@ package ru.itmo.hungergames.selenium.pages;
 
 import lombok.Getter;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -11,12 +10,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ChatPage {
-    private final WebDriver driver;
-
-    public ChatPage(WebDriver driver) {
-        this.driver = driver;
-    }
-
     public static class Message {
         private final WebElement element;
 
@@ -79,8 +72,11 @@ public class ChatPage {
     @FindBy(xpath = "//button[contains(text(), 'Предложить ресурсы')]")
     private WebElement sendResourcesButton;
 
+    @FindBy(tagName = "li")
+    private List<WebElement> chatMessageElements;
+
     public List<Message> getMessages() {
-        return this.driver.findElements(By.tagName("li")).stream().map(Message::new).collect(Collectors.toList());
+        return this.chatMessageElements.stream().map(Message::new).collect(Collectors.toList());
     }
 
 
