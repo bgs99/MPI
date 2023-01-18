@@ -29,6 +29,8 @@
         </ng-container>
         <ng-container *ngIf="this.paymentSucceded === true">
             <h2 id="status">Оплата подтверждена</h2>
+            <div>Средства заморожены на счете и будут списаны когда модератор одобрит содержимое рекламы для размещения.</div>
+            <div>Если размещение будет отклонено, средства на счету будут разморожены.</div>
 
             <button mat-raised-button (click)="this.anotherPost()">Еще один пост</button>
             <button mat-raised-button [routerLink]="['/tribute']">Вернуться в меню</button>
