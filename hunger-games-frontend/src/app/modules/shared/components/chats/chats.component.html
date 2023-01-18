@@ -1,10 +1,19 @@
-<mat-list>
-    <mat-list-item *ngFor="let chat of chats">
-        <h4 matListItemTitle>
-            <button [routerLink]="[this.chatLink, chat.chatId]">
-                {{chatName(chat)}}
+<ng-container *ngFor="let chat of chats">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>{{chatName(chat)}}</mat-card-title>
+            <mat-card-subtitle *ngIf="chat.lastMessage !== null">
+                {{chat.lastMessage.dateTime.toLocaleString("ru-RU")}}
+            </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content *ngIf="chat.lastMessage !== null">
+            {{chat.lastMessage.senderName}}: {{chat.lastMessage.message}}
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button [routerLink]="[this.chatLink, chat.chatId]">
+                Перейти
             </button>
-        </h4>
-        <p matListItemLine> {{chat.lastMessage?.message}} </p>
-    </mat-list-item>
-</mat-list>
+        </mat-card-actions>
+    </mat-card>
+    <br/>
+</ng-container>

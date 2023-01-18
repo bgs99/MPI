@@ -6,7 +6,7 @@
                     <div mat-card-avatar class="message-avatar" *ngIf="message.message.senderAvatarUri !== null"
                         [ngStyle]="{'background-image': 'url(' + message.message.senderAvatarUri + ')'}"></div>
                     <mat-card-title>{{message.message.senderName}}</mat-card-title>
-                    <mat-card-subtitle>{{message.message.dateTime}}</mat-card-subtitle>
+                    <mat-card-subtitle>{{message.message.dateTime.toLocaleString("ru-RU")}}</mat-card-subtitle>
                 </mat-card-header>
                 <mat-card-content matListItemLine>
                     <ng-container *ngIf="message.order !== undefined; then commandMessage else regularMessage">
@@ -54,8 +54,10 @@
     </ul>
 </div>
 <form (ngSubmit)="send()">
-    <input matInput placeholder="Введите сообщение" type="text" name="msg" [(ngModel)]="this.pendingMessage" />
-    <button type="submit">Отправить</button>
+    <mat-form-field style="width: 30vw">
+        <input matInput placeholder="Введите сообщение" type="text" name="msg" [(ngModel)]="this.pendingMessage" />
+    </mat-form-field>
+    <button mat-raised-button type="submit">Отправить</button>
+    <button mat-raised-button *ngIf="this.role === UserRole.Mentor" (click)="this.requestResources()">Запросить ресурсы</button>
+    <button mat-raised-button *ngIf="this.role === UserRole.Sponsor" (click)="this.sendResources()">Предложить ресурсы</button>
 </form>
-<button *ngIf="this.role === UserRole.Mentor" (click)="this.requestResources()">Запросить ресурсы</button>
-<button *ngIf="this.role === UserRole.Sponsor" (click)="this.sendResources()">Предложить ресурсы</button>

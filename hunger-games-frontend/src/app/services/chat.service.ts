@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { lastValueFrom, Observable, map } from 'rxjs';
 import { ApiService } from './api.service';
-import { Chat, ChatId, ChatMessage } from '../models/chat';
+import { Chat, ChatId, ChatMessage, ChatMessageSerDe, ChatSerDe } from '../models/chat';
 import { RxStompService } from './rxstomp.service';
 import { RxStompServiceFactory } from './rxstomp.factory';
 
@@ -17,7 +17,7 @@ export class ConnectedChatServiceInstance {
     get messages(): Observable<ChatMessage> {
         return this.stompService.watch(`/chat/receive/${this.chat.chatId}`).pipe(
             map((message) => {
-                return JSON.parse(message.body) as ChatMessage
+                return ChatMessage.fromSerDe(JSON.parse(message.body) as ChatMessageSerDe)
             })
         )
     }
@@ -34,9 +34,10 @@ export class ChatServiceInstance {
         return connectedInstance;
     }
     async getMessagesSnapshot(): Promise<ChatMessage[]> {
-        return await lastValueFrom(this.http.get<ChatMessage[]>(
+        const messages =  await lastValueFrom(this.http.get<ChatMessageSerDe[]>(
             `${ApiService.baseURL}/chat/message/${this.chat.chatId}`
         ));
+        return messages.map(ChatMessage.fromSerDe)
     }
 }
 
@@ -48,15 +49,17 @@ export class ChatService {
     private static BASE_URL: string = `${ApiService.baseURL}/chat`;
     constructor(private http: HttpClient, private stompServiceFactory: RxStompServiceFactory) { }
     async createChat(tributeId: string): Promise<Chat> {
-        return await lastValueFrom(this.http.post<Chat>(
+        const chat = await lastValueFrom(this.http.post<ChatSerDe>(
             `${ChatService.BASE_URL}`,
             { tributeId }
         ));
+        return Chat.fromSerDe(chat);
     }
     async getChats(): Promise<Chat[]> {
-        return await lastValueFrom(this.http.get<Chat[]>(
+        const chats = await lastValueFrom(this.http.get<ChatSerDe[]>(
             `${ChatService.BASE_URL}`,
         ));
+        return chats.map(Chat.fromSerDe)
     }
     async getChat(id: ChatId): Promise<Chat> {
         const chats = await this.getChats();
