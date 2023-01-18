@@ -1,7 +1,7 @@
 <app-header></app-header>
 
 <ng-container *ngIf="this.ad !== null">
-    <h2>Пост для рассмотрения</h2>
+    <h2 class="status">Пост для рассмотрения</h2>
 
     <div id="ad" [innerHTML]="this.ad.text"></div>
 
@@ -9,5 +9,5 @@
     <button mat-raised-button (click)="this.review(false)">Отклонить</button>
 </ng-container>
 <ng-container *ngIf="this.ad === null">
-    <h2>Все посты рассмотрены</h2>
+    <h2 class="status">Все посты рассмотрены</h2>
 </ng-container>

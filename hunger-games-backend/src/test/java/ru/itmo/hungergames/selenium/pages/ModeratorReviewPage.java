@@ -4,7 +4,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 public class ModeratorReviewPage {
-    @FindBy(xpath = "//h2")
+    @FindBy(xpath = "//h2[contains(@class, 'status')]")
     private WebElement statusElement;
 
     public String getStatus() {
