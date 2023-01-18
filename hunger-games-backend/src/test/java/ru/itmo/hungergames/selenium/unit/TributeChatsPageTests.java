@@ -1,10 +1,8 @@
 package ru.itmo.hungergames.selenium.unit;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebElement;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.itmo.hungergames.model.entity.chat.Chat;
 import ru.itmo.hungergames.model.entity.chat.Message;
@@ -26,7 +24,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.doReturn;
 
 @SeleniumTest
@@ -101,8 +98,8 @@ public class TributeChatsPageTests extends SeleniumTestBase {
 
         var chatRows = this.page.getChatRows();
 
-        var names = chatRows.stream().map(ChatsPage.ChatRow::getSelectButton).map(WebElement::getText).collect(Collectors.toList());
-        var expectedNames = List.of(mentor.getName() + ", " + sponsor1.getName(), mentor.getName() + ", " + sponsor2.getName());
+        var names = chatRows.stream().map(ChatsPage.ChatRow::getParticipants).collect(Collectors.toList());
+        var expectedNames = List.of(Set.of(mentor.getName(), sponsor1.getName()), Set.of(mentor.getName(), sponsor2.getName()));
 
         Assertions.assertEquals(expectedNames, names);
 
@@ -133,14 +130,8 @@ public class TributeChatsPageTests extends SeleniumTestBase {
 
         this.page = this.getInit("/tribute/chats", TributeChatsPage.class);
 
-        var chatRow = this.page.getChatRows().get(0);
+        final var chatRow = this.page.getChatRows().get(0);
 
-        var sourceUrl = driver.getCurrentUrl();
-
-        chatRow.getSelectButton().click();
-
-        this.redirectWait(sourceUrl);
-
-        assertThat(driver.getCurrentUrl(), CoreMatchers.endsWith("#/tribute/chat/" + chat.getId().toString()));
+        this.assertRedirects(chatRow::select, "/tribute/chat/" + chat.getId().toString());
     }
 }

@@ -17,22 +17,26 @@ public class ChatsPage {
         public ChatRow(WebElement row) {
             this.row = row;
         }
-        public WebElement getSelectButton() {
-            return row.findElement(By.tagName("button"));
+        public void select() {
+            row.findElement(By.tagName("button")).click();
+        }
+        private String lastMessageTextRaw() {
+            return row.findElement(By.tagName("mat-card-content")).getText();
         }
         public String getLastMessage() {
-            return row.findElements(By.tagName("p")).get(0).getText();
+            final var rowStr = this.lastMessageTextRaw();
+            return rowStr.substring(rowStr.indexOf(": ") + 2);
         }
         public Set<String> getParticipants() {
-            return Arrays.stream(this.getSelectButton().getText().split(", ")).collect(Collectors.toSet());
+            return Arrays.stream(this.row.findElement(By.tagName("mat-card-title")).getText().split(", ")).collect(Collectors.toSet());
         }
     }
 
-    @FindBy(tagName = "mat-list-item")
-    private List<WebElement> messageElements;
+    @FindBy(tagName = "mat-card")
+    private List<WebElement> cardElements;
 
     private Stream<ChatRow> getChatRowsStream() {
-        return this.messageElements.stream().map(ChatRow::new);
+        return this.cardElements.stream().map(ChatRow::new);
     }
 
     public List<ChatRow> getChatRows() {
@@ -46,6 +50,6 @@ public class ChatsPage {
     }
 
     public void selectChatByParticipants(Set<String> participants) {
-        this.getChatRowByParticipants(participants).getSelectButton().click();
+        this.getChatRowByParticipants(participants).select();
     }
 }
