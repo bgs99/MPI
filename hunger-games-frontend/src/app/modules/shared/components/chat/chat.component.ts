@@ -40,7 +40,6 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
         private authService: AuthService,
         private ordersService: OrdersService,
         private router: Router,
-        private tributesService: TributesService,
         private mentorsService: MentorsService
     ) { }
 

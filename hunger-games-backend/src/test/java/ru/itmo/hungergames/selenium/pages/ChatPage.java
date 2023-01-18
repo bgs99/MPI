@@ -61,15 +61,15 @@ public class ChatPage {
     private WebElement messageInput;
 
     @Getter
-    @FindBy(xpath = "//button[contains(text(), 'Отправить')]")
+    @FindBy(xpath = "//button//*[contains(text(), 'Отправить')]")
     private WebElement messageSendButton;
 
     @Getter
-    @FindBy(xpath = "//button[contains(text(), 'Запросить ресурсы')]")
+    @FindBy(xpath = "//button//*[contains(text(), 'Запросить ресурсы')]")
     private WebElement requestResourcesButton;
 
     @Getter
-    @FindBy(xpath = "//button[contains(text(), 'Предложить ресурсы')]")
+    @FindBy(xpath = "//button//*[contains(text(), 'Предложить ресурсы')]")
     private WebElement sendResourcesButton;
 
     @FindBy(tagName = "li")
