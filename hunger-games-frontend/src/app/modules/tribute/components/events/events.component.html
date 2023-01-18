@@ -1,4 +1,4 @@
-<app-header></app-header>
+<app-header *ngIf="!this.embedded"></app-header>
 <button mat-raised-button *ngIf="!this.addingEvent" (click)="this.addingEvent = true">Добавить</button>
 <br />
 <app-event-editor *ngIf="this.addingEvent" (eventChanged)="this.addEvent($event)"
