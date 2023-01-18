@@ -14,8 +14,6 @@ public interface ModeratorService {
 
     List<UserResponse> getAllModerators();
 
-    JwtResponse authenticateModerator(User user);
-
     AdvertisingTextResponse getAnotherAdvertisingText();
 
     void approveAdvertisingText(ApproveAdvertisingTextRequest approveAdvertisingTextRequest);

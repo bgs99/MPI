@@ -83,7 +83,7 @@ export class AuthService {
     }
 
     async loginModerator(username: string, password: string): Promise<void> {
-        const url: string = `${ApiService.baseURL}/moderator/signin`;
+        const url: string = `${this.BASE_URL}/signin`;
         const login = await lastValueFrom(this.http.post<LoginResult>(url, { username, password }));
         this.storeAuth(new AuthData(login.id, login.name, login.token, UserRole.Moderator));
     }

@@ -3,7 +3,6 @@ package ru.itmo.hungergames.selenium.unit;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.support.PageFactory;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.AuthenticationException;
 import ru.itmo.hungergames.model.entity.user.User;
@@ -30,8 +29,7 @@ public class ModeratorLoginPageTests extends SeleniumTestBase {
 
     @BeforeEach
     public void setUp() {
-        this.get("/moderator/login");
-        this.page = PageFactory.initElements(driver, ModeratorLoginPage.class);
+        this.page = this.getInit("/moderator/login", ModeratorLoginPage.class);
 
         page.getLoginInput().clear();
         page.getPasswordInput().clear();
@@ -55,7 +53,7 @@ public class ModeratorLoginPageTests extends SeleniumTestBase {
     }
 
     @Test
-    public void LoginSponsorFailure() {
+    public void LoginFailure() {
         String username = "username";
         String password = "password";
 

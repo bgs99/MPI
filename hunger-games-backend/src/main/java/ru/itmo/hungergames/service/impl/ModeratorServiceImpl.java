@@ -37,25 +37,16 @@ public class ModeratorServiceImpl implements ModeratorService {
     private final ModeratorRepository moderatorRepository;
     private final NewsRepository newsRepository;
     private final AdvertisementOrderRepository advertisementOrderRepository;
-    private final UserDetailsServiceImpl userDetailsService;
-    private final AuthenticationProvider authenticationProvider;
-    private final JwtUtil jwtUtil;
     private final SecurityUtil securityUtil;
 
     @Autowired
     public ModeratorServiceImpl(ModeratorRepository moderatorRepository,
                                 NewsRepository newsRepository,
                                 AdvertisementOrderRepository advertisementOrderRepository,
-                                UserDetailsServiceImpl userDetailsService,
-                                AuthenticationProvider authenticationProvider,
-                                JwtUtil jwtUtil,
                                 SecurityUtil securityUtil) {
         this.moderatorRepository = moderatorRepository;
         this.newsRepository = newsRepository;
         this.advertisementOrderRepository = advertisementOrderRepository;
-        this.userDetailsService = userDetailsService;
-        this.authenticationProvider = authenticationProvider;
-        this.jwtUtil = jwtUtil;
         this.securityUtil = securityUtil;
     }
 
@@ -78,32 +69,6 @@ public class ModeratorServiceImpl implements ModeratorService {
                 .findAll().stream()
                 .map(UserResponse::new)
                 .toList();
-    }
-
-    @Override
-    public JwtResponse authenticateModerator(User user) {
-        User userDetails = (User)userDetailsService.loadUserByUsername(user.getUsername());
-        Set<String> roles = userDetails
-                .getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toSet());
-        Authentication authentication;
-        if (roles.contains(UserRole.MODERATOR.toString())) {
-            authentication = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), userDetails.getAuthorities());
-        } else {
-            authentication = authenticationProvider.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-        }
-        SecurityContextHolder
-                .getContext()
-                .setAuthentication(authentication);
-
-        return new JwtResponse(
-                userDetails.getId(),
-                jwtUtil.generateJwtToken(userDetails),
-                userDetails.getUsername(),
-                roles,
-                userDetails.getName()
-        );
     }
 
     @Override

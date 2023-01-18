@@ -1,4 +1,5 @@
 <mat-toolbar>
     <span class="spacer"></span>
-    <button [routerLink]="['/login']"><mat-icon>account_circle</mat-icon></button>
+    <button (click)="this.goHome()"><mat-icon>home</mat-icon></button>
+    <button (click)="this.logout()"><mat-icon>exit_to_app</mat-icon></button>
 </mat-toolbar>
