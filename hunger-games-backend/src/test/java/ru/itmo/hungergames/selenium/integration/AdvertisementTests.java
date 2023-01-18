@@ -3,15 +3,10 @@ package ru.itmo.hungergames.selenium.integration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebElement;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.jdbc.Sql;
 import ru.itmo.hungergames.model.entity.user.UserRole;
-import ru.itmo.hungergames.repository.AdvertisementOrderRepository;
 import ru.itmo.hungergames.selenium.integration.util.SeleniumIntegrationTestBase;
-import ru.itmo.hungergames.selenium.pages.ModeratorMenuPage;
-import ru.itmo.hungergames.selenium.pages.SponsorMenuPage;
-import ru.itmo.hungergames.selenium.pages.SponsorTributePage;
-import ru.itmo.hungergames.selenium.pages.TributeMenuPage;
+import ru.itmo.hungergames.selenium.pages.*;
 import ru.itmo.hungergames.selenium.util.SeleniumTest;
 
 import java.util.Collections;
@@ -20,10 +15,6 @@ import java.util.stream.Collectors;
 
 @SeleniumTest
 public class AdvertisementTests extends SeleniumIntegrationTestBase {
-
-    @Autowired
-    AdvertisementOrderRepository advertisementOrderRepository;
-
     @Test
     @Sql(value = {
             "/initScripts/create-tribute.sql",
@@ -49,7 +40,10 @@ public class AdvertisementTests extends SeleniumIntegrationTestBase {
         for (String advertisementText :
                 expectedAdvertisementTexts) {
             this.postAdvertisement(advertisementText);
-            this.approvePayment(this.driver.getWindowHandle());
+            final var postPage = this.initPage(TributeCreateAdvertisementPage.class);
+            postPage.getAnotherPostButton().click();
+            this.waitForAngularRequests();
+            //this.redirectWait(() -> {}, Duration.ofDays(1));
         }
 
         this.getModeratorStartPage();

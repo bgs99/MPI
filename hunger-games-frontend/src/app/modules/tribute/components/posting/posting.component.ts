@@ -1,24 +1,49 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, ViewChild } from '@angular/core';
+import { MatStepper } from '@angular/material/stepper';
+import { OrderId } from 'src/app/models/order';
 import { pay } from 'src/app/services/mock/payment.service';
 import { TributesService } from 'src/app/services/tributes.service';
 
 @Component({
-    selector: 'app-posting',
     templateUrl: './posting.component.html',
     styleUrls: ['./posting.component.css']
 })
 export class PostingComponent {
-    htmlContent: string = "";
+    @ViewChild('stepper') stepper!: MatStepper;
 
-    constructor(private router: Router, private tributesService: TributesService) { }
+    htmlContent: string = "";
+    paymentSucceded: boolean | null = null;
+    savedOrderId: OrderId | null = null;
+
+    constructor(private tributesService: TributesService) { }
 
     async order(): Promise<void> {
+        if (this.htmlContent === '') {
+            return;
+        }
         const text: string = this.htmlContent;
         this.htmlContent = '';
 
         const paymentData = await this.tributesService.orderAd(text);
+        this.savedOrderId = paymentData.orderId;
+        this.stepper.next();
+        await this.retry();
+    }
 
-        const success = await pay(paymentData.orderId);
+    async retry(): Promise<void> {
+        if (this.savedOrderId === null) {
+            return;
+        }
+        try {
+            this.paymentSucceded = await pay(this.savedOrderId);
+        }
+        catch (err: any) {
+            console.error(err);
+        }
+    }
+
+    anotherPost(): void {
+        this.paymentSucceded = null
+        this.stepper.previous();
     }
 }

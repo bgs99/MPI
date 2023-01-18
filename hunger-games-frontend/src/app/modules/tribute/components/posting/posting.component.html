@@ -1,14 +1,37 @@
 <app-header></app-header>
 
-<mat-horizontal-stepper [linear]="true" [selectedIndex]="0">
-    <mat-step [completed]="false" label="Оформление"></mat-step>
-    <mat-step [editable]="false" label="Подтверждение"></mat-step>
+<mat-horizontal-stepper #stepper [linear]="true">
+    <mat-step label="Оформление">
+
+        <angular-editor placeholder="Текст поста..." [(ngModel)]="htmlContent"></angular-editor>
+
+        <div>
+            <h2>Сумма: </h2>
+            <div class="payment-field">200$</div>
+            <button mat-raised-button (click)="order()" [disabled]="this.htmlContent === ''">Оплатить</button>
+        </div>
+
+    </mat-step>
+    <mat-step label="Подтверждение">
+        <ng-container *ngIf="this.paymentSucceded === null">
+            <h2 id="status">Ожидаем подтверждения оплаты</h2>
+
+            <button mat-raised-button (click)="order()">Попробовать еще раз</button>
+            <button mat-raised-button [routerLink]="['/tribute']">Вернуться в меню</button>
+        </ng-container>
+        <ng-container *ngIf="this.paymentSucceded === false">
+            <h2 id="status">Ошибка оплаты</h2>
+
+            <div>
+                <button mat-raised-button (click)="retry()">Попробовать еще раз</button>
+                <button mat-raised-button [routerLink]="['/tribute']">Вернуться в меню</button>
+            </div>
+        </ng-container>
+        <ng-container *ngIf="this.paymentSucceded === true">
+            <h2 id="status">Оплата подтверждена</h2>
+
+            <button mat-raised-button (click)="this.anotherPost()">Еще один пост</button>
+            <button mat-raised-button [routerLink]="['/tribute']">Вернуться в меню</button>
+        </ng-container>
+    </mat-step>
 </mat-horizontal-stepper>
-
-<angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="htmlContent"></angular-editor>
-
-<div>
-    <h2>Сумма: </h2>
-    <div class="payment-field">200$</div>
-    <button mat-raised-button (click)="order()">Оплатить</button>
-</div>

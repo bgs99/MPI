@@ -16,6 +16,9 @@ public class TributeCreateAdvertisementPage {
     @FindBy(xpath = "//div[contains(@class, 'payment-field')]")
     private WebElement total;
 
+    @FindBy(xpath = "//button//*[contains(text(),'Еще один пост')]")
+    private WebElement anotherPostButton;
+
     public int getTotal() {
         final var sumStr = this.total.getText();
         return Integer.parseInt(sumStr.substring(0, sumStr.length() - 1));

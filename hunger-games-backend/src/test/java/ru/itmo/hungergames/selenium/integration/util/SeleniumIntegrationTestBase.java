@@ -133,7 +133,7 @@ public class SeleniumIntegrationTestBase extends SeleniumTestBase {
     protected void postAdvertisement(String advertisementText) {
         final var tributeCreateAdvertisementPage = this.initPage(TributeCreateAdvertisementPage.class);
         tributeCreateAdvertisementPage.getTextArea().sendKeys(advertisementText);
-        tributeCreateAdvertisementPage.getPayButton().click();
+        this.approvePayment(() -> tributeCreateAdvertisementPage.getPayButton().click());
     }
 
     protected void moderatorMenuGoTo(ModeratorMenuPage.Action action) {
