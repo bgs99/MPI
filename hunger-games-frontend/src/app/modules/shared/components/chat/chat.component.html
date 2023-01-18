@@ -2,13 +2,13 @@
     <ul style="list-style-type:none;">
         <li *ngFor="let message of messages">
             <mat-card>
-                <mat-card-header matListItemTitle>
+                <mat-card-header>
                     <div mat-card-avatar class="message-avatar" *ngIf="message.message.senderAvatarUri !== null"
                         [ngStyle]="{'background-image': 'url(' + message.message.senderAvatarUri + ')'}"></div>
                     <mat-card-title>{{message.message.senderName}}</mat-card-title>
                     <mat-card-subtitle>{{message.message.dateTime.toLocaleString("ru-RU")}}</mat-card-subtitle>
                 </mat-card-header>
-                <mat-card-content matListItemLine>
+                <mat-card-content>
                     <ng-container *ngIf="message.order !== undefined; then commandMessage else regularMessage">
                     </ng-container>
                     <ng-template #regularMessage>
