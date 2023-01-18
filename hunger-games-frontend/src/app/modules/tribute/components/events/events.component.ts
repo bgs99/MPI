@@ -1,14 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Event } from 'src/app/models/event';
 import { TributesService } from 'src/app/services/tributes.service';
 
 @Component({
+    selector: 'app-tribute-events',
     templateUrl: './events.component.html',
 })
 export class EventsComponent implements OnInit {
     events: Event[] = [];
     addingEvent: boolean = false;
     editedEvent: number | null = null;
+
+    @Input()
+    embedded: boolean = false;
 
     constructor(private tributesService: TributesService) { }
 

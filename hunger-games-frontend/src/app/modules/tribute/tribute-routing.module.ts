@@ -7,6 +7,7 @@ import { MenuComponent } from './components/menu/menu.component';
 import { FailureComponent } from './components/posting/failure/failure.component';
 import { PostingComponent } from './components/posting/posting.component';
 import { SuccessComponent } from './components/posting/success/success.component';
+import { TributeComponent } from './components/tribute/tribute.component';
 
 const routes: Routes = [
     { path: '', component: MenuComponent },
@@ -16,6 +17,7 @@ const routes: Routes = [
     { path: 'chats', component: ChatsComponent },
     { path: 'chat/:id', component: ChatComponent },
     { path: 'events', component: EventsComponent },
+    { path: 'self', component: TributeComponent },
 ];
 
 @NgModule({

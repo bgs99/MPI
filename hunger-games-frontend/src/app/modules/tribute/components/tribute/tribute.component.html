@@ -1,0 +1,24 @@
+<app-header></app-header>
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Трибут {{this.self?.name}}</mat-card-title>
+        <mat-card-subtitle>Дистрикт {{this.self?.district}}</mat-card-subtitle>
+    </mat-card-header>
+    <img id="avatar" mat-card-image [src]="this.self?.avatarUri" alt="Аватар трибута">
+</mat-card>
+
+<h2>События</h2>
+<app-tribute-events [embedded]="true"></app-tribute-events>
+
+<h2>Посты</h2>
+<button mat-raised-button (click)="this.addPost()">Добавить пост</button>
+<mat-list>
+    <ng-container *ngFor="let ad of this.ads">
+        <mat-divider></mat-divider>
+        <mat-list-item class="post">
+            <mat-card [innerHTML]="ad">
+            </mat-card>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+    </ng-container>
+</mat-list>

@@ -24,6 +24,7 @@ import { ChatComponent } from './components/chat/chat.component';
 import { ChatsComponent } from './components/chats/chats.component';
 import { EventsComponent } from './components/events/events.component';
 import { EventEditorComponent } from './components/event-editor/event-editor.component';
+import { TributeComponent } from './components/tribute/tribute.component';
 
 @NgModule({
     declarations: [
@@ -35,6 +36,7 @@ import { EventEditorComponent } from './components/event-editor/event-editor.com
         ChatsComponent,
         EventsComponent,
         EventEditorComponent,
+        TributeComponent,
     ],
     imports: [
         CommonModule,
